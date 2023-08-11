@@ -32,4 +32,6 @@ public class UserLocation {
     public void setDistanceDeviation() {
         distanceDev = Math.sqrt( ( Math.pow( (realLocX-x), 2) ) + ( Math.pow(realLocY-y, 2) ) );
     }
+
+
 }

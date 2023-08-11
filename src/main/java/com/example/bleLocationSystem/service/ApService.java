@@ -30,6 +30,8 @@ public class ApService {
         kFilterForAp1 = new KalmanFilter();
         kFilterForAp2 = new KalmanFilter();
         kFilterForAp3 = new KalmanFilter();
+
+
     }
 
     public UserLocation trilateration(VO vo) {
@@ -70,8 +72,8 @@ public class ApService {
     public VO createFilteredVo(VO originalVo) {
 
         double filterdRssi1 = kFilterForAp1.kalmanFiltering(originalVo.getRssi1());
-        double filterdRssi2 = kFilterForAp1.kalmanFiltering(originalVo.getRssi2());
-        double filterdRssi3 = kFilterForAp1.kalmanFiltering(originalVo.getRssi3());
+        double filterdRssi2 = kFilterForAp2.kalmanFiltering(originalVo.getRssi2());
+        double filterdRssi3 = kFilterForAp3.kalmanFiltering(originalVo.getRssi3());
 
         return new VO(originalVo.getDeviceName(),
                         calcDistance(filterdRssi1),
