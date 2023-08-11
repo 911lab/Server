@@ -18,6 +18,7 @@ public class Up implements Runnable {
     @Override
     public void run() {
         double start = realLocX;
+        System.out.println("run start");
         for(double i = start; i <= endLocX ; i++){
 //            System.out.printf("i=%f%n",i);
 //            System.out.printf("x:%f, y:%f %n",x,y);

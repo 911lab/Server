@@ -19,9 +19,11 @@ public class ApService {
     KalmanFilter kFilterForAp3;
 
     Up UserPoint;
-
+    Thread t;
     private float tempAlpha;
     private int lossNum;
+
+    boolean initCheck;
 
     ExelPOIHelper poiHelper;
 
@@ -34,8 +36,9 @@ public class ApService {
         kFilterForAp3 = new KalmanFilter();
 
         UserPoint = new Up();
-        Thread t = new Thread(UserPoint);
-        t.start();
+        t = new Thread(UserPoint);
+
+//        initCheck = false;
 
     }
 
@@ -56,6 +59,11 @@ public class ApService {
         Trilateration tr = new Trilateration(originalVo.getDeviceName(), ap1, ap2, ap3);
 
         Trilateration filteredTr = new Trilateration(filteredVo.getDeviceName(), filteredAp1, filteredAp2, filteredAp3);
+
+//        if(!initCheck) {
+//            t.start();
+//            initCheck = true;
+//        }
 
         UserLocation ul = tr.calcUserLocation(UserPoint);
         UserLocation filteredUl = filteredTr.calcUserLocation(UserPoint);

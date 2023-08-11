@@ -24,8 +24,9 @@ public class UserLocation {
     public UserLocation(double x, double y, Up UserPoint) {
         this.x = x;
         this.y = y;
-        double realLocX= UserPoint.getRealLocX();
-        double realLocY= UserPoint.getRealLocY();
+
+//        double realLocX= UserPoint.getRealLocX();
+//        double realLocY= UserPoint.getRealLocY();
 
         setDistanceDeviation(realLocX,realLocY);
     }
