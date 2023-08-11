@@ -16,7 +16,7 @@ public class Trilateration {
     private Ap ap3;
 
     // 삼변측량 기법을 통한 사용자 위치 계산
-    public UserLocation calcUserLocation() {
+    public UserLocation calcUserLocation(Up UserPoint) {
         double A = 2*(ap2.getX()-ap1.getX());
         double B = 2*(ap2.getY()-ap1.getY());
         double C = Math.pow(ap1.getDistance(), 2) - Math.pow(ap2.getDistance(),2) - Math.pow(ap1.getX(),2) + Math.pow(ap2.getX(),2) - Math.pow(ap1.getY(),2) + Math.pow(ap2.getY(),2);
@@ -29,7 +29,7 @@ public class Trilateration {
 
 
 
-        UserLocation ul = new UserLocation(userX, userY);
+        UserLocation ul = new UserLocation(userX, userY, UserPoint);
 
 
         return ul;
