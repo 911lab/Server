@@ -29,6 +29,9 @@ public class ExelPOIHelper {
     //셀 스타일
     CellStyle style;
 
+    String strOrgloc;
+    String strFilterdloc;
+
     int num;
 
     public ExelPOIHelper() {
@@ -49,6 +52,8 @@ public class ExelPOIHelper {
         sheet.setColumnWidth(5, 10000);
         sheet.setColumnWidth(6, 10000);
         sheet.setColumnWidth(7, 10000);
+        sheet.setColumnWidth(8, 10000);
+        sheet.setColumnWidth(9, 10000);
 
 
         header = sheet.createRow(0);
@@ -83,13 +88,21 @@ public class ExelPOIHelper {
         headerCell.setCellStyle(headerStyle);
 
 
-
-
         headerCell = header.createCell(6);
-        headerCell.setCellValue("Before Filtering distance Deviation");
+        headerCell.setCellValue("before filtered location");
         headerCell.setCellStyle(headerStyle);
 
         headerCell = header.createCell(7);
+        headerCell.setCellValue("After filtered location");
+        headerCell.setCellStyle(headerStyle);
+
+
+
+        headerCell = header.createCell(8);
+        headerCell.setCellValue("Before Filtering distance Deviation");
+        headerCell.setCellStyle(headerStyle);
+
+        headerCell = header.createCell(9);
         headerCell.setCellValue("After Filtering distance Deviation");
         headerCell.setCellStyle(headerStyle);
     }
@@ -111,7 +124,7 @@ public class ExelPOIHelper {
     }
 
 
-    public int writeExcel(VO originalVo, UserLocation originalUl, VO filteredVo, UserLocation filteredUl, int i) throws IOException  {
+    public void writeExcel(VO originalVo, UserLocation originalUl, VO filteredVo, UserLocation filteredUl, int i) throws IOException  {
 
         num = i;
 
@@ -151,23 +164,33 @@ public class ExelPOIHelper {
         cell.setCellValue(filteredVo.getRssi3());
         cell.setCellStyle(style);
 
-        //6 distance dev
+        strOrgloc = String.format("( %.2f, %.2f )", originalUl.getX(), originalUl.getY());
+        strFilterdloc = String.format("( %.2f, %.2f )", filteredUl.getX(), filteredUl.getY());
+
+        //6 before filtered location
         cell = row.createCell(6);
+        cell.setCellValue(strOrgloc);
+        cell.setCellStyle(style);
+
+        //7 after filtered location
+        cell = row.createCell(7);
+        cell.setCellValue(strFilterdloc);
+        cell.setCellStyle(style);
+
+        //8 distance dev
+        cell = row.createCell(8);
         cell.setCellValue(originalUl.getDistanceDev());
         cell.setCellStyle(style);
 
-        //7 distance dev filter
-        cell = row.createCell(7);
+        //9 distance dev filter
+        cell = row.createCell(9);
         cell.setCellValue(filteredUl.getDistanceDev());
         cell.setCellStyle(style);
 
         if(num%100 == 0)  {
             createFileAndRewrite();
-            return 1;
         }
 
-        num++;
-        return num;
     }
 
 
@@ -175,7 +198,7 @@ public class ExelPOIHelper {
 //        File currDir = new File(".");
 //        String path = currDir.getAbsolutePath();
 //        String fileLocation = path.substring(0, path.length() - 1) + "temp.xlsx";
-        String fileLocation = "C:\\Users\\JaeHyuk\\Desktop\\bleExel\\beaconBestTest10_4.xlsx";
+        String fileLocation = "C:\\Users\\JaeHyuk\\Desktop\\bleExel\\beaconTest_1.xlsx";
 
         FileOutputStream outputStream = new FileOutputStream(fileLocation);
         workbook.write(outputStream);

@@ -18,12 +18,16 @@ public class ApService {
     KalmanFilter kFilterForAp2;
     KalmanFilter kFilterForAp3;
 
+    StartFilter startFilter;
+
+
     Up UserPoint;
     Thread t;
     private float tempAlpha;
     private int lossNum;
 
     boolean initCheck;
+    boolean numCheck;
 
     ExelPOIHelper poiHelper;
 
@@ -31,9 +35,12 @@ public class ApService {
 
     public ApService() {
         poiHelper = new ExelPOIHelper();
+
         kFilterForAp1 = new KalmanFilter();
         kFilterForAp2 = new KalmanFilter();
         kFilterForAp3 = new KalmanFilter();
+
+        startFilter = new StartFilter();
 
         UserPoint = new Up();
         t = new Thread(UserPoint);
@@ -46,40 +53,49 @@ public class ApService {
 
         originalVo = vo;
 
-        filteredVo = createFilteredVo(originalVo);
+        if(i <= 10) {
+            log.info("i = {}", i);
+            originalVo = startFilter.initFirstValue(originalVo, i);
+        }
 
-        Ap ap1 = new Ap(0,0, originalVo.getDistance1());
-        Ap ap2 = new Ap(10,0, originalVo.getDistance2());
-        Ap ap3 = new Ap(5,10, originalVo.getDistance3());
+        if(originalVo != null) {
+            filteredVo = createFilteredVo(originalVo);
 
-        Ap filteredAp1 = new Ap(0,0, filteredVo.getDistance1());
-        Ap filteredAp2 = new Ap(10,0, filteredVo.getDistance2());
-        Ap filteredAp3 = new Ap(5,10, filteredVo.getDistance3());
+            Ap ap1 = new Ap(0, 0, originalVo.getDistance1());
+            Ap ap2 = new Ap(3, 0, originalVo.getDistance2());
+            Ap ap3 = new Ap(1.5, 3, originalVo.getDistance3());
 
-        Trilateration tr = new Trilateration(originalVo.getDeviceName(), ap1, ap2, ap3);
+            Ap filteredAp1 = new Ap(0, 0, filteredVo.getDistance1());
+            Ap filteredAp2 = new Ap(3, 0, filteredVo.getDistance2());
+            Ap filteredAp3 = new Ap(1.5, 3, filteredVo.getDistance3());
 
-        Trilateration filteredTr = new Trilateration(filteredVo.getDeviceName(), filteredAp1, filteredAp2, filteredAp3);
+            Trilateration tr = new Trilateration(originalVo.getDeviceName(), ap1, ap2, ap3);
+
+            Trilateration filteredTr = new Trilateration(filteredVo.getDeviceName(), filteredAp1, filteredAp2, filteredAp3);
 
 //        if(!initCheck) {
 //            t.start();
 //            initCheck = true;
 //        }
 
-        UserLocation ul = tr.calcUserLocation(UserPoint);
-        UserLocation filteredUl = filteredTr.calcUserLocation(UserPoint);
+            UserLocation ul = tr.calcUserLocation(UserPoint);
+            UserLocation filteredUl = filteredTr.calcUserLocation(UserPoint);
 
 
-        log.info("originalVo = {}", originalVo.toString());
-        log.info("filteredVo = {}", filteredVo.toString());
+            log.info("originalVo = {}", originalVo.toString());
+            log.info("filteredVo = {}", filteredVo.toString());
 
-        System.out.printf("Before Location : (%.2f, %.2f)  Distance Deviation : %.2fm%n", ul.getX(), ul.getY(), ul.getDistanceDev());
+            System.out.printf("Before Location : (%.2f, %.2f)  Distance Deviation : %.2fm%n", ul.getX(), ul.getY(), ul.getDistanceDev());
 
-        System.out.printf("Filtered Location : (%.2f, %.2f)  Distance Deviation : %.2fm%n", filteredUl.getX(), filteredUl.getY(), filteredUl.getDistanceDev());
+            System.out.printf("Filtered Location : (%.2f, %.2f)  Distance Deviation : %.2fm%n", filteredUl.getX(), filteredUl.getY(), filteredUl.getDistanceDev());
 
 
-        createCsv(originalVo ,ul, filteredVo, filteredUl);
-
-        return ul;
+            createCsv(originalVo, ul, filteredVo, filteredUl);
+            i++;
+            return ul;
+        }
+        i++;
+        return null;
     }
 
     public VO createFilteredVo(VO originalVo) {
@@ -112,7 +128,7 @@ public class ApService {
     public void createCsv(VO originalVo, UserLocation ul, VO filteredVo, UserLocation filteredUl) {
         try {
             // 성능 테스트를 위한 엑셀 생성
-            i = poiHelper.writeExcel(originalVo, ul, filteredVo, filteredUl, i);
+            poiHelper.writeExcel(originalVo, ul, filteredVo, filteredUl, i);
 
         } catch (IOException e) {
             e.printStackTrace();

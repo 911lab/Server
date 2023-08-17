@@ -39,16 +39,14 @@ public class KalmanFilter {
             initialized = true;
             priorRssi = rssi;
             priorErrorCovariance = 1;
-            log.info("firstKalman !!!!!!");
         }
         else {
             priorRssi = predictedRssi;
             priorErrorCovariance = errorCovariance + processNoise;
-            log.info("priorRssi = {}, priorErrorConvariance = {}, errorConvariance = {}", priorRssi, priorErrorCovariance, errorCovariance);
+//            log.info("priorRssi = {}, priorErrorConvariance = {}, errorConvariance = {}", priorRssi, priorErrorCovariance, errorCovariance);
         }
         kalmanGain = priorErrorCovariance / (priorErrorCovariance + measurementNoise);
-        log.info("kalmanGain = {}", kalmanGain);
-
+//        log.info("kalmanGain = {}", kalmanGain);
 
         predictedRssi = priorRssi + (kalmanGain * (rssi - priorRssi));
 
@@ -56,6 +54,4 @@ public class KalmanFilter {
 
         return predictedRssi;
     }
-
-
 }

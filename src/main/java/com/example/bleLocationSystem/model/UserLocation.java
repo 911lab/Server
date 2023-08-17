@@ -15,8 +15,8 @@ public class UserLocation {
     private double y;
 
     //실제 위치
-    private double realLocX = 5;
-    private double realLocY = 5;
+    private double realLocX = 1.5;
+    private double realLocY = 1.5;
 
     //거리 편차
     private double distanceDev;

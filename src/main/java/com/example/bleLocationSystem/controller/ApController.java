@@ -15,8 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 @RestController
 @Slf4j //로깅 어노테이션
 public class ApController {
-    @Autowired
-    ApService apService;
+//    @Autowired
+//    ApService apService;
+
+    ApService apService = new ApService();
 
     //앱으로부터 ap1, ap2, ap3 각각의 거리값 받기
     @PostMapping("/api/distance")
