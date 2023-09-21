@@ -31,7 +31,7 @@ public class ApService {
 
     ExelPOIHelper poiHelper;
 
-    int i=1;
+    int i=0;
 
     public ApService() {
         poiHelper = new ExelPOIHelper();
@@ -90,8 +90,8 @@ public class ApService {
             System.out.printf("Filtered Location : (%.2f, %.2f)  Distance Deviation : %.2fm%n", filteredUl.getX(), filteredUl.getY(), filteredUl.getDistanceDev());
 
 
-            createCsv(originalVo, ul, filteredVo, filteredUl);
             i++;
+            createCsv(originalVo, ul, filteredVo, filteredUl);
             return ul;
         }
         i++;
