@@ -62,12 +62,12 @@ public class ApService {
             filteredVo = createFilteredVo(originalVo);
 
             Ap ap1 = new Ap(0, 0, originalVo.getDistance1());
-            Ap ap2 = new Ap(5, 0, originalVo.getDistance2());
-            Ap ap3 = new Ap(2.5, 5, originalVo.getDistance3());
+            Ap ap2 = new Ap(10, 0, originalVo.getDistance2());
+            Ap ap3 = new Ap(5, 10, originalVo.getDistance3());
 
             Ap filteredAp1 = new Ap(0, 0, filteredVo.getDistance1());
-            Ap filteredAp2 = new Ap(5, 0, filteredVo.getDistance2());
-            Ap filteredAp3 = new Ap(2.5, 5, filteredVo.getDistance3());
+            Ap filteredAp2 = new Ap(10, 0, filteredVo.getDistance2());
+            Ap filteredAp3 = new Ap(5, 10, filteredVo.getDistance3());
 
             Trilateration tr = new Trilateration(originalVo.getDeviceName(), ap1, ap2, ap3);
 
