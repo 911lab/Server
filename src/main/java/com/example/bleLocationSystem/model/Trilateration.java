@@ -1,6 +1,7 @@
 package com.example.bleLocationSystem.model;
 
 import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.catalina.User;
 
 @Setter
@@ -8,6 +9,7 @@ import org.apache.catalina.User;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@Slf4j
 //삼변측량
 public class Trilateration {
     private String deviceName;
@@ -16,7 +18,7 @@ public class Trilateration {
     private Ap ap3;
 
     // 삼변측량 기법을 통한 사용자 위치 계산
-    public UserLocation calcUserLocation(Up UserPoint) {
+    public UserLocation calcUserLocation() {
         double A = 2*(ap2.getX()-ap1.getX());
         double B = 2*(ap2.getY()-ap1.getY());
         double C = Math.pow(ap1.getDistance(), 2) - Math.pow(ap2.getDistance(),2) - Math.pow(ap1.getX(),2) + Math.pow(ap2.getX(),2) - Math.pow(ap1.getY(),2) + Math.pow(ap2.getY(),2);
@@ -28,8 +30,11 @@ public class Trilateration {
         double userY = ( (F * A) - (D * C) ) / ( (A * E) - (D * B) );
 
 
+        log.info("AP1 = {}", ap1.toString());
+        log.info("AP2 = {}", ap2.toString());
+        log.info("AP3 = {}", ap3.toString());
 
-        UserLocation ul = new UserLocation(userX, userY, UserPoint);
+        UserLocation ul = new UserLocation(userX, userY);
 
 
         return ul;

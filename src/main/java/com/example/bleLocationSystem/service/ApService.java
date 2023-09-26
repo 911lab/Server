@@ -4,11 +4,12 @@ import com.example.bleLocationSystem.model.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.swing.*;
 import java.io.IOException;
 
 @Service
 @Slf4j //로깅 어노테이션
-public class ApService {
+public class ApService extends JFrame {
 
     VO originalVo;
     VO filteredVo;
@@ -34,6 +35,8 @@ public class ApService {
     int i=0;
 
     public ApService() {
+
+
         poiHelper = new ExelPOIHelper();
 
         kFilterForAp1 = new KalmanFilter();
@@ -42,8 +45,8 @@ public class ApService {
 
         startFilter = new StartFilter();
 
-        UserPoint = new Up();
-        t = new Thread(UserPoint);
+//        UserPoint = new Up();
+//        t = new Thread(UserPoint);
 
 //        initCheck = false;
 
@@ -52,6 +55,7 @@ public class ApService {
     public UserLocation trilateration(VO vo) {
 
         originalVo = vo;
+        System.out.printf("Original VO : {}\n", originalVo);
 
         if(i <= 10) {
             log.info("i = {}", i);
@@ -78,8 +82,8 @@ public class ApService {
 //            initCheck = true;
 //        }
 
-            UserLocation ul = tr.calcUserLocation(UserPoint);
-            UserLocation filteredUl = filteredTr.calcUserLocation(UserPoint);
+            UserLocation ul = tr.calcUserLocation();
+            UserLocation filteredUl = filteredTr.calcUserLocation();
 
 
             log.info("originalVo = {}", originalVo.toString());
@@ -92,7 +96,7 @@ public class ApService {
 
             i++;
             createCsv(originalVo, ul, filteredVo, filteredUl);
-            return ul;
+            return filteredUl;
         }
         i++;
         return null;

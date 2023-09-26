@@ -1,6 +1,7 @@
 package com.example.bleLocationSystem.controller;
 
 import ch.qos.logback.core.net.SyslogOutputStream;
+import com.example.bleLocationSystem.UI;
 import com.example.bleLocationSystem.model.UserLocation;
 import com.example.bleLocationSystem.model.VO;
 import com.example.bleLocationSystem.service.ApService;
@@ -19,13 +20,17 @@ public class ApController {
 //    ApService apService;
 
     ApService apService = new ApService();
+    UI ui = new UI();
 
     //앱으로부터 ap1, ap2, ap3 각각의 거리값 받기
     @PostMapping("/api/distance")
     public ResponseEntity<UserLocation> receiveDistance(VO vo) throws Exception {
 
-        UserLocation ul = apService.trilateration(vo);
 
+        UserLocation ul = apService.trilateration(vo);
+        if(ul != null) {
+            ui.setUserLocation(ul);
+        }
         //System.out.printf("Before Location : (%.2f, %.2f)  Distance Deviation : %.2fm%n", ul.getX(), ul.getY(), ul.getDistanceDev());
 
         return (ul != null) ?

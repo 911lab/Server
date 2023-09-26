@@ -21,7 +21,7 @@ public class UserLocation {
     //거리 편차
     private double distanceDev;
 
-    public UserLocation(double x, double y, Up UserPoint) {
+    public UserLocation(double x, double y) {
         this.x = x;
         this.y = y;
 
