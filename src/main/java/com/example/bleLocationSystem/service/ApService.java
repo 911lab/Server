@@ -55,7 +55,6 @@ public class ApService extends JFrame {
     public UserLocation trilateration(VO vo) {
 
         originalVo = vo;
-        System.out.printf("Original VO : {}\n", originalVo);
 
         if(i <= 10) {
             log.info("i = {}", i);
@@ -89,9 +88,8 @@ public class ApService extends JFrame {
             log.info("originalVo = {}", originalVo.toString());
             log.info("filteredVo = {}", filteredVo.toString());
 
-            System.out.printf("Before Location : (%.2f, %.2f)  Distance Deviation : %.2fm%n", ul.getX(), ul.getY(), ul.getDistanceDev());
-
-            System.out.printf("Filtered Location : (%.2f, %.2f)  Distance Deviation : %.2fm%n", filteredUl.getX(), filteredUl.getY(), filteredUl.getDistanceDev());
+            log.info("Before Location : (%.2f, %.2f)  Distance Deviation : %.2fm%n", ul.getX(), ul.getY(), ul.getDistanceDev());
+            log.info("Filtered Location : (%.2f, %.2f)  Distance Deviation : %.2fm%n", filteredUl.getX(), filteredUl.getY(), filteredUl.getDistanceDev());
 
 
             i++;

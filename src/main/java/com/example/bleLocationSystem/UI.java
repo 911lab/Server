@@ -8,20 +8,26 @@ import java.awt.geom.Line2D;
 
 public class UI extends JFrame {
     private MyPanel p;
+    private JScrollPane scrollPane;
 
 
     public UI () {
 //        setContentPane(MainPanel);
         setTitle("Ble Location App");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+
         setSize(1050,1050);
         setLocationRelativeTo(null);
+
         makeUI();
+
         setVisible(true);
+
     }
     private void makeUI() {
 
         p = new MyPanel();
+
 
         add(p, BorderLayout.CENTER);
 

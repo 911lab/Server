@@ -1,5 +1,6 @@
 package com.example.bleLocationSystem.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 @Setter
@@ -7,6 +8,8 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@Data
+@JsonFormat
 //Value Object
 public class VO {
     private String deviceName;
