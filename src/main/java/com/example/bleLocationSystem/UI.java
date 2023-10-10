@@ -9,6 +9,7 @@ import java.awt.geom.Line2D;
 public class UI extends JFrame {
     private MyPanel p;
     private JScrollPane scrollPane;
+    //JScrollPane scroll;
 
 
     public UI () {
@@ -18,13 +19,16 @@ public class UI extends JFrame {
 
         setSize(1050,1050);
         setLocationRelativeTo(null);
-
+//        scroll = new JScrollPane(p);
+//        scroll.setBounds(0,0,1050,1050);
+//        add(scroll, BorderLayout.EAST);
         makeUI();
 
         setVisible(true);
 
     }
     private void makeUI() {
+        //JScrollBar scroll = new JScrollBar(1, 30, 0, -1050, 1100);
 
         p = new MyPanel();
 
@@ -41,6 +45,7 @@ public class UI extends JFrame {
     }
 
     public class MyPanel extends JPanel {
+
 
         Graphics2D g2;
         int radius;
@@ -101,11 +106,15 @@ public class UI extends JFrame {
             radius = 5;
 //            g2.fillOval(0-radius, 0-radius, radius*2, radius*2);
 //            g2.fillOval(0-radius, -250-radius, radius*2, radius*2);
-            g2.fillOval(0-radius, (int)(-Math.sqrt(750000)/2)-radius, radius*2, radius*2);      //3
-            g2.fillOval(-500-radius, (int)(Math.sqrt(750000)/2)-radius, radius*2, radius*2);    //1
-            g2.fillOval(500-radius, (int)(Math.sqrt(750000)/2)-radius, radius*2, radius*2);     //2
+            //정삼각형
+//            g2.fillOval(0-radius, (int)(-Math.sqrt(750000)/2)-radius, radius*2, radius*2);      //3
+//            g2.fillOval(-500-radius, (int)(Math.sqrt(750000)/2)-radius, radius*2, radius*2);    //1
+//            g2.fillOval(500-radius, (int)(Math.sqrt(750000)/2)-radius, radius*2, radius*2);     //2
 
-
+            //삼각형(20x15)
+            g2.fillOval(0-radius, -500-radius, radius*2, radius*2);      //3
+            g2.fillOval(-500-radius, 250-radius, radius*2, radius*2);    //1
+            g2.fillOval(500-radius, 250-radius, radius*2, radius*2);     //2
 
             if(x!=-1 && y!=-1) {
                 g2.translate(-500, (int)(Math.sqrt(750000)/2));
