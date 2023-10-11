@@ -117,9 +117,14 @@ public class UI extends JFrame {
             g2.fillOval(500-radius, 250-radius, radius*2, radius*2);     //2
 
             if(x!=-1 && y!=-1) {
-                g2.translate(-500, (int)(Math.sqrt(750000)/2));
+                //정삼각형
+//                g2.translate(-500, (int)(Math.sqrt(750000)/2));
+//                g2.setColor(Color.RED);
+//                g2.fillRect((int)(x*100)-5, -((int)(y*100)-5), 10, 10);
+
+                g2.translate(-500,250);
                 g2.setColor(Color.RED);
-                g2.fillRect((int)(x*100)-5, -((int)(y*100)-5), 10, 10);
+                g2.fillRect((int)(x*50)-5, -((int)(y*50)+5), 10, 10);
             }
 
 

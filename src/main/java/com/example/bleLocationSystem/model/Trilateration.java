@@ -40,6 +40,23 @@ public class Trilateration {
         return ul;
     }
 
+    // 화면밖으로 넘어가는경우 화면내로 좌표이동
+    public UserLocation moveUserLocation(UserLocation ul) {
+        System.out.printf("Before Location : (%.2f, %.2f) \t\t", ul.getX(), ul.getY());
 
+        if(ul.getX() < ap1.getX())
+            ul.setX(ap1.getX());
+        else if(ul.getX() > ap2.getX())
+            ul.setX(ap2.getX());
+
+        if(ul.getY() < ap1.getY())
+            ul.setY(ap1.getY());
+        else if(ul.getY() > ap3.getY())
+            ul.setY(ap3.getY());
+
+        System.out.printf("Moved Location : (%.2f, %.2f)\n", ul.getX(), ul.getY());
+
+        return ul;
+    }
 
 }

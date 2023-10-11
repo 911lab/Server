@@ -20,7 +20,7 @@ public class ApService extends JFrame {
     KalmanFilter kFilterForAp3;
 
     StartFilter startFilter;
-
+    RssiFilter rssiFilter;
 
     Up UserPoint;
     Thread t;
@@ -44,6 +44,7 @@ public class ApService extends JFrame {
         kFilterForAp3 = new KalmanFilter();
 
         startFilter = new StartFilter();
+        rssiFilter = new RssiFilter();
 
 //        UserPoint = new Up();
 //        t = new Thread(UserPoint);
@@ -59,14 +60,19 @@ public class ApService extends JFrame {
         if(i <= 10) {
             log.info("i = {}", i);
             originalVo = startFilter.initFirstValue(originalVo, i);
+            beforeFilteredVo = originalVo;
         }
 
         if(originalVo != null) {
-            filteredVo = createFilteredVo(originalVo);
+            //filteredVo = createFilteredVo(originalVo);
 
             Ap ap1 = new Ap(0, 0, originalVo.getDistance1());
             Ap ap2 = new Ap(20, 0, originalVo.getDistance2());
             Ap ap3 = new Ap(10, 15, originalVo.getDistance3());
+
+            rssiFilter.setRssiVo(ap2.getX()- ap1.getX(), ap3.getY()- ap1.getY(),beforeFilteredVo, originalVo);
+            filteredVo = createFilteredVo(originalVo);
+            beforeFilteredVo = filteredVo;
 
             Ap filteredAp1 = new Ap(0, 0, filteredVo.getDistance1());
             Ap filteredAp2 = new Ap(20, 0, filteredVo.getDistance2());
@@ -82,15 +88,16 @@ public class ApService extends JFrame {
 //        }
 
             UserLocation ul = tr.calcUserLocation();
-            UserLocation filteredUl = filteredTr.calcUserLocation();
+            UserLocation filteredUl = filteredTr.moveUserLocation(filteredTr.calcUserLocation());
+            //UserLocation filteredUl = filteredTr.calcUserLocation();
+
 
 
             log.info("originalVo = {}", originalVo.toString());
             log.info("filteredVo = {}", filteredVo.toString());
 
-            log.info("Before Location : (%.2f, %.2f)  Distance Deviation : %.2fm%n", ul.getX(), ul.getY(), ul.getDistanceDev());
-            log.info("Filtered Location : (%.2f, %.2f)  Distance Deviation : %.2fm%n", filteredUl.getX(), filteredUl.getY(), filteredUl.getDistanceDev());
-
+            System.out.printf("Before Location : (%.2f, %.2f)  Distance Deviation : %.2fm%n", ul.getX(), ul.getY(), ul.getDistanceDev());
+            System.out.printf("Filtered Location : (%.2f, %.2f)  Distance Deviation : %.2fm%n", filteredUl.getX(), filteredUl.getY(), filteredUl.getDistanceDev());
 
             i++;
             createCsv(originalVo, ul, filteredVo, filteredUl);
