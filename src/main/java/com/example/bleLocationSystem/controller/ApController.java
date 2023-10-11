@@ -30,7 +30,7 @@ public class ApController {
         if(ul != null) {
             ui.setUserLocation(ul);
         }
-        //System.out.printf("Before Location : (%.2f, %.2f)  Distance Deviation : %.2fm%n", ul.getX(), ul.getY(), ul.getDistanceDev());
+
 
         return (ul != null) ?
                 ResponseEntity.status(HttpStatus.OK).body(ul) :

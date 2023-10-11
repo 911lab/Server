@@ -2,6 +2,7 @@ package com.example.bleLocationSystem.service;
 
 import com.example.bleLocationSystem.model.*;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.xmlbeans.impl.xb.xsdschema.Attribute;
 import org.springframework.stereotype.Service;
 
 import javax.swing.*;
@@ -21,6 +22,15 @@ public class ApService extends JFrame {
 
     StartFilter startFilter;
     RssiFilter rssiFilter;
+
+    LocKalmanFilter locKalmanFilter;
+
+    double[][] x;
+
+    double[][] x2;
+
+    double[][] tempArr;
+
 
     Up UserPoint;
     Thread t;
@@ -45,6 +55,8 @@ public class ApService extends JFrame {
 
         startFilter = new StartFilter();
         rssiFilter = new RssiFilter();
+
+        locKalmanFilter = new LocKalmanFilter(0.1, 1, 1, 1, 0.1, 0.1);
 
 //        UserPoint = new Up();
 //        t = new Thread(UserPoint);
@@ -82,6 +94,8 @@ public class ApService extends JFrame {
 
             Trilateration filteredTr = new Trilateration(filteredVo.getDeviceName(), filteredAp1, filteredAp2, filteredAp3);
 
+
+
 //        if(!initCheck) {
 //            t.start();
 //            initCheck = true;
@@ -92,6 +106,20 @@ public class ApService extends JFrame {
             //UserLocation filteredUl = filteredTr.calcUserLocation();
 
 
+            x = locKalmanFilter.predict();
+            UserLocation locFilteredUl = new UserLocation(x[0][0], x[1][0]);
+
+
+            tempArr = new double[][] {{filteredUl.getX()},
+                                       {filteredUl.getY()}};
+
+            x2 = locKalmanFilter.update(tempArr);
+            UserLocation updateLocFilteredUl = new UserLocation(x2[0][0], x2[1][0]);
+
+
+
+
+
 
             log.info("originalVo = {}", originalVo.toString());
             log.info("filteredVo = {}", filteredVo.toString());
@@ -99,9 +127,13 @@ public class ApService extends JFrame {
             System.out.printf("Before Location : (%.2f, %.2f)  Distance Deviation : %.2fm%n", ul.getX(), ul.getY(), ul.getDistanceDev());
             System.out.printf("Filtered Location : (%.2f, %.2f)  Distance Deviation : %.2fm%n", filteredUl.getX(), filteredUl.getY(), filteredUl.getDistanceDev());
 
+            System.out.printf("LocFiltered Location : (%.2f, %.2f)  Distance Deviation : %.2fm%n", locFilteredUl.getX(), locFilteredUl.getY(), locFilteredUl.getDistanceDev());
+            System.out.printf("LocFiltered Location (Update) : (%.2f, %.2f)  Distance Deviation : %.2fm%n", updateLocFilteredUl.getX(), updateLocFilteredUl.getY(), updateLocFilteredUl.getDistanceDev());
+
+
             i++;
             createCsv(originalVo, ul, filteredVo, filteredUl);
-            return filteredUl;
+            return locFilteredUl;
         }
         i++;
         return null;
@@ -143,5 +175,7 @@ public class ApService extends JFrame {
             e.printStackTrace();
         }
     }
+
+
 
 }
