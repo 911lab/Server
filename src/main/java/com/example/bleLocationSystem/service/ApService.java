@@ -102,7 +102,7 @@ public class ApService extends JFrame {
 //        }
 
             UserLocation ul = tr.calcUserLocation();
-            UserLocation filteredUl = filteredTr.moveUserLocation(filteredTr.calcUserLocation());
+            UserLocation filteredUl = filteredTr.calcUserLocation();
             //UserLocation filteredUl = filteredTr.calcUserLocation();
 
 
@@ -116,10 +116,7 @@ public class ApService extends JFrame {
             x2 = locKalmanFilter.update(tempArr);
             UserLocation updateLocFilteredUl = new UserLocation(x2[0][0], x2[1][0]);
 
-
-
-
-
+            UserLocation moveFilteredUl = filteredTr.moveUserLocation(locFilteredUl);
 
             log.info("originalVo = {}", originalVo.toString());
             log.info("filteredVo = {}", filteredVo.toString());
@@ -129,7 +126,7 @@ public class ApService extends JFrame {
 
             System.out.printf("LocFiltered Location : (%.2f, %.2f)  Distance Deviation : %.2fm%n", locFilteredUl.getX(), locFilteredUl.getY(), locFilteredUl.getDistanceDev());
             System.out.printf("LocFiltered Location (Update) : (%.2f, %.2f)  Distance Deviation : %.2fm%n", updateLocFilteredUl.getX(), updateLocFilteredUl.getY(), updateLocFilteredUl.getDistanceDev());
-
+            System.out.printf("LocFiltered Location (Update) : (%.2f, %.2f)  Distance Deviation : %.2fm%n", moveFilteredUl.getX(), moveFilteredUl.getY(), moveFilteredUl.getDistanceDev());
 
             i++;
             createCsv(originalVo, ul, filteredVo, filteredUl);
