@@ -199,7 +199,10 @@ public class ExelPOIHelper {
 //        File currDir = new File(".");
 //        String path = currDir.getAbsolutePath();
 //        String fileLocation = path.substring(0, path.length() - 1) + "temp.xlsx";
-        String fileLocation = "C:\\Users\\heehe\\Desktop\\bleExel\\1012\\beaconTest_2m2.xlsx";
+
+//        String fileLocation = "C:\\Users\\heehe\\Desktop\\bleExel\\1012\\beaconTest_2m2.xlsx";
+
+        String fileLocation = "C:\\Users\\JaeHyuk\\Desktop\\bleExel\\1016\\beaconTest5_1.xlsx";
 
         FileOutputStream outputStream = new FileOutputStream(fileLocation);
         workbook.write(outputStream);

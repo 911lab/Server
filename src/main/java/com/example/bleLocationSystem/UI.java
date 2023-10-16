@@ -112,9 +112,15 @@ public class UI extends JFrame {
 //            g2.fillOval(500-radius, (int)(Math.sqrt(750000)/2)-radius, radius*2, radius*2);     //2
 
             //삼각형(20x15)
+//            g2.fillOval(0-radius, -500-radius, radius*2, radius*2);      //3
+//            g2.fillOval(-500-radius, 250-radius, radius*2, radius*2);    //1
+//            g2.fillOval(500-radius, 250-radius, radius*2, radius*2);     //2
+
+            //삼각형(5x5)
             g2.fillOval(0-radius, -500-radius, radius*2, radius*2);      //3
-            g2.fillOval(-500-radius, 250-radius, radius*2, radius*2);    //1
-            g2.fillOval(500-radius, 250-radius, radius*2, radius*2);     //2
+            g2.fillOval(-500-radius, 500-radius, radius*2, radius*2);    //1
+            g2.fillOval(500-radius, 500-radius, radius*2, radius*2);     //2
+
 
             if(x!=-1 && y!=-1) {
                 //정삼각형
@@ -122,12 +128,16 @@ public class UI extends JFrame {
 //                g2.setColor(Color.RED);
 //                g2.fillRect((int)(x*100)-5, -((int)(y*100)-5), 10, 10);
 
-                g2.translate(-500,250);
+                //삼각형(20x15)
+//                g2.translate(-500,250);
+//                g2.setColor(Color.RED);
+//                g2.fillRect((int)(x*50)-5, -((int)(y*50)+5), 10, 10);
+
+                //삼각형(5x5)
+                g2.translate(-500,500);
                 g2.setColor(Color.RED);
-                g2.fillRect((int)(x*50)-5, -((int)(y*50)+5), 10, 10);
+                g2.fillRect((int)(x*200)-5, -((int)(y*200)+5), 10, 10);
             }
-
-
         }
     }
 }

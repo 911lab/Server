@@ -30,9 +30,9 @@ public class Trilateration {
         double userY = ( (F * A) - (D * C) ) / ( (A * E) - (D * B) );
 
 
-        log.info("AP1 = {}", ap1.toString());
-        log.info("AP2 = {}", ap2.toString());
-        log.info("AP3 = {}", ap3.toString());
+//        log.info("AP1 = {}", ap1.toString());
+//        log.info("AP2 = {}", ap2.toString());
+//        log.info("AP3 = {}", ap3.toString());
 
         UserLocation ul = new UserLocation(userX, userY);
 
