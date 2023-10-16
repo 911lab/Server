@@ -82,7 +82,7 @@ public class ApService extends JFrame {
             Ap ap2 = new Ap(20, 0, originalVo.getDistance2());
             Ap ap3 = new Ap(10, 15, originalVo.getDistance3());
 
-            rssiFilter.setRssiVo(ap2.getX()- ap1.getX(), ap3.getY()- ap1.getY(),beforeFilteredVo, originalVo);
+            rssiFilter.setRssiVo(ap1, ap2, ap3,beforeFilteredVo, originalVo);
             filteredVo = createFilteredVo(originalVo);
             beforeFilteredVo = filteredVo;
 
@@ -116,7 +116,7 @@ public class ApService extends JFrame {
             x2 = locKalmanFilter.update(tempArr);
             UserLocation updateLocFilteredUl = new UserLocation(x2[0][0], x2[1][0]);
 
-            UserLocation moveFilteredUl = filteredTr.moveUserLocation(locFilteredUl);
+//            UserLocation moveFilteredUl = filteredTr.moveUserLocation(locFilteredUl);
 
             log.info("originalVo = {}", originalVo.toString());
             log.info("filteredVo = {}", filteredVo.toString());
@@ -126,7 +126,7 @@ public class ApService extends JFrame {
 
             System.out.printf("LocFiltered Location : (%.2f, %.2f)  Distance Deviation : %.2fm%n", locFilteredUl.getX(), locFilteredUl.getY(), locFilteredUl.getDistanceDev());
             System.out.printf("LocFiltered Location (Update) : (%.2f, %.2f)  Distance Deviation : %.2fm%n", updateLocFilteredUl.getX(), updateLocFilteredUl.getY(), updateLocFilteredUl.getDistanceDev());
-            System.out.printf("LocFiltered Location (Update) : (%.2f, %.2f)  Distance Deviation : %.2fm%n", moveFilteredUl.getX(), moveFilteredUl.getY(), moveFilteredUl.getDistanceDev());
+//            System.out.printf("LocFiltered Location (Update) : (%.2f, %.2f)  Distance Deviation : %.2fm%n", moveFilteredUl.getX(), moveFilteredUl.getY(), moveFilteredUl.getDistanceDev());
 
             i++;
             createCsv(originalVo, ul, filteredVo, filteredUl);
@@ -154,7 +154,7 @@ public class ApService extends JFrame {
 
     public double calcDistance(double tempRssi) {
 
-        tempAlpha = -59;
+        tempAlpha = -54;
         lossNum = 2;
 
         double distance = Math.pow(10, (tempAlpha-tempRssi)/(10*lossNum));
