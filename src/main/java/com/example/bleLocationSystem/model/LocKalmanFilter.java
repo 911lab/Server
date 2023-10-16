@@ -67,22 +67,27 @@ public class LocKalmanFilter {
 
     public double[][] predict() {
 
+        //x_k =Ax_(k-1) + Bu_(k-1)
         x = hangHap(hangGop(A, x), hangGop(B, u));
 
+        //P= A*P*A' + Q
         P = hangHap(hangGop(hangGop(A, P), hangShift(A)), Q);
         return x;
     }
 
     public double[][] update(double[][] z) {
+        //S = H*P*H'+R
         S = hangHap(hangGop(H, hangGop(P, hangShift(H))), R);
+        //K = P * H'* inv(H*P*H'+R)
         K = hangGop(hangGop(P, hangShift(H)), inverse(S));
+
         x = hangHap(x , hangGop(K, hangCha(z, hangGop(H, x))));
 
-        for (int i=0; i< x.length; i++) {
-            for(int j=0; j< x[0].length; j++) {
-                x[i][j] = Math.round(x[i][j]);
-            }
-        }
+//        for (int i=0; i< x.length; i++) {
+//            for(int j=0; j< x[0].length; j++) {
+//                x[i][j] = Math.round(x[i][j]);
+//            }
+//        }
 
         I = new double[][] {{1, 0, 0, 0},
                             {0, 1, 0, 0},

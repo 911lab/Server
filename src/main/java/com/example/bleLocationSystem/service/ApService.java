@@ -71,24 +71,27 @@ public class ApService extends JFrame {
 
         if(i <= 10) {
             log.info("i = {}", i);
-            originalVo = startFilter.initFirstValue(originalVo, i);
-            beforeFilteredVo = originalVo;
+            if(originalVo.getRssi1() < 0 && originalVo.getRssi2() < 0 && originalVo.getRssi3() < 0) {
+                originalVo = startFilter.initFirstValue(originalVo, i);
+                beforeFilteredVo = originalVo;
+            } else {
+                i--;
+            }
         }
 
         if(originalVo != null) {
-            //filteredVo = createFilteredVo(originalVo);
 
             Ap ap1 = new Ap(0, 0, originalVo.getDistance1());
-            Ap ap2 = new Ap(20, 0, originalVo.getDistance2());
-            Ap ap3 = new Ap(10, 15, originalVo.getDistance3());
+            Ap ap2 = new Ap(5, 0, originalVo.getDistance2());
+            Ap ap3 = new Ap(2.5, 5, originalVo.getDistance3());
 
             rssiFilter.setRssiVo(ap2.getX()- ap1.getX(), ap3.getY()- ap1.getY(),beforeFilteredVo, originalVo);
             filteredVo = createFilteredVo(originalVo);
             beforeFilteredVo = filteredVo;
 
             Ap filteredAp1 = new Ap(0, 0, filteredVo.getDistance1());
-            Ap filteredAp2 = new Ap(20, 0, filteredVo.getDistance2());
-            Ap filteredAp3 = new Ap(10, 15, filteredVo.getDistance3());
+            Ap filteredAp2 = new Ap(5, 0, filteredVo.getDistance2());
+            Ap filteredAp3 = new Ap(2.5, 5, filteredVo.getDistance3());
 
             Trilateration tr = new Trilateration(originalVo.getDeviceName(), ap1, ap2, ap3);
 
@@ -103,7 +106,6 @@ public class ApService extends JFrame {
 
             UserLocation ul = tr.calcUserLocation();
             UserLocation filteredUl = filteredTr.calcUserLocation();
-            //UserLocation filteredUl = filteredTr.calcUserLocation();
 
 
             x = locKalmanFilter.predict();
@@ -116,7 +118,7 @@ public class ApService extends JFrame {
             x2 = locKalmanFilter.update(tempArr);
             UserLocation updateLocFilteredUl = new UserLocation(x2[0][0], x2[1][0]);
 
-            UserLocation moveFilteredUl = filteredTr.moveUserLocation(locFilteredUl);
+//            UserLocation moveFilteredUl = filteredTr.moveUserLocation(locFilteredUl);
 
             log.info("originalVo = {}", originalVo.toString());
             log.info("filteredVo = {}", filteredVo.toString());
@@ -126,7 +128,7 @@ public class ApService extends JFrame {
 
             System.out.printf("LocFiltered Location : (%.2f, %.2f)  Distance Deviation : %.2fm%n", locFilteredUl.getX(), locFilteredUl.getY(), locFilteredUl.getDistanceDev());
             System.out.printf("LocFiltered Location (Update) : (%.2f, %.2f)  Distance Deviation : %.2fm%n", updateLocFilteredUl.getX(), updateLocFilteredUl.getY(), updateLocFilteredUl.getDistanceDev());
-            System.out.printf("LocFiltered Location (Update) : (%.2f, %.2f)  Distance Deviation : %.2fm%n", moveFilteredUl.getX(), moveFilteredUl.getY(), moveFilteredUl.getDistanceDev());
+//            System.out.printf("LocFiltered Location (Update) : (%.2f, %.2f)  Distance Deviation : %.2fm%n", moveFilteredUl.getX(), moveFilteredUl.getY(), moveFilteredUl.getDistanceDev());
 
             i++;
             createCsv(originalVo, ul, filteredVo, filteredUl);
