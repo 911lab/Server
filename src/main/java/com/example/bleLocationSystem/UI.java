@@ -5,6 +5,7 @@ import com.example.bleLocationSystem.model.UserLocation;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Line2D;
+import java.util.ArrayList;
 
 public class UI extends JFrame {
     private MyPanel p;
@@ -58,9 +59,11 @@ public class UI extends JFrame {
         add(p, BorderLayout.CENTER);
     }
 
-    public void setUserLocation(UserLocation ul) {
-        p.x = ul.getX();
-        p.y = ul.getY();
+    public void setUserLocation(ArrayList<UserLocation> ul) {
+        p.ox = ul.get(0).getX();
+        p.oy = ul.get(0).getY();
+        p.x = ul.get(1).getX();
+        p.y = ul.get(1).getY();
 
         p.repaint();
     }
@@ -71,6 +74,8 @@ public class UI extends JFrame {
 
         double x = -1;
         double y = -1;
+        double ox = -1;
+        double oy = -1;
         int i =0;
         public void paintComponent(Graphics g) {
 
@@ -153,7 +158,6 @@ public class UI extends JFrame {
 //            g2.fillOval(0-radius, -500-radius, radius*2, radius*2);      //3
 //            g2.fillOval(-500-radius, 500-radius, radius*2, radius*2);    //1
 //            g2.fillOval(500-radius, 500-radius, radius*2, radius*2);     //2
-
             if(x!=-1 && y!=-1) {
                 //정삼각형
 //                g2.translate(-500, (int)(Math.sqrt(750000)/2));
@@ -168,6 +172,11 @@ public class UI extends JFrame {
                     g2.setColor(Color.GREEN);
                 g2.fillRect((int)(x*(m/beaconW))-radius, -((int)(y*(m/beaconH))+radius), radius*2, radius*2);
                 i++;
+                if(i%2==0)
+                    g2.setColor(Color.magenta);
+                else if(i%2==1)
+                    g2.setColor(Color.blue);
+                g2.drawOval((int)(ox*(m/beaconW))-radius, -((int)(oy*(m/beaconH))+radius), radius*2, radius*2);
                 //삼각형(5x5)
 //                g2.translate(-500,500);
 //                g2.setColor(Color.RED);

@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import javax.swing.*;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Slf4j //로깅 어노테이션
@@ -42,7 +44,7 @@ public class ApService extends JFrame {
     boolean numCheck;
 
     ExelPOIHelper poiHelper;
-
+    ArrayList<UserLocation> ulList;
     int i=0;
     @Getter
     double w= 5;
@@ -62,6 +64,7 @@ public class ApService extends JFrame {
         rssiFilter = new RssiFilter();
 
         locKalmanFilter = new LocKalmanFilter(0.1, 1, 1, 1, 0.1, 0.1);
+        ulList = new ArrayList<UserLocation>();
 //        locKalmanFilter = new LocKalmanFilter(1, 1, 1, 1, 0.1, 0.1);
 
 //        UserPoint = new Up();
@@ -71,8 +74,9 @@ public class ApService extends JFrame {
 
     }
 
-    public UserLocation trilateration(VO vo) {
+    //public UserLocation trilateration(VO vo) {
 
+    public ArrayList<UserLocation> trilateration(VO vo) {
         originalVo = vo;
 
         if(i <= 10) {
@@ -113,7 +117,6 @@ public class ApService extends JFrame {
             UserLocation ul = tr.calcUserLocation();
             UserLocation filteredUl = filteredTr.calcUserLocation();
 
-
             x = locKalmanFilter.predict();
             UserLocation locFilteredUl = new UserLocation(x[0][0], x[1][0]);
 
@@ -139,7 +142,16 @@ public class ApService extends JFrame {
             i++;
             createCsv(originalVo, ul, filteredVo, filteredUl);
 //            return locFilteredUl;
-            return moveFilteredUl;
+//            return moveFilteredUl;
+            if(i==12){
+            ulList.add(0,filteredTr.moveUserLocation(filteredUl));
+            ulList.add(1,moveFilteredUl);
+            }
+            else{
+                ulList.set(0,filteredTr.moveUserLocation(filteredUl));
+                ulList.set(1,moveFilteredUl);
+            }
+            return ulList;
         }
         i++;
         return null;

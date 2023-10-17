@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
+
 @RestController
 @Slf4j //로깅 어노테이션
 public class ApController {
@@ -22,21 +24,22 @@ public class ApController {
     ApService apService = new ApService();
 //    UI ui = new UI();
     UI ui = new UI(apService.getW(),apService.getH());
-
+    ArrayList<UserLocation> ul = new ArrayList<>();
     //앱으로부터 ap1, ap2, ap3 각각의 거리값 받기
     @PostMapping("/api/distance")
 
     public ResponseEntity<UserLocation> receiveDistance(@RequestBody VO vo) throws Exception {
 //    public ResponseEntity<UserLocation> receiveDistance(VO vo) throws Exception {
 
-        UserLocation ul = apService.trilateration(vo);
+
+        ul = apService.trilateration(vo);
         if(ul != null) {
             ui.setUserLocation(ul);
         }
 
 
         return (ul != null) ?
-                ResponseEntity.status(HttpStatus.OK).body(ul) :
+                ResponseEntity.status(HttpStatus.OK).body(ul.get(1)) :
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 }
