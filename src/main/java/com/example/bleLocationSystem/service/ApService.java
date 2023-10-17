@@ -1,6 +1,7 @@
 package com.example.bleLocationSystem.service;
 
 import com.example.bleLocationSystem.model.*;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.xmlbeans.impl.xb.xsdschema.Attribute;
 import org.springframework.stereotype.Service;
@@ -43,6 +44,10 @@ public class ApService extends JFrame {
     ExelPOIHelper poiHelper;
 
     int i=0;
+    @Getter
+    double w= 5;
+    @Getter
+    double h= 5;
 
     public ApService() {
 
@@ -82,16 +87,16 @@ public class ApService extends JFrame {
         if(originalVo != null) {
 
             Ap ap1 = new Ap(0, 0, originalVo.getDistance1());
-            Ap ap2 = new Ap(5, 0, originalVo.getDistance2());
-            Ap ap3 = new Ap(2.5, 5, originalVo.getDistance3());
+            Ap ap2 = new Ap(w, 0, originalVo.getDistance2());
+            Ap ap3 = new Ap(w/2.0, h, originalVo.getDistance3());
 
             rssiFilter.setRssiVo(ap1, ap2, ap3,beforeFilteredVo, originalVo);
             filteredVo = createFilteredVo(originalVo);
             beforeFilteredVo = filteredVo;
 
             Ap filteredAp1 = new Ap(0, 0, filteredVo.getDistance1());
-            Ap filteredAp2 = new Ap(5, 0, filteredVo.getDistance2());
-            Ap filteredAp3 = new Ap(2.5, 5, filteredVo.getDistance3());
+            Ap filteredAp2 = new Ap(w, 0, filteredVo.getDistance2());
+            Ap filteredAp3 = new Ap(w/2.0, h, filteredVo.getDistance3());
 
             Trilateration tr = new Trilateration(originalVo.getDeviceName(), ap1, ap2, ap3);
 
