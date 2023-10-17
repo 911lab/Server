@@ -32,6 +32,12 @@ public class LocKalmanFilter {
                             {0, 0, 1, 0},
                             {0 , 0, 0, 1}};
 
+        //Define the State Transition Matrix A 2
+//        A = new double[][] {{1, dt, 0, 0},
+//                            {0, 1, 0, 0},
+//                            {0, 0, 1, dt},
+//                            {0 , 0, 0, 1}};
+
         //Define the Control Input Matrix B
         B = new double[][] {{Math.pow(dt,2)/2, 0} ,
                             {0,Math.pow(dt,2)/2},
@@ -41,6 +47,10 @@ public class LocKalmanFilter {
         //Define Measurement Mapping Matrix
         H = new double[][] {{1, 0, 0, 0},
                             {0, 1, 0, 0}};
+
+        //Define Measurement Mapping Matrix 2
+//        H = new double[][] {{1, 0, 0, 0},
+//                            {0, 0, 1, 0}};
 
         //Initial Process Noise Covariance
         Q = new double[][] {{Math.pow(dt,4)/4, 0, Math.pow(dt, 3)/2, 0},
@@ -54,21 +64,40 @@ public class LocKalmanFilter {
             }
         }
 
+        //Initial Process Noise Covariance 2
+//        Q = new double[][] {{1, 0, 0, 0},
+//                            {0, 1, 0, 0},
+//                            {0, 0, 1, 0},
+//                            {0, 0, 0, 1}};
+
+
         //Initial Measurement Noise Covariance
         R = new double[][] {{Math.pow(x_std_meas, 2), 0},
                             {0, Math.pow(y_std_meas, 2)}};
+
+        //Initial Measurement Noise Covariance 2
+//        R = new double[][] {{50, 0},
+//                            {0, 50}};
 
         //Initial Covariance Matrix
         P = new double[][] {{1, 0, 0, 0},
                             {0, 1, 0, 0},
                             {0, 0, 1, 0},
                             {0, 0, 0, 1}};
+
+        //Initial Covariance Matrix 2
+//        P = new double[][] {{100, 0, 0, 0},
+//                            {0, 100, 0, 0},
+//                            {0, 0, 100, 0},
+//                            {0, 0, 0, 100}};
     }
 
     public double[][] predict() {
 
-        //x_k =Ax_(k-1) + Bu_(k-1)
+        //x_k =Ax_(k-1) + Bu_(k-1)  //1
         x = hangHap(hangGop(A, x), hangGop(B, u));
+        //2
+//        x = hangGop(A, x);
 
         //P= A*P*A' + Q
         P = hangHap(hangGop(hangGop(A, P), hangShift(A)), Q);
@@ -94,8 +123,10 @@ public class LocKalmanFilter {
                             {0, 0, 1, 0},
                             {0, 0, 0, 1}};
 
+        //1
         P = hangGop(hangCha(I, hangGop(K, H)), P);
-
+        //2
+//        P = hangCha(P, hangGop(hangGop(K, H), P));
         return x;
     }
 
