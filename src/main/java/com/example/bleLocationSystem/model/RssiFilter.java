@@ -2,7 +2,7 @@ package com.example.bleLocationSystem.model;
 
 
 public class RssiFilter {
-    float tempAlpha = -54;
+    float tempAlpha = -35;
     int lossNum = 2;
 
     public void setRssiVo(Ap ap1, Ap ap2, Ap ap3, VO beforeFilteredVo, VO originalVo) {

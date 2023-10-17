@@ -62,7 +62,7 @@ public class StartFilter {
 
     public double calcDistance(double tempRssi) {
 
-        tempAlpha = -54;
+        tempAlpha = -35;
         lossNum = 2;
 
         double distance = Math.pow(10, (tempAlpha-tempRssi)/(10*lossNum));
