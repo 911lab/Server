@@ -45,6 +45,10 @@ public class ApService extends JFrame {
 
     VO realNoFIlterVo;
 
+    MAFilter mafFilter1;
+    MAFilter mafFilter2;
+    MAFilter mafFilter3;
+
     ExelPOIHelper poiHelper;
     ArrayList<UserLocation> ulList;
     RemoveOutlier rm;
@@ -60,9 +64,13 @@ public class ApService extends JFrame {
 
         poiHelper = new ExelPOIHelper();
 
-        kFilterForAp1 = new KalmanFilter();
-        kFilterForAp2 = new KalmanFilter();
-        kFilterForAp3 = new KalmanFilter();
+//        kFilterForAp1 = new KalmanFilter();
+//        kFilterForAp2 = new KalmanFilter();
+//        kFilterForAp3 = new KalmanFilter();
+
+        mafFilter1 = new MAFilter();
+        mafFilter2 = new MAFilter();
+        mafFilter3 = new MAFilter();
 
         startFilter = new StartFilter();
         rssiFilter = new RssiFilter();
@@ -104,11 +112,17 @@ public class ApService extends JFrame {
             Ap ap2 = new Ap(w, 0, originalVo.getDistance2());
             Ap ap3 = new Ap(w/2.0, h, originalVo.getDistance3());
 
-            filteredVo = createFilteredVo(originalVo);
+            //MAF
+            filteredVo = createMAFVo(originalVo);
+
+            //KF
+//            filteredVo = createFilteredVo(originalVo);
+
             //Original
 //            rssiFilter.setRssiVo(ap1, ap2, ap3,beforeFilteredVo, originalVo);
             //Temp
-            rssiFilter.setRssiVo(ap1, ap2, ap3,beforeFilteredVo, filteredVo);
+//            rssiFilter.setRssiVo(ap1, ap2, ap3,beforeFilteredVo, filteredVo);
+
             beforeFilteredVo = filteredVo;
 //+-            beforeFilteredVo = originalVo;
 
@@ -178,6 +192,21 @@ public class ApService extends JFrame {
         return null;
     }
 
+    private VO createMAFVo(VO originalVo) {
+        double filterdRssi1 = mafFilter1.push(originalVo.getRssi1());
+        double filterdRssi2 = mafFilter2.push(originalVo.getRssi2());
+        double filterdRssi3 = mafFilter3.push(originalVo.getRssi3());
+
+        return new VO(originalVo.getDeviceName(),
+                calcDistance(filterdRssi1),
+                filterdRssi1,
+                calcDistance(filterdRssi2),
+                filterdRssi2,
+                calcDistance(filterdRssi3),
+                filterdRssi3
+        );
+    }
+
     public VO createFilteredVo(VO originalVo) {
 
         double filterdRssi1 = kFilterForAp1.kalmanFiltering(originalVo.getRssi1());
@@ -196,8 +225,8 @@ public class ApService extends JFrame {
 
     public double calcDistance(double tempRssi) {
 
-        tempAlpha = -35;
-        lossNum = 2;
+        tempAlpha = -30;
+        lossNum = 4;
 
         double distance = Math.pow(10, (tempAlpha-tempRssi)/(10*lossNum));
 

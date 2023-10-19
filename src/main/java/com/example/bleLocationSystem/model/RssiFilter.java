@@ -2,8 +2,8 @@ package com.example.bleLocationSystem.model;
 
 
 public class RssiFilter {
-    float tempAlpha = -35;
-    int lossNum = 2;
+    float tempAlpha = -30;
+    int lossNum = 4;
 
     public void setRssiVo(Ap ap1, Ap ap2, Ap ap3, VO beforeFilteredVo, VO originalVo) {
         double maxRssi1 = getMaxRssi(ap1, ap2, ap3);
