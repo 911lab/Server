@@ -47,11 +47,13 @@ public class ApService extends JFrame {
 
     ExelPOIHelper poiHelper;
     ArrayList<UserLocation> ulList;
+    RemoveOutlier rm;
     int i=0;
+    double outlier = -86;
     @Getter
-    double w= 10;
+    double w= 30;
     @Getter
-    double h= 10;
+    double h= 30;
 
     public ApService() {
 
@@ -67,6 +69,7 @@ public class ApService extends JFrame {
 
         locKalmanFilter = new LocKalmanFilter(0.1, 1, 1, 1, 0.1, 0.1);
         ulList = new ArrayList<UserLocation>();
+        rm = new RemoveOutlier();
 //        locKalmanFilter = new LocKalmanFilter(1, 1, 1, 1, 0.1, 0.1);
 
 //        UserPoint = new Up();
@@ -81,6 +84,10 @@ public class ApService extends JFrame {
     public ArrayList<UserLocation> trilateration(VO vo) {
         originalVo = vo;
         realNoFIlterVo = new VO(originalVo.getDeviceName(), originalVo.getDistance1(), originalVo.getRssi1(), originalVo.getDistance2(), originalVo.getRssi2(), originalVo.getDistance3(), originalVo.getRssi3());
+
+        if(!rm.rmOutlier(originalVo.getRssi1(),originalVo.getRssi2(),originalVo.getRssi3()))//이상치 제거
+            return null;
+
         if(i <= 10) {
             log.info("i = {}", i);
             if(originalVo.getRssi1() < 0 && originalVo.getRssi2() < 0 && originalVo.getRssi3() < 0) {
@@ -207,7 +214,6 @@ public class ApService extends JFrame {
             e.printStackTrace();
         }
     }
-
 
 
 }
