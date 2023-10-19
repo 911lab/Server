@@ -188,7 +188,7 @@ public class ExelPOIHelper {
         cell.setCellValue(filteredUl.getDistanceDev());
         cell.setCellStyle(style);
 
-        if(num%1000 == 0)  {
+        if(num%300 == 0)  {
             createFileAndRewrite();
         }
 
@@ -200,7 +200,7 @@ public class ExelPOIHelper {
 //        String path = currDir.getAbsolutePath();
 //        String fileLocation = path.substring(0, path.length() - 1) + "temp.xlsx";
 
-        String fileLocation = "C:\\Users\\heehe\\Desktop\\bleExel\\1012\\beaconTest_2m2.xlsx";
+        String fileLocation = "C:\\Users\\heehe\\Desktop\\bleExel\\1018\\beaconTest_jjin10m_3.xlsx";
 
 //        String fileLocation = "C:\\Users\\JaeHyuk\\Desktop\\bleExel\\1016\\beaconTest5_1.xlsx";
 

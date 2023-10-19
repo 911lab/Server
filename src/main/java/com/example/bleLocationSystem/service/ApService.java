@@ -43,13 +43,15 @@ public class ApService extends JFrame {
     boolean initCheck;
     boolean numCheck;
 
+    VO realNoFIlterVo;
+
     ExelPOIHelper poiHelper;
     ArrayList<UserLocation> ulList;
     int i=0;
     @Getter
-    double w= 5;
+    double w= 10;
     @Getter
-    double h= 5;
+    double h= 10;
 
     public ApService() {
 
@@ -78,7 +80,7 @@ public class ApService extends JFrame {
 
     public ArrayList<UserLocation> trilateration(VO vo) {
         originalVo = vo;
-
+        realNoFIlterVo = new VO(originalVo.getDeviceName(), originalVo.getDistance1(), originalVo.getRssi1(), originalVo.getDistance2(), originalVo.getRssi2(), originalVo.getDistance3(), originalVo.getRssi3());
         if(i <= 10) {
             log.info("i = {}", i);
             if(originalVo.getRssi1() < 0 && originalVo.getRssi2() < 0 && originalVo.getRssi3() < 0) {
@@ -98,6 +100,8 @@ public class ApService extends JFrame {
             rssiFilter.setRssiVo(ap1, ap2, ap3,beforeFilteredVo, originalVo);
             filteredVo = createFilteredVo(originalVo);
             beforeFilteredVo = filteredVo;
+//+-            beforeFilteredVo = originalVo;
+
 
             Ap filteredAp1 = new Ap(0, 0, filteredVo.getDistance1());
             Ap filteredAp2 = new Ap(w, 0, filteredVo.getDistance2());
@@ -116,7 +120,12 @@ public class ApService extends JFrame {
 
             UserLocation ul = tr.calcUserLocation();
             UserLocation filteredUl = filteredTr.calcUserLocation();
-
+            if(i==10){
+                ulList.add(0,filteredTr.moveUserLocation(filteredUl));
+            }
+            else{
+                ulList.set(0,filteredTr.moveUserLocation(filteredUl));
+            }
             x = locKalmanFilter.predict();
             UserLocation locFilteredUl = new UserLocation(x[0][0], x[1][0]);
 
@@ -139,19 +148,21 @@ public class ApService extends JFrame {
             System.out.printf("LocFiltered Location (Update) : (%.2f, %.2f)  Distance Deviation : %.2fm%n", updateLocFilteredUl.getX(), updateLocFilteredUl.getY(), updateLocFilteredUl.getDistanceDev());
             System.out.printf("Moved Filtered Location : (%.2f, %.2f)  Distance Deviation : %.2fm%n", moveFilteredUl.getX(), moveFilteredUl.getY(), moveFilteredUl.getDistanceDev());
 
-            i++;
-            createCsv(originalVo, ul, filteredVo, filteredUl);
-//            return locFilteredUl;
-//            return moveFilteredUl;
-            if(i==12){
-            ulList.add(0,filteredTr.moveUserLocation(filteredUl));
-            ulList.add(1,moveFilteredUl);
+            if(i==10){
+                //ulList.add(0,filteredTr.moveUserLocation(filteredUl));
+                ulList.add(1,moveFilteredUl);
             }
             else{
-                ulList.set(0,filteredTr.moveUserLocation(filteredUl));
+                //ulList.set(0,filteredTr.moveUserLocation(filteredUl));
                 ulList.set(1,moveFilteredUl);
             }
+            i++;
+            createCsv(realNoFIlterVo, ul, filteredVo, filteredUl);
+//            return locFilteredUl;
+//            return moveFilteredUl;
+
             return ulList;
+
         }
         i++;
         return null;
