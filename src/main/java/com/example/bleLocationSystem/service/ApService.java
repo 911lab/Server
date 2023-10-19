@@ -97,8 +97,11 @@ public class ApService extends JFrame {
             Ap ap2 = new Ap(w, 0, originalVo.getDistance2());
             Ap ap3 = new Ap(w/2.0, h, originalVo.getDistance3());
 
-            rssiFilter.setRssiVo(ap1, ap2, ap3,beforeFilteredVo, originalVo);
             filteredVo = createFilteredVo(originalVo);
+            //Original
+//            rssiFilter.setRssiVo(ap1, ap2, ap3,beforeFilteredVo, originalVo);
+            //Temp
+            rssiFilter.setRssiVo(ap1, ap2, ap3,beforeFilteredVo, filteredVo);
             beforeFilteredVo = filteredVo;
 //+-            beforeFilteredVo = originalVo;
 
