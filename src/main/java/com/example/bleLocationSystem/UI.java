@@ -69,7 +69,6 @@ public class UI extends JFrame {
             g2.translate(10, 5); // 원점을 (10, 5)로 이동시킨다.
             maxX=(int)beaconW*(int)(m/beaconW);
             maxY=(int)beaconH*(int)(m/beaconH);
-            System.out.println("maxX:"+maxX+"maxY"+maxY);
 
             for (int i=0; i<=m; i = i+(int)(m/beaconH)) {
                 g2.draw(new Line2D.Float(0, i, m, i));     // x축과 평행선을 그린다.
@@ -83,6 +82,10 @@ public class UI extends JFrame {
             g2.draw(new Line2D.Float(maxX/2, 0, maxX/2, maxY));     // y축을 그린다.
 
             g2.setColor(Color.BLUE);
+
+            g2.draw(new Line2D.Float(0, maxY, maxX/2, 0));     // 1-3
+            g2.draw(new Line2D.Float(maxX, maxY, maxX/2, 0));     // 2-3
+            g2.draw(new Line2D.Float(0, maxY, maxX, maxY));     // 1-2
 
             radius = (int)(5*scale);
             g2.setFont(new Font("궁서",Font.BOLD,15));
@@ -106,7 +109,7 @@ public class UI extends JFrame {
                     g2.setColor(Color.RED);
                 else if(i%2==1)
                     g2.setColor(Color.GREEN);
-                g2.fillRect((int)x-radius, -((int)y+radius), radius*2, radius*2);
+                //g2.fillRect((int)x-radius, -((int)y+radius), radius*2, radius*2);
 
                 i++;
 
