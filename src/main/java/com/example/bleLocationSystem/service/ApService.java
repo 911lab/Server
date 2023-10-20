@@ -55,9 +55,9 @@ public class ApService extends JFrame {
     int i=0;
     double outlier = -86;
     @Getter
-    double w= 30;
+    double w= 20;
     @Getter
-    double h= 30;
+    double h= 15;
 
     public ApService() {
 
@@ -145,10 +145,10 @@ public class ApService extends JFrame {
             UserLocation ul = tr.calcUserLocation();
             UserLocation filteredUl = filteredTr.calcUserLocation();
             if(i==10){
-                ulList.add(0,filteredTr.moveUserLocation(filteredUl));
+                ulList.add(0,filteredUl);
             }
             else{
-                ulList.set(0,filteredTr.moveUserLocation(filteredUl));
+                ulList.set(0,filteredUl);
             }
             x = locKalmanFilter.predict();
             UserLocation locFilteredUl = new UserLocation(x[0][0], x[1][0]);
@@ -160,7 +160,7 @@ public class ApService extends JFrame {
             x2 = locKalmanFilter.update(tempArr);
             UserLocation updateLocFilteredUl = new UserLocation(x2[0][0], x2[1][0]);
 
-            UserLocation moveFilteredUl = filteredTr.moveUserLocation(updateLocFilteredUl);
+//            UserLocation moveFilteredUl = filteredTr.moveUserLocation(updateLocFilteredUl);
 
             log.info("originalVo = {}", originalVo.toString());
             log.info("filteredVo = {}", filteredVo.toString());
@@ -170,15 +170,15 @@ public class ApService extends JFrame {
 
             System.out.printf("LocFiltered Location : (%.2f, %.2f)  Distance Deviation : %.2fm%n", locFilteredUl.getX(), locFilteredUl.getY(), locFilteredUl.getDistanceDev());
             System.out.printf("LocFiltered Location (Update) : (%.2f, %.2f)  Distance Deviation : %.2fm%n", updateLocFilteredUl.getX(), updateLocFilteredUl.getY(), updateLocFilteredUl.getDistanceDev());
-            System.out.printf("Moved Filtered Location : (%.2f, %.2f)  Distance Deviation : %.2fm%n", moveFilteredUl.getX(), moveFilteredUl.getY(), moveFilteredUl.getDistanceDev());
+//            System.out.printf("Moved Filtered Location : (%.2f, %.2f)  Distance Deviation : %.2fm%n", moveFilteredUl.getX(), moveFilteredUl.getY(), moveFilteredUl.getDistanceDev());
 
             if(i==10){
                 //ulList.add(0,filteredTr.moveUserLocation(filteredUl));
-                ulList.add(1,moveFilteredUl);
+                ulList.add(1,updateLocFilteredUl);
             }
             else{
                 //ulList.set(0,filteredTr.moveUserLocation(filteredUl));
-                ulList.set(1,moveFilteredUl);
+                ulList.set(1,updateLocFilteredUl);
             }
             i++;
             createCsv(realNoFIlterVo, ul, filteredVo, filteredUl);

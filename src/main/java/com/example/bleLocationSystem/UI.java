@@ -106,7 +106,7 @@ public class UI extends JFrame {
                     g2.setColor(Color.RED);
                 else if(i%2==1)
                     g2.setColor(Color.GREEN);
-                g2.fillRect((int)x-radius, -((int)y+radius), radius*2, radius*2);
+                //g2.fillRect((int)x-radius, -((int)y+radius), radius*2, radius*2);
 
                 i++;
 
