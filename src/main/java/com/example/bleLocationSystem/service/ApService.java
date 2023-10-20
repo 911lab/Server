@@ -53,11 +53,10 @@ public class ApService extends JFrame {
     ArrayList<UserLocation> ulList;
     RemoveOutlier rm;
     int i=0;
-    double outlier = -86;
     @Getter
-    double w= 20;
+    double w= 10;
     @Getter
-    double h= 15;
+    double h= 10;
 
     public ApService() {
 
@@ -144,12 +143,19 @@ public class ApService extends JFrame {
 
             UserLocation ul = tr.calcUserLocation();
             UserLocation filteredUl = filteredTr.calcUserLocation();
+
+            //좌표 이상치 제거
+            if(rm.rmXYOutlier(filteredUl))
+                return null;
+
             if(i==10){
                 ulList.add(0,filteredUl);
             }
             else{
                 ulList.set(0,filteredUl);
             }
+
+
             x = locKalmanFilter.predict();
             UserLocation locFilteredUl = new UserLocation(x[0][0], x[1][0]);
 
