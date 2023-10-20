@@ -49,6 +49,8 @@ public class ApService extends JFrame {
     MAFilter mafFilter2;
     MAFilter mafFilter3;
 
+    LocMAFilter locMAFilter;
+
     ExelPOIHelper poiHelper;
     ArrayList<UserLocation> ulList;
     RemoveOutlier rm;
@@ -71,6 +73,8 @@ public class ApService extends JFrame {
         mafFilter1 = new MAFilter();
         mafFilter2 = new MAFilter();
         mafFilter3 = new MAFilter();
+
+        locMAFilter = new LocMAFilter();
 
         startFilter = new StartFilter();
         rssiFilter = new RssiFilter();
@@ -144,18 +148,24 @@ public class ApService extends JFrame {
 
             UserLocation ul = tr.calcUserLocation();
             UserLocation filteredUl = filteredTr.calcUserLocation();
+
             if(i==10){
                 ulList.add(0,filteredTr.moveUserLocation(filteredUl));
             }
             else{
                 ulList.set(0,filteredTr.moveUserLocation(filteredUl));
             }
+
+            UserLocation mAFilteredUl = locMAFilter.push(filteredUl);
+            if (mAFilteredUl == null) {
+                return null;
+            }
+
             x = locKalmanFilter.predict();
-            UserLocation locFilteredUl = new UserLocation(x[0][0], x[1][0]);
+//            UserLocation locFilteredUl = new UserLocation(x[0][0], x[1][0]);
 
-
-            tempArr = new double[][] {{filteredUl.getX()},
-                                       {filteredUl.getY()}};
+            tempArr = new double[][] {{mAFilteredUl.getX()},
+                                       {mAFilteredUl.getY()}};
 
             x2 = locKalmanFilter.update(tempArr);
             UserLocation updateLocFilteredUl = new UserLocation(x2[0][0], x2[1][0]);
@@ -168,7 +178,7 @@ public class ApService extends JFrame {
             System.out.printf("Before Location : (%.2f, %.2f)  Distance Deviation : %.2fm%n", ul.getX(), ul.getY(), ul.getDistanceDev());
             System.out.printf("Filtered Location : (%.2f, %.2f)  Distance Deviation : %.2fm%n", filteredUl.getX(), filteredUl.getY(), filteredUl.getDistanceDev());
 
-            System.out.printf("LocFiltered Location : (%.2f, %.2f)  Distance Deviation : %.2fm%n", locFilteredUl.getX(), locFilteredUl.getY(), locFilteredUl.getDistanceDev());
+//            System.out.printf("LocFiltered Location : (%.2f, %.2f)  Distance Deviation : %.2fm%n", locFilteredUl.getX(), locFilteredUl.getY(), locFilteredUl.getDistanceDev());
             System.out.printf("LocFiltered Location (Update) : (%.2f, %.2f)  Distance Deviation : %.2fm%n", updateLocFilteredUl.getX(), updateLocFilteredUl.getY(), updateLocFilteredUl.getDistanceDev());
             System.out.printf("Moved Filtered Location : (%.2f, %.2f)  Distance Deviation : %.2fm%n", moveFilteredUl.getX(), moveFilteredUl.getY(), moveFilteredUl.getDistanceDev());
 

@@ -40,12 +40,7 @@ public class MAFilter {
             sum = sum+r;
         }
 
-        if(queueSize < size) {
-            avg = sum / (queueSize + 1);
-        }
-        else {
-            avg = sum / queueSize;
-        }
+        avg = sum / queue.size();
 
         return avg;
     }
