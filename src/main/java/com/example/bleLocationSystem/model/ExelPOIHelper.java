@@ -18,9 +18,11 @@ public class ExelPOIHelper {
 
     //엑셀 시트
     Sheet sheet;
+    Sheet testSheet;
 
     //헤더 로우
     Row header;
+    Row testHeader;
 
     //헤더 스타일
     CellStyle headerStyle;
@@ -37,8 +39,10 @@ public class ExelPOIHelper {
     public ExelPOIHelper() {
         workbook = new XSSFWorkbook();
         styleSetting();
-        ResultSetting();
-
+        //실제 동작 시
+//        ResultSetting();
+        //테스트 시
+        testSetting();
     }
 
     public void ResultSetting() {
@@ -104,6 +108,55 @@ public class ExelPOIHelper {
 
         headerCell = header.createCell(9);
         headerCell.setCellValue("After Filtering distance Deviation");
+        headerCell.setCellStyle(headerStyle);
+    }
+
+    public void testSetting() {
+        testSheet = workbook.createSheet("BeaconTest");
+
+        testSheet.setColumnWidth(0, 10000);
+        testSheet.setColumnWidth(1, 10000);
+        testSheet.setColumnWidth(2, 10000);
+        testSheet.setColumnWidth(3, 10000);
+        testSheet.setColumnWidth(4, 10000);
+        testSheet.setColumnWidth(5, 10000);
+        testSheet.setColumnWidth(6, 10000);
+        testSheet.setColumnWidth(7, 10000);
+
+        testHeader = testSheet.createRow(0);
+
+        //헤더 셀(컬럼)
+        Cell headerCell = testHeader.createCell(0);
+        headerCell.setCellValue("Ap1 Rssi");
+        headerCell.setCellStyle(headerStyle);
+
+        headerCell = header.createCell(1);
+        headerCell.setCellValue("Ap2 Rssi");
+        headerCell.setCellStyle(headerStyle);
+
+        headerCell = header.createCell(2);
+        headerCell.setCellValue("Ap3 Rssi");
+        headerCell.setCellStyle(headerStyle);
+
+        headerCell = header.createCell(3);
+        headerCell.setCellValue("Ap4 Rssi");
+        headerCell.setCellStyle(headerStyle);
+
+        headerCell = header.createCell(4);
+        headerCell.setCellValue("Ap5 Rssi");
+        headerCell.setCellStyle(headerStyle);
+
+        headerCell = header.createCell(5);
+        headerCell.setCellValue("Ap6 Rssi");
+        headerCell.setCellStyle(headerStyle);
+
+
+        headerCell = header.createCell(6);
+        headerCell.setCellValue("Ap7 Rssi");
+        headerCell.setCellStyle(headerStyle);
+
+        headerCell = header.createCell(7);
+        headerCell.setCellValue("Ap8 Rssi");
         headerCell.setCellStyle(headerStyle);
     }
 
@@ -200,9 +253,9 @@ public class ExelPOIHelper {
 //        String path = currDir.getAbsolutePath();
 //        String fileLocation = path.substring(0, path.length() - 1) + "temp.xlsx";
 
-        String fileLocation = "C:\\Users\\heehe\\Desktop\\bleExel\\1019\\beaconTest_.xlsx";
+//        String fileLocation = "C:\\Users\\heehe\\Desktop\\bleExel\\1019\\beaconTest_1.xlsx";
 
-//        String fileLocation = "C:\\Users\\JaeHyuk\\Desktop\\bleExel\\1016\\beaconTest5_1.xlsx";
+        String fileLocation = "C:\\Users\\JaeHyuk\\Desktop\\bleExel\\1016\\beaconTest_11111111111111.xlsx";
 
         FileOutputStream outputStream = new FileOutputStream(fileLocation);
         workbook.write(outputStream);
@@ -212,7 +265,60 @@ public class ExelPOIHelper {
         ResultSetting();
     }
 
-    public void rewrite() {
+    public void writeTestExcel(VO originalVo, int i) throws IOException  {
+
+        num = i;
+
+        log.info("row i : {}", num);
+
+        //data row 생성
+        Row row = testSheet.createRow(num);
+
+
+        //셀 추가
+        //ap1
+        Cell cell = row.createCell(0);
+        cell.setCellValue(originalVo.getRssi1());
+        cell.setCellStyle(style);
+
+        //ap2
+        cell = row.createCell(1);
+        cell.setCellValue(originalVo.getRssi2());
+        cell.setCellStyle(style);
+
+        //ap3
+        cell = row.createCell(2);
+        cell.setCellValue(originalVo.getRssi3());
+        cell.setCellStyle(style);
+
+        //ap4
+        cell = row.createCell(3);
+        cell.setCellValue(originalVo.getRssi4());
+        cell.setCellStyle(style);
+
+        //ap5
+        cell = row.createCell(4);
+        cell.setCellValue(originalVo.getRssi5());
+        cell.setCellStyle(style);
+
+        //ap6
+        cell = row.createCell(5);
+        cell.setCellValue(originalVo.getRssi6());
+        cell.setCellStyle(style);
+
+        //ap7
+        cell = row.createCell(6);
+        cell.setCellValue(originalVo.getRssi7());
+        cell.setCellStyle(style);
+
+        //ap8
+        cell = row.createCell(7);
+        cell.setCellValue(originalVo.getRssi8());
+        cell.setCellStyle(style);
+
+        if(num%1000 == 0)  {
+            createFileAndRewrite();
+        }
 
     }
 }

@@ -5,7 +5,9 @@ import com.example.bleLocationSystem.UI;
 import com.example.bleLocationSystem.model.UserLocation;
 import com.example.bleLocationSystem.model.VO;
 import com.example.bleLocationSystem.service.ApService;
+import com.example.bleLocationSystem.service.TestService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,6 +24,7 @@ public class ApController {
 //    ApService apService;
 
     ApService apService = new ApService();
+    TestService testService = new TestService();
 //    UI ui = new UI();
     UI ui = new UI(apService.getW(),apService.getH());
     ArrayList<UserLocation> ul = new ArrayList<>();
@@ -31,14 +34,23 @@ public class ApController {
     public ResponseEntity<UserLocation> receiveDistance(VO vo) throws Exception {
 
 
-        ul = apService.trilateration(vo);
-        if(ul != null) {
-            ui.setUserLocation(ul);
-        }
+        //-------------Real--------------
+//        ul = apService.trilateration(vo);
+
+//        if(ul != null) {
+//            ui.setUserLocation(ul);
+//        }
+
+//        return (ul != null) ?
+//                ResponseEntity.status(HttpStatus.OK).body(ul.get(1)) :
+//                ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
 
-        return (ul != null) ?
-                ResponseEntity.status(HttpStatus.OK).body(ul.get(1)) :
-                ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+
+        //--------------Test--------------
+        testService.trilateration(vo);
+
+        return ResponseEntity.status(HttpStatus.OK).body(null);
+
     }
 }

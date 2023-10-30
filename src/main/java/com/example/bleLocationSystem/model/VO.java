@@ -22,4 +22,19 @@ public class VO {
 
     private double distance3;
     private double rssi3;
+
+    private double distance4;
+    private double rssi4;
+
+    private double distance5;
+    private double rssi5;
+
+    private double distance6;
+    private double rssi6;
+
+    private double distance7;
+    private double rssi7;
+
+    private double distance8;
+    private double rssi8;
 }
