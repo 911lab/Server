@@ -105,7 +105,7 @@ public class ApService extends JFrame {
 
     public ArrayList<UserLocation> trilateration(VO vo) {
         originalVo = vo;
-
+        log.info("start");
         triangleNum = selectTriangle(originalVo);
 
 
@@ -248,7 +248,7 @@ public class ApService extends JFrame {
                 ulList.set(1,updateLocFilteredUl);
             }
             i++;
-            createCsv(originalVo, ul, filteredVo, filteredUl);
+//            createCsv(originalVo, ul, filteredVo, filteredUl);
 //            return locFilteredUl;
 //            return moveFilteredUl;
 
@@ -344,11 +344,15 @@ public class ApService extends JFrame {
         map.put(7, vo.getRssi7());
         map.put(8, vo.getRssi8());
 
+        log.info(map.toString());
+
         for(int i=0; i<8; i++) {
             if( map.get(i+1) > 0 ) {
                 map.put(i+1, errorValue);
             }
         }
+
+        log.info(map.toString());
 
         List<Integer> keyList = new ArrayList<Integer>();
 
@@ -363,16 +367,19 @@ public class ApService extends JFrame {
                     valueTemp = map.get(i);
                 }
             }
-            if(map.get(keyTemp) == errorValue) {
+            if(!map.get(keyTemp).equals(errorValue)) {
                 keyList.add(keyTemp);
                 map.put(keyTemp, errorValue);
             }
         }
 
+        log.info("key list before sort = {}", keyList.toString());
+
         if(keyList.size() == 3) {
             Collections.sort(keyList);
 
-            log.info(keyList.toString());
+            log.info("key list = {}", keyList.toString());
+
 
             int n1 = keyList.get(1) - keyList.get(0);
             int n2 = keyList.get(2) - keyList.get(1);

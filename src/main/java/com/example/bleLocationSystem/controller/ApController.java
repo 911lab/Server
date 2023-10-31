@@ -24,9 +24,11 @@ public class ApController {
 //    ApService apService;
 
     ApService apService = new ApService();
+    UI ui = new UI();
+
+//    UI ui = new UI(apService.getW(),apService.getH());
 //    TestService testService = new TestService();
-//    UI ui = new UI();
-    UI ui = new UI(apService.getW(),apService.getH());
+
     ArrayList<UserLocation> ul = new ArrayList<>();
     //앱으로부터 ap1, ap2, ap3 각각의 거리값 받기
     @PostMapping("/api/distance")
