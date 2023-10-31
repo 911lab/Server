@@ -24,7 +24,7 @@ public class ApController {
 //    ApService apService;
 
     ApService apService = new ApService();
-    TestService testService = new TestService();
+//    TestService testService = new TestService();
 //    UI ui = new UI();
     UI ui = new UI(apService.getW(),apService.getH());
     ArrayList<UserLocation> ul = new ArrayList<>();
@@ -35,22 +35,22 @@ public class ApController {
 
 
         //-------------Real--------------
-//        ul = apService.trilateration(vo);
+        ul = apService.trilateration(vo);
 
-//        if(ul != null) {
-//            ui.setUserLocation(ul);
-//        }
+        if(ul != null) {
+            ui.setUserLocation(ul);
+        }
 
-//        return (ul != null) ?
-//                ResponseEntity.status(HttpStatus.OK).body(ul.get(1)) :
-//                ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        return (ul != null) ?
+                ResponseEntity.status(HttpStatus.OK).body(ul.get(1)) :
+                ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
 
 
         //--------------Test--------------
-        testService.trilateration(vo);
-
-        return ResponseEntity.status(HttpStatus.OK).body(null);
+//        testService.trilateration(vo);
+//
+//        return ResponseEntity.status(HttpStatus.OK).body(null);
 
     }
 }

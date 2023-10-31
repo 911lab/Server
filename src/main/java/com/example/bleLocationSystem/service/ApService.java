@@ -8,16 +8,17 @@ import org.springframework.stereotype.Service;
 
 import javax.swing.*;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 @Slf4j //로깅 어노테이션
 public class ApService extends JFrame {
 
     VO originalVo;
-    VO filteredVo;
-    VO beforeFilteredVo;
+    SelectedVO filteredVo;
+    SelectedVO beforeFilteredVo;
+
+    SelectedVO selectedVo;
 
     KalmanFilter kFilterForAp1;
     KalmanFilter kFilterForAp2;
@@ -56,9 +57,19 @@ public class ApService extends JFrame {
     RemoveOutlier rm;
     int i=0;
     @Getter
-    double w= 10;
+    double w= 5;
     @Getter
     double h= 10;
+
+    int triangleNum;
+
+    Ap ap1;
+    Ap ap2;
+    Ap ap3;
+
+    Ap filteredAp1;
+    Ap filteredAp2;
+    Ap filteredAp3;
 
     public ApService() {
 
@@ -94,29 +105,62 @@ public class ApService extends JFrame {
 
     public ArrayList<UserLocation> trilateration(VO vo) {
         originalVo = vo;
+
+        triangleNum = selectTriangle(originalVo);
+
+
+        switch (triangleNum) {
+            case 0:
+                return null;
+            case 1:
+                selectedVo = createSelectVO(originalVo.getDeviceName(), originalVo.getRssi1(),originalVo.getRssi2(),originalVo.getRssi3());
+                break;
+            case 2:
+                selectedVo = createSelectVO(originalVo.getDeviceName(), originalVo.getRssi2(),originalVo.getRssi3(),originalVo.getRssi4());
+                break;
+            case 3:
+                selectedVo = createSelectVO(originalVo.getDeviceName(), originalVo.getRssi3(),originalVo.getRssi4(),originalVo.getRssi4());
+                break;
+            case 4:
+                selectedVo = createSelectVO(originalVo.getDeviceName(), originalVo.getRssi4(),originalVo.getRssi5(),originalVo.getRssi6());
+                break;
+            case 5:
+                selectedVo = createSelectVO(originalVo.getDeviceName(), originalVo.getRssi5(),originalVo.getRssi6(),originalVo.getRssi7());
+                break;
+            case 6:
+                selectedVo = createSelectVO(originalVo.getDeviceName(), originalVo.getRssi6(),originalVo.getRssi7(),originalVo.getRssi8());
+                break;
+        }
 //        realNoFIlterVo = new VO(originalVo.getDeviceName(), originalVo.getDistance1(), originalVo.getRssi1(), originalVo.getDistance2(), originalVo.getRssi2(), originalVo.getDistance3(), originalVo.getRssi3());
 
-        if(!rm.rmOutlier(originalVo.getRssi1(),originalVo.getRssi2(),originalVo.getRssi3()))//이상치 제거
+        if(!rm.rmOutlier(selectedVo.getRssi1(),selectedVo.getRssi2(),selectedVo.getRssi3()))//이상치 제거
             return null;
 
         if(i <= 10) {
             log.info("i = {}", i);
-            if(originalVo.getRssi1() < 0 && originalVo.getRssi2() < 0 && originalVo.getRssi3() < 0) {
-                originalVo = startFilter.initFirstValue(originalVo, i);
-                beforeFilteredVo = originalVo;
+            if(selectedVo.getRssi1() < 0 && selectedVo.getRssi2() < 0 && selectedVo.getRssi3() < 0) {
+                selectedVo = startFilter.initFirstValue(selectedVo, i);
+                beforeFilteredVo = selectedVo;
             } else {
                 i--;
             }
         }
 
-        if(originalVo != null) {
+        if(selectedVo != null) {
 
-            Ap ap1 = new Ap(0, 0, originalVo.getDistance1());
-            Ap ap2 = new Ap(w, 0, originalVo.getDistance2());
-            Ap ap3 = new Ap(w/2.0, h, originalVo.getDistance3());
-
+            //w = 5, h = 10
+            if(triangleNum%2 == 0) {
+                ap1 = new Ap(w*(triangleNum-1), 0, selectedVo.getDistance1());
+                ap2 = new Ap(w*triangleNum, h, selectedVo.getDistance2());
+                ap3 = new Ap(w*(triangleNum+1), 0, selectedVo.getDistance3());
+            }
+            else {
+                ap1 = new Ap(w*(triangleNum-1), h, selectedVo.getDistance1());
+                ap2 = new Ap(w*triangleNum, 0, selectedVo.getDistance2());
+                ap3 = new Ap(w*(triangleNum+1), h, selectedVo.getDistance3());
+            }
             //MAF
-            filteredVo = createMAFVo(originalVo);
+            filteredVo = createMAFVo(selectedVo);
 
             //KF
 //            filteredVo = createFilteredVo(originalVo);
@@ -130,14 +174,21 @@ public class ApService extends JFrame {
 //+-            beforeFilteredVo = originalVo;
 
 
-            Ap filteredAp1 = new Ap(0, 0, filteredVo.getDistance1());
-            Ap filteredAp2 = new Ap(w, 0, filteredVo.getDistance2());
-            Ap filteredAp3 = new Ap(w/2.0, h, filteredVo.getDistance3());
+            //w = 5, h = 10
+            if(triangleNum%2 == 0) {
+                filteredAp1 = new Ap(w*(triangleNum-1), 0, filteredVo.getDistance1());
+                filteredAp2 = new Ap(w*triangleNum, h, filteredVo.getDistance2());
+                filteredAp3 = new Ap(w*(triangleNum+1), 0, filteredVo.getDistance3());
+            }
+            else {
+                filteredAp1 = new Ap(w*(triangleNum-1), h, filteredVo.getDistance1());
+                filteredAp2 = new Ap(w*triangleNum, 0, filteredVo.getDistance2());
+                filteredAp3 = new Ap(w*(triangleNum+1), h, filteredVo.getDistance3());
+            }
 
             Trilateration tr = new Trilateration(originalVo.getDeviceName(), ap1, ap2, ap3);
 
             Trilateration filteredTr = new Trilateration(filteredVo.getDeviceName(), filteredAp1, filteredAp2, filteredAp3);
-
 
 
 //        if(!initCheck) {
@@ -208,29 +259,31 @@ public class ApService extends JFrame {
         return null;
     }
 
+    private SelectedVO createSelectVO(String name, double rssi1, double rssi2, double rssi3) {
+        return new SelectedVO(name,
+                calcDistance(rssi1),
+                rssi1,
+                calcDistance(rssi2),
+                rssi2,
+                calcDistance(rssi3),
+                rssi3
+        );
 
-    private VO createMAFVo(VO originalVo) {
+    }
+
+
+    private SelectedVO createMAFVo(SelectedVO originalVo) {
         double filterdRssi1 = mafFilter1.push(originalVo.getRssi1());
         double filterdRssi2 = mafFilter2.push(originalVo.getRssi2());
         double filterdRssi3 = mafFilter3.push(originalVo.getRssi3());
 
-        return new VO(originalVo.getDeviceName(),
+        return new SelectedVO(originalVo.getDeviceName(),
                 calcDistance(filterdRssi1),
                 filterdRssi1,
                 calcDistance(filterdRssi2),
                 filterdRssi2,
                 calcDistance(filterdRssi3),
-                filterdRssi3,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
+                filterdRssi3
         );
     }
 
@@ -262,7 +315,7 @@ public class ApService extends JFrame {
     }
 
     //엑셀 파일 만들기
-    public void createCsv(VO originalVo, UserLocation ul, VO filteredVo, UserLocation filteredUl) {
+    public void createCsv(VO originalVo, UserLocation ul, SelectedVO filteredVo, UserLocation filteredUl) {
         try {
             // 성능 테스트를 위한 엑셀 생성
             poiHelper.writeExcel(originalVo, ul, filteredVo, filteredUl, i);
@@ -270,6 +323,67 @@ public class ApService extends JFrame {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+
+    public int selectTriangle(VO originalVo) {
+        int num;
+        double valueTemp;
+        int keyTemp;
+        double errorValue = -999.9;
+
+        VO vo = originalVo;
+
+        Map<Integer, Double> map = new HashMap<Integer, Double>();
+        map.put(1, vo.getRssi1());
+        map.put(2, vo.getRssi2());
+        map.put(3, vo.getRssi3());
+        map.put(4, vo.getRssi4());
+        map.put(5, vo.getRssi5());
+        map.put(6, vo.getRssi6());
+        map.put(7, vo.getRssi7());
+        map.put(8, vo.getRssi8());
+
+        for(int i=0; i<8; i++) {
+            if( map.get(i+1) > 0 ) {
+                map.put(i+1, errorValue);
+            }
+        }
+
+        List<Integer> keyList = new ArrayList<Integer>();
+
+        for(int j = 0; j<3; j++) {
+            valueTemp = map.get(1);
+            keyTemp=1;
+
+            for(int i = 2; i<9; i++) {
+
+                if(valueTemp < map.get(i) && 0>map.get(i)) {
+                    keyTemp = i;
+                    valueTemp = map.get(i);
+                }
+            }
+            if(map.get(keyTemp) == errorValue) {
+                keyList.add(keyTemp);
+                map.put(keyTemp, errorValue);
+            }
+        }
+
+        if(keyList.size() == 3) {
+            Collections.sort(keyList);
+
+            log.info(keyList.toString());
+
+            int n1 = keyList.get(1) - keyList.get(0);
+            int n2 = keyList.get(2) - keyList.get(1);
+
+            log.info("n1 = {},   n2 = {}", n1, n2);
+
+            if(n1 == 1 && n2 ==1) {
+                return keyList.get(0);
+            }
+        }
+        return 0;
     }
 
 

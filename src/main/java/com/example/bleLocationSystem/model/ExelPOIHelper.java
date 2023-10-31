@@ -130,32 +130,32 @@ public class ExelPOIHelper {
         headerCell.setCellValue("Ap1 Rssi");
         headerCell.setCellStyle(headerStyle);
 
-        headerCell = header.createCell(1);
+        headerCell = testHeader.createCell(1);
         headerCell.setCellValue("Ap2 Rssi");
         headerCell.setCellStyle(headerStyle);
 
-        headerCell = header.createCell(2);
+        headerCell = testHeader.createCell(2);
         headerCell.setCellValue("Ap3 Rssi");
         headerCell.setCellStyle(headerStyle);
 
-        headerCell = header.createCell(3);
+        headerCell = testHeader.createCell(3);
         headerCell.setCellValue("Ap4 Rssi");
         headerCell.setCellStyle(headerStyle);
 
-        headerCell = header.createCell(4);
+        headerCell = testHeader.createCell(4);
         headerCell.setCellValue("Ap5 Rssi");
         headerCell.setCellStyle(headerStyle);
 
-        headerCell = header.createCell(5);
+        headerCell = testHeader.createCell(5);
         headerCell.setCellValue("Ap6 Rssi");
         headerCell.setCellStyle(headerStyle);
 
 
-        headerCell = header.createCell(6);
+        headerCell = testHeader.createCell(6);
         headerCell.setCellValue("Ap7 Rssi");
         headerCell.setCellStyle(headerStyle);
 
-        headerCell = header.createCell(7);
+        headerCell = testHeader.createCell(7);
         headerCell.setCellValue("Ap8 Rssi");
         headerCell.setCellStyle(headerStyle);
     }
@@ -177,7 +177,7 @@ public class ExelPOIHelper {
     }
 
 
-    public void writeExcel(VO originalVo, UserLocation originalUl, VO filteredVo, UserLocation filteredUl, int i) throws IOException  {
+    public void writeExcel(VO originalVo, UserLocation originalUl, SelectedVO filteredVo, UserLocation filteredUl, int i) throws IOException  {
 
         num = i;
 

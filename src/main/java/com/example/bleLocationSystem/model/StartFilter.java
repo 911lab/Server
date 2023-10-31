@@ -7,7 +7,7 @@ import java.util.List;
 
 public class StartFilter {
 
-    VO firstVo;
+    SelectedVO firstVo;
 
     List<Double> rssi1;
     List<Double> rssi2;
@@ -25,7 +25,7 @@ public class StartFilter {
         count = 0;
     }
 
-    public VO initFirstValue(VO originalVo, int num) {
+    public SelectedVO initFirstValue(SelectedVO originalVo, int num) {
 
         rssi1.add(originalVo.getRssi1());
         rssi2.add(originalVo.getRssi2());
@@ -44,8 +44,8 @@ public class StartFilter {
         return maxRssi;
     }
 
-    public VO setFirstVo(double rssi1, double rssi2, double rssi3) {
-        VO vo = new VO();
+    public SelectedVO setFirstVo(double rssi1, double rssi2, double rssi3) {
+        SelectedVO vo = new SelectedVO();
 
         vo.setDeviceName("dddddddddd");
         vo.setRssi1(rssi1);
