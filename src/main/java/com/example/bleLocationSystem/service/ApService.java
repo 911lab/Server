@@ -150,16 +150,15 @@ public class ApService extends JFrame {
 
             //w = 5, h = 10
             if(triangleNum%2 == 0) {
-                ap1 = new Ap(w*(triangleNum-1), 0, selectedVo.getDistance1());
-                ap2 = new Ap(w*triangleNum, h, selectedVo.getDistance2());
-                ap3 = new Ap(w*(triangleNum+1), 0, selectedVo.getDistance3());
-            }
-            else {
                 ap1 = new Ap(w*(triangleNum-1), h, selectedVo.getDistance1());
                 ap2 = new Ap(w*triangleNum, 0, selectedVo.getDistance2());
                 ap3 = new Ap(w*(triangleNum+1), h, selectedVo.getDistance3());
             }
-
+            else {
+                ap1 = new Ap(w*(triangleNum-1), 0, selectedVo.getDistance1());
+                ap2 = new Ap(w*triangleNum, h, selectedVo.getDistance2());
+                ap3 = new Ap(w*(triangleNum+1), 0, selectedVo.getDistance3());
+            }
             log.info("selectedVo = {}", selectedVo.toString());
             //MAF
             filteredVo = createMAFVo(selectedVo);
@@ -179,14 +178,14 @@ public class ApService extends JFrame {
 
             //w = 5, h = 10
             if(triangleNum%2 == 0) {
-                filteredAp1 = new Ap(w*(triangleNum-1), 0, filteredVo.getDistance1());
-                filteredAp2 = new Ap(w*triangleNum, h, filteredVo.getDistance2());
-                filteredAp3 = new Ap(w*(triangleNum+1), 0, filteredVo.getDistance3());
-            }
-            else {
                 filteredAp1 = new Ap(w*(triangleNum-1), h, filteredVo.getDistance1());
                 filteredAp2 = new Ap(w*triangleNum, 0, filteredVo.getDistance2());
                 filteredAp3 = new Ap(w*(triangleNum+1), h, filteredVo.getDistance3());
+            }
+            else {
+                filteredAp1 = new Ap(w*(triangleNum-1), 0, filteredVo.getDistance1());
+                filteredAp2 = new Ap(w*triangleNum, h, filteredVo.getDistance2());
+                filteredAp3 = new Ap(w*(triangleNum+1), 0, filteredVo.getDistance3());
             }
 
             Trilateration tr = new Trilateration(originalVo.getDeviceName(), ap1, ap2, ap3);
