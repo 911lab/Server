@@ -159,8 +159,11 @@ public class ApService extends JFrame {
                 ap2 = new Ap(w*triangleNum, 0, selectedVo.getDistance2());
                 ap3 = new Ap(w*(triangleNum+1), h, selectedVo.getDistance3());
             }
+
+            log.info("selectedVo = {}", selectedVo.toString());
             //MAF
             filteredVo = createMAFVo(selectedVo);
+            log.info("filteredVo = {}", filteredVo.toString());
 
             //KF
 //            filteredVo = createFilteredVo(originalVo);
