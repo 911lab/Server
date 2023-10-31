@@ -172,7 +172,7 @@ public class UI extends JFrame {
                 //    g2.setColor(Color.RED);
                 //else if(i%2==1)
                     g2.setColor(Color.GREEN);
-                g2.fillRect((int)x*(int)(w/beaconW)-radius, -((int)y*(int)(h/beaconH)+radius), radius*2, radius*2);
+                g2.fillRect((int)(x*(w/beaconW))-radius, -((int)(y*(h/beaconH))+radius), radius*2, radius*2);
 
                 //i++;
 
@@ -180,7 +180,7 @@ public class UI extends JFrame {
                     g2.setColor(Color.magenta);
                 //else if(i%2==1)
                 //    g2.setColor(Color.blue);
-                g2.fillOval((int)ox*(int)(w/beaconW)-radius, -((int)oy*(int)(h/beaconH)+radius), radius*2, radius*2);
+                g2.fillOval((int)(ox*(w/beaconW))-radius, -((int)(oy*(h/beaconH))+radius), radius*2, radius*2);
             }
         }
     }
