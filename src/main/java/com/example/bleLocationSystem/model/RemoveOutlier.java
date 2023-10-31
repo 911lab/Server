@@ -17,42 +17,22 @@ public class RemoveOutlier {
     //좌표 이상치 제거
     public boolean rmXYOutlier(UserLocation ul){
         System.out.println("x,y=\t"+ul.getX()+",\t"+ul.getY());
-        if (ul.getY()>maxY+5){
+        if (ul.getY()>10){
             System.out.println("yCUT");
             return true;
         }
-        else if (ul.getY()<minY-5){
+        if (ul.getY()<0){
             System.out.println("yCUT");
             return true;
         }
-        else if (ul.getX()>maxX+5){
+       if (ul.getX()>35){
             System.out.println("xCUT");
             return true;
         }
-        else if (ul.getX()<minX-5){
-            System.out.println("xCUT");
-            return true;
-        }
-        else if(ul.getY()>maxY){
-            if(ul.getX()>maxX){
-                System.out.println("xyCUT");
-                return true;
-            }
-            if(ul.getX()<minX){
-                System.out.println("xyCUT");
-                return true;
-            }
-        }
-        else if(ul.getY()<minY){
-            if(ul.getX()>maxX){
-                System.out.println("xyCUT");
-                return true;
-            }
-            if(ul.getX()<minX){
-                System.out.println("xyCUT");
-                return true;
-            }
-        }
+       if (ul.getX()<0) {
+           System.out.println("xCUT");
+           return true;
+       }
         return false;
     }
 }
