@@ -61,6 +61,7 @@ public class ApService extends JFrame {
     @Getter
     double h= 10;
 
+    @Getter
     int triangleNum;
 
     Ap ap1;

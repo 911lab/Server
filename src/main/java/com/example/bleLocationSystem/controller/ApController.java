@@ -16,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @Slf4j //로깅 어노테이션
@@ -26,6 +28,8 @@ public class ApController {
     ApService apService = new ApService();
     UI ui = new UI();
 
+    Map<String, Integer> map = new HashMap<String, Integer>();
+
 //    UI ui = new UI(apService.getW(),apService.getH());
 //    TestService testService = new TestService();
 
@@ -33,7 +37,7 @@ public class ApController {
     //앱으로부터 ap1, ap2, ap3 각각의 거리값 받기
     @PostMapping("/api/distance")
 //    public ResponseEntity<UserLocation> receiveDistance(@RequestBody VO vo) throws Exception {
-    public ResponseEntity<UserLocation> receiveDistance(VO vo) throws Exception {
+    public ResponseEntity<Map<String, Integer>> receiveDistance(VO vo) throws Exception {
 
 
         //-------------Real--------------
@@ -43,8 +47,10 @@ public class ApController {
             ui.setUserLocation(ul);
         }
 
+        map.put("triangleNum", apService.getTriangleNum());
+
         return (ul != null) ?
-                ResponseEntity.status(HttpStatus.OK).body(ul.get(1)) :
+                ResponseEntity.status(HttpStatus.OK).body(map) :
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
 
