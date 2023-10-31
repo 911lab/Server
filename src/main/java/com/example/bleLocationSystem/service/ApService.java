@@ -105,7 +105,7 @@ public class ApService extends JFrame {
 
     public ArrayList<UserLocation> trilateration(VO vo) {
         originalVo = vo;
-        log.info("start");
+
         triangleNum = selectTriangle(originalVo);
 
 
@@ -135,6 +135,8 @@ public class ApService extends JFrame {
 
         if(!rm.rmOutlier(selectedVo.getRssi1(),selectedVo.getRssi2(),selectedVo.getRssi3()))//이상치 제거
             return null;
+
+        log.info("start");
 
         if(i <= 10) {
             log.info("i = {}", i);
@@ -346,15 +348,12 @@ public class ApService extends JFrame {
         map.put(7, vo.getRssi7());
         map.put(8, vo.getRssi8());
 
-        log.info(map.toString());
 
         for(int i=0; i<8; i++) {
             if( map.get(i+1) > 0 ) {
                 map.put(i+1, errorValue);
             }
         }
-
-        log.info(map.toString());
 
         List<Integer> keyList = new ArrayList<Integer>();
 
@@ -375,8 +374,6 @@ public class ApService extends JFrame {
             }
         }
 
-        log.info("key list before sort = {}", keyList.toString());
-
         if(keyList.size() == 3) {
             Collections.sort(keyList);
 
@@ -385,8 +382,6 @@ public class ApService extends JFrame {
 
             int n1 = keyList.get(1) - keyList.get(0);
             int n2 = keyList.get(2) - keyList.get(1);
-
-            log.info("n1 = {},   n2 = {}", n1, n2);
 
             if(n1 == 1 && n2 ==1) {
                 return keyList.get(0);
