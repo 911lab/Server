@@ -25,13 +25,13 @@ public class ApController {
 //    @Autowired
 //    ApService apService;
 
-    ApService apService = new ApService();
+//    ApService apService = new ApService();
     UI ui = new UI();
 
     Map<String, Integer> map = new HashMap<String, Integer>();
 
 //    UI ui = new UI(apService.getW(),apService.getH());
-//    TestService testService = new TestService();
+    TestService testService = new TestService();
 
     ArrayList<UserLocation> ul = new ArrayList<>();
     //앱으로부터 ap1, ap2, ap3 각각의 거리값 받기
@@ -41,24 +41,24 @@ public class ApController {
 
 
         //-------------Real--------------
-        ul = apService.trilateration(vo);
-
-        if(ul != null) {
-            ui.setUserLocation(ul);
-        }
-
-        map.put("triangleNum", apService.getTriangleNum());
-
-        return (ul != null) ?
-                ResponseEntity.status(HttpStatus.OK).body(map) :
-                ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-
-
-
-        //--------------Test--------------
-//        testService.trilateration(vo);
+//        ul = apService.trilateration(vo);
 //
-//        return ResponseEntity.status(HttpStatus.OK).body(null);
+//        if(ul != null) {
+//            ui.setUserLocation(ul);
+//        }
+//
+//        map.put("triangleNum", apService.getTriangleNum());
+//
+//        return (ul != null) ?
+//                ResponseEntity.status(HttpStatus.OK).body(map) :
+//                ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+
+
+
+//        --------------Test--------------
+        testService.trilateration(vo);
+
+        return ResponseEntity.status(HttpStatus.OK).body(null);
 
     }
 }

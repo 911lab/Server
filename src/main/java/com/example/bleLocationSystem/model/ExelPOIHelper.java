@@ -20,9 +20,13 @@ public class ExelPOIHelper {
     Sheet sheet;
     Sheet testSheet;
 
+    Sheet oneBeaconSheet;
+
     //헤더 로우
     Row header;
     Row testHeader;
+
+    Row oneBeaconHeader;
 
     //헤더 스타일
     CellStyle headerStyle;
@@ -39,10 +43,30 @@ public class ExelPOIHelper {
     public ExelPOIHelper() {
         workbook = new XSSFWorkbook();
         styleSetting();
+
         //실제 동작 시
 //        ResultSetting();
+
         //테스트 시
-        testSetting();
+//        testSetting();
+
+        //한개 비콘 필터링 테스트시
+        oneBeaconSetting();
+    }
+
+    public void styleSetting() {
+        //칼럼 셀 스타일(헤더 : 칼럼)
+        headerStyle = workbook.createCellStyle();
+
+        headerStyle.setAlignment(HorizontalAlignment.CENTER);
+
+        font = ((XSSFWorkbook) workbook).createFont();
+
+        //셀 스타일(데이터 : 로우)
+        // Next, let's write the content of the table with a different style:
+        style = workbook.createCellStyle();
+        style.setAlignment(HorizontalAlignment.CENTER);            // 가로 중앙 정렬
+        style.setWrapText(true);
     }
 
     public void ResultSetting() {
@@ -111,72 +135,6 @@ public class ExelPOIHelper {
         headerCell.setCellStyle(headerStyle);
     }
 
-    public void testSetting() {
-        testSheet = workbook.createSheet("BeaconTest");
-
-        testSheet.setColumnWidth(0, 10000);
-        testSheet.setColumnWidth(1, 10000);
-        testSheet.setColumnWidth(2, 10000);
-        testSheet.setColumnWidth(3, 10000);
-        testSheet.setColumnWidth(4, 10000);
-        testSheet.setColumnWidth(5, 10000);
-        testSheet.setColumnWidth(6, 10000);
-        testSheet.setColumnWidth(7, 10000);
-
-        testHeader = testSheet.createRow(0);
-
-        //헤더 셀(컬럼)
-        Cell headerCell = testHeader.createCell(0);
-        headerCell.setCellValue("Ap1 Rssi");
-        headerCell.setCellStyle(headerStyle);
-
-        headerCell = testHeader.createCell(1);
-        headerCell.setCellValue("Ap2 Rssi");
-        headerCell.setCellStyle(headerStyle);
-
-        headerCell = testHeader.createCell(2);
-        headerCell.setCellValue("Ap3 Rssi");
-        headerCell.setCellStyle(headerStyle);
-
-        headerCell = testHeader.createCell(3);
-        headerCell.setCellValue("Ap4 Rssi");
-        headerCell.setCellStyle(headerStyle);
-
-        headerCell = testHeader.createCell(4);
-        headerCell.setCellValue("Ap5 Rssi");
-        headerCell.setCellStyle(headerStyle);
-
-        headerCell = testHeader.createCell(5);
-        headerCell.setCellValue("Ap6 Rssi");
-        headerCell.setCellStyle(headerStyle);
-
-
-        headerCell = testHeader.createCell(6);
-        headerCell.setCellValue("Ap7 Rssi");
-        headerCell.setCellStyle(headerStyle);
-
-        headerCell = testHeader.createCell(7);
-        headerCell.setCellValue("Ap8 Rssi");
-        headerCell.setCellStyle(headerStyle);
-    }
-
-
-    public void styleSetting() {
-        //칼럼 셀 스타일(헤더 : 칼럼)
-        headerStyle = workbook.createCellStyle();
-
-        headerStyle.setAlignment(HorizontalAlignment.CENTER);
-
-        font = ((XSSFWorkbook) workbook).createFont();
-
-        //셀 스타일(데이터 : 로우)
-        // Next, let's write the content of the table with a different style:
-        style = workbook.createCellStyle();
-        style.setAlignment(HorizontalAlignment.CENTER);            // 가로 중앙 정렬
-        style.setWrapText(true);
-    }
-
-
     public void writeExcel(VO originalVo, UserLocation originalUl, SelectedVO filteredVo, UserLocation filteredUl, int i) throws IOException  {
 
         num = i;
@@ -244,27 +202,68 @@ public class ExelPOIHelper {
         if(num%300 == 0)  {
             createFileAndRewrite();
         }
-
     }
 
 
-    public void createFileAndRewrite() throws IOException {
-//        File currDir = new File(".");
-//        String path = currDir.getAbsolutePath();
-//        String fileLocation = path.substring(0, path.length() - 1) + "temp.xlsx";
 
-        String fileLocation = "C:\\Users\\heehe\\Desktop\\bleExel\\1031\\8beaconTest_1.xlsx";
 
-//        String fileLocation = "C:\\Users\\JaeHyuk\\Desktop\\bleExel\\1016\\beaconTest_11111111111111.xlsx";
+    //8개 짜리 정지상태 엑셀 파일 만들기
+    public void testSetting() {
+        testSheet = workbook.createSheet("BeaconTest");
 
-        FileOutputStream outputStream = new FileOutputStream(fileLocation);
-        workbook.write(outputStream);
-        workbook.close();
-        workbook = new XSSFWorkbook();
-        styleSetting();
-        ResultSetting();
+        testSheet.setColumnWidth(0, 10000);
+        testSheet.setColumnWidth(1, 10000);
+        testSheet.setColumnWidth(2, 10000);
+        testSheet.setColumnWidth(3, 10000);
+        testSheet.setColumnWidth(4, 10000);
+        testSheet.setColumnWidth(5, 10000);
+        testSheet.setColumnWidth(6, 10000);
+        testSheet.setColumnWidth(7, 10000);
+
+        testHeader = testSheet.createRow(0);
+
+        //헤더 셀(컬럼)
+        Cell headerCell = testHeader.createCell(0);
+        headerCell.setCellValue("Ap1 Rssi");
+        headerCell.setCellStyle(headerStyle);
+
+        headerCell = testHeader.createCell(1);
+        headerCell.setCellValue("Ap2 Rssi");
+        headerCell.setCellStyle(headerStyle);
+
+        headerCell = testHeader.createCell(2);
+        headerCell.setCellValue("Ap3 Rssi");
+        headerCell.setCellStyle(headerStyle);
+
+        headerCell = testHeader.createCell(3);
+        headerCell.setCellValue("Ap4 Rssi");
+        headerCell.setCellStyle(headerStyle);
+
+        headerCell = testHeader.createCell(4);
+        headerCell.setCellValue("Ap5 Rssi");
+        headerCell.setCellStyle(headerStyle);
+
+        headerCell = testHeader.createCell(5);
+        headerCell.setCellValue("Ap6 Rssi");
+        headerCell.setCellStyle(headerStyle);
+
+
+        headerCell = testHeader.createCell(6);
+        headerCell.setCellValue("Ap7 Rssi");
+        headerCell.setCellStyle(headerStyle);
+
+        headerCell = testHeader.createCell(7);
+        headerCell.setCellValue("Ap8 Rssi");
+        headerCell.setCellStyle(headerStyle);
     }
 
+
+
+
+
+
+
+    //8개 짜리 정지상태 엑셀 파일 만들기
     public void writeTestExcel(VO originalVo, int i) throws IOException  {
 
         num = i;
@@ -319,6 +318,90 @@ public class ExelPOIHelper {
         if(num%1000 == 0)  {
             createFileAndRewrite();
         }
+    }
+
+    //단일 비콘 필터링 테스트
+    public void oneBeaconSetting() {
+        oneBeaconSheet = workbook.createSheet("Beacon");
+
+
+        oneBeaconSheet.setColumnWidth(0, 10000);
+        oneBeaconSheet.setColumnWidth(1, 10000);
+        oneBeaconSheet.setColumnWidth(2, 10000);
+        oneBeaconSheet.setColumnWidth(3, 10000);
+        oneBeaconSheet.setColumnWidth(4, 10000);
+
+
+        oneBeaconHeader = oneBeaconSheet.createRow(0);
+
+        //헤더 셀(컬럼)
+        Cell headerCell = oneBeaconHeader.createCell(0);
+        headerCell.setCellValue("Remove Outlier RSSi");
+        headerCell.setCellStyle(headerStyle);
+
+        headerCell = oneBeaconHeader.createCell(1);
+        headerCell.setCellValue("RO Kalman RSSi");
+        headerCell.setCellStyle(headerStyle);
+
+        headerCell = oneBeaconHeader.createCell(2);
+        headerCell.setCellValue("RO MAF RSSi");
+        headerCell.setCellStyle(headerStyle);
+
+        headerCell = oneBeaconHeader.createCell(3);
+        headerCell.setCellValue("RO MAF Kalman RSSi");
+        headerCell.setCellStyle(headerStyle);
+
+        headerCell = oneBeaconHeader.createCell(4);
+        headerCell.setCellValue("RO Kalman MAF RSSi");
+        headerCell.setCellStyle(headerStyle);
 
     }
+
+    //단일 비콘 필터링 테스트
+    public void wrieteOneBeaconTestExcel(VO ROVO, VO ROKVO, int i) throws IOException  {
+
+        num = i;
+
+        log.info("row i : {}", num);
+
+        //data row 생성
+        Row row = oneBeaconSheet.createRow(num);
+
+
+        //셀 추가
+        //ap1
+        Cell cell = row.createCell(0);
+        cell.setCellValue(ROVO.getRssi1());
+        cell.setCellStyle(style);
+
+        //ap2
+        cell = row.createCell(1);
+        cell.setCellValue(ROKVO.getRssi2());
+        cell.setCellStyle(style);
+
+
+
+        if(num%1500 == 0)  {
+            createFileAndRewrite();
+        }
+    }
+
+    public void createFileAndRewrite() throws IOException {
+//        File currDir = new File(".");
+//        String path = currDir.getAbsolutePath();
+//        String fileLocation = path.substring(0, path.length() - 1) + "temp.xlsx";
+
+        String fileLocation = "C:\\Users\\heehe\\Desktop\\bleExel\\1031\\8beaconTest_1.xlsx";
+
+//        String fileLocation = "C:\\Users\\JaeHyuk\\Desktop\\bleExel\\1016\\beaconTest_11111111111111.xlsx";
+
+        FileOutputStream outputStream = new FileOutputStream(fileLocation);
+        workbook.write(outputStream);
+        workbook.close();
+        workbook = new XSSFWorkbook();
+//        styleSetting();
+//        ResultSetting();
+    }
+
+
 }

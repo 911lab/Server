@@ -88,7 +88,7 @@ public class ApService extends JFrame {
         locMAFilter = new LocMAFilter();
 
         startFilter = new StartFilter();
-        rssiFilter = new RssiFilter();
+//        rssiFilter = new RssiFilter();
 
         locKalmanFilter = new LocKalmanFilter(0.1, 1, 1, 1, 0.1, 0.1);
         ulList = new ArrayList<UserLocation>();
