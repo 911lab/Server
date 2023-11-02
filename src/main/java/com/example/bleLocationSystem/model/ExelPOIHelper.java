@@ -336,11 +336,11 @@ public class ExelPOIHelper {
 
         //헤더 셀(컬럼)
         Cell headerCell = oneBeaconHeader.createCell(0);
-        headerCell.setCellValue("Remove Outlier RSSi");
+        headerCell.setCellValue("Original VO");
         headerCell.setCellStyle(headerStyle);
 
         headerCell = oneBeaconHeader.createCell(1);
-        headerCell.setCellValue("RO Kalman RSSi");
+        headerCell.setCellValue("Maf VO");
         headerCell.setCellStyle(headerStyle);
 
         headerCell = oneBeaconHeader.createCell(2);
@@ -358,7 +358,7 @@ public class ExelPOIHelper {
     }
 
     //단일 비콘 필터링 테스트
-    public void wrieteOneBeaconTestExcel(VO ROVO, VO ROKVO, int i) throws IOException  {
+    public void wrieteOneBeaconTestExcel(VO originalVo, VO MafVo, VO roMafVo, VO roMafKalmanVo, VO roKalmanMafVo, int i) throws IOException  {
 
         num = i;
 
@@ -371,17 +371,35 @@ public class ExelPOIHelper {
         //셀 추가
         //ap1
         Cell cell = row.createCell(0);
-        cell.setCellValue(ROVO.getRssi1());
+        cell.setCellValue(originalVo.getRssi1());
         cell.setCellStyle(style);
 
         //ap2
         cell = row.createCell(1);
-        cell.setCellValue(ROKVO.getRssi2());
+        cell.setCellValue(MafVo.getRssi1());
+        cell.setCellStyle(style);
+
+        //ap3
+        cell = row.createCell(2);
+        cell.setCellValue(roMafVo.getRssi1());
+        cell.setCellStyle(style);
+
+
+        //ap4
+        cell = row.createCell(3);
+        cell.setCellValue(roMafKalmanVo.getRssi1());
+        cell.setCellStyle(style);
+
+
+        //ap5
+        cell = row.createCell(4);
+        cell.setCellValue(roKalmanMafVo.getRssi1());
         cell.setCellStyle(style);
 
 
 
-        if(num%1500 == 0)  {
+
+        if(num%1200 == 0)  {
             createFileAndRewrite();
         }
     }
@@ -391,7 +409,7 @@ public class ExelPOIHelper {
 //        String path = currDir.getAbsolutePath();
 //        String fileLocation = path.substring(0, path.length() - 1) + "temp.xlsx";
 
-        String fileLocation = "C:\\Users\\heehe\\Desktop\\bleExel\\1031\\8beaconTest_1.xlsx";
+        String fileLocation = "C:\\Users\\heehe\\Desktop\\bleExel\\1031\\mAFTest.xlsx";
 
 //        String fileLocation = "C:\\Users\\JaeHyuk\\Desktop\\bleExel\\1016\\beaconTest_11111111111111.xlsx";
 

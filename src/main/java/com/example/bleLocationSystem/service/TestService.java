@@ -1,9 +1,6 @@
 package com.example.bleLocationSystem.service;
 
-import com.example.bleLocationSystem.model.ExelPOIHelper;
-import com.example.bleLocationSystem.model.KalmanFilter;
-import com.example.bleLocationSystem.model.UserLocation;
-import com.example.bleLocationSystem.model.VO;
+import com.example.bleLocationSystem.model.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,9 +9,36 @@ public class TestService {
     VO originalVo;
     VO roKalmanVo;
 
+    VO MafVo;
+
+    VO roMafVo;
+
+    VO roMafKalamnVo;
+
+    VO roKalmanMafVo;
+
     KalmanFilter kFilterForAp1;
     KalmanFilter kFilterForAp2;
     KalmanFilter kFilterForAp3;
+
+    MAFilter mafFilter1;
+    MAFilter mafFilter2;
+    MAFilter mafFilter3;
+
+
+    MAFilter mafFilter4;
+    MAFilter mafFilter5;
+    MAFilter mafFilter6;
+
+
+    MAFilter mafFilter7;
+    MAFilter mafFilter8;
+    MAFilter mafFilter9;
+
+
+    MAFilter mafFilter10;
+    MAFilter mafFilter11;
+    MAFilter mafFilter12;
 
 
 
@@ -29,28 +53,115 @@ public class TestService {
         kFilterForAp1 = new KalmanFilter();
         kFilterForAp2 = new KalmanFilter();
         kFilterForAp3 = new KalmanFilter();
+
+        mafFilter1 = new MAFilter();
+        mafFilter2 = new MAFilter();
+        mafFilter3 = new MAFilter();
+        mafFilter4 = new MAFilter();
+        mafFilter5 = new MAFilter();
+        mafFilter6 = new MAFilter();
+        mafFilter7 = new MAFilter();
+        mafFilter8 = new MAFilter();
+        mafFilter9 = new MAFilter();
+        mafFilter10 = new MAFilter();
+        mafFilter11 = new MAFilter();
+        mafFilter12 = new MAFilter();
     }
 
     public void trilateration(VO vo) {
         originalVo = vo;
 
-        if(rmOutlier(originalVo))//이상치 제거
+        //MAF
+        MafVo = createMAFVo1(originalVo);
+
+        if(rmOutlier(originalVo)) {//이상치 제거
             i++;
             //KF
+//            roKalmanVo = createFilteredVo(originalVo);
+
+            //RO + MAF
+            roMafVo = createMAFVo2(originalVo);
+
+            //RO + MAF + Kalman
+            roMafKalamnVo = createFilteredVo(roMafVo);
+
+            //RO + Kalman + MAF
             roKalmanVo = createFilteredVo(originalVo);
-            createCsv(originalVo, roKalmanVo);
+            roKalmanMafVo = createMAFVo2(roKalmanVo);
+
+        }
+        else {
+            roMafVo = new VO(originalVo.getDeviceName(),
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1
+            );
+
+            roMafKalamnVo = new VO(originalVo.getDeviceName(),
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1
+            );
+
+            roKalmanMafVo = new VO(originalVo.getDeviceName(),
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1
+            );
+
+        }
 
 
+        createCsv(originalVo, MafVo, roMafVo, roMafKalamnVo, roKalmanMafVo);
 
     }
 
     //8개 짜리 정지상태 엑셀 파일 만들기
-    public void createCsv(VO originalVo, VO roKalmanVo) {
+    public void createCsv(VO originalVo, VO MafVo, VO roMafVo, VO roMafKalmanVo, VO roKalmanMafVo) {
         try {
             // 비콘 8개 각각 성능 테스트를 위한 엑셀 생성
 //            poiHelper.writeTestExcel(originalVo, i);
 
-            poiHelper.wrieteOneBeaconTestExcel(originalVo, roKalmanVo,i);
+            poiHelper.wrieteOneBeaconTestExcel(originalVo, MafVo, roMafVo, roMafKalmanVo, roKalmanMafVo,i);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -60,7 +171,7 @@ public class TestService {
     //RSSI 이상치 제거
     public boolean rmOutlier(VO vo){
 
-        return !(vo.getRssi1() <= outlier && vo.getRssi1() >= 0) && !(vo.getRssi2() <= outlier) && !(vo.getRssi3() <= outlier);
+        return !(vo.getRssi1() <= outlier) && !(vo.getRssi2() <= outlier) && !(vo.getRssi3() <= outlier) && !(vo.getRssi1() > 0);
     }
 
     //칼만 필터 VO 생성 함수
@@ -88,5 +199,110 @@ public class TestService {
                         1,
                         1
                         );
+    }
+
+
+    // MAF VO 생성 함수 1
+    private VO createMAFVo1(VO originalVo) {
+        double filterdRssi1 = mafFilter1.push(originalVo.getRssi1());
+        double filterdRssi2 = mafFilter2.push(originalVo.getRssi2());
+        double filterdRssi3 = mafFilter3.push(originalVo.getRssi3());
+
+        return new VO(originalVo.getDeviceName(),
+                1,
+                filterdRssi1,
+                1,
+                filterdRssi2,
+                1,
+                filterdRssi3,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+        );
+    }
+
+    // MAF VO 생성 함수 2
+    private VO createMAFVo2(VO originalVo) {
+        double filterdRssi1 = mafFilter4.push(originalVo.getRssi1());
+        double filterdRssi2 = mafFilter5.push(originalVo.getRssi2());
+        double filterdRssi3 = mafFilter6.push(originalVo.getRssi3());
+
+        return new VO(originalVo.getDeviceName(),
+                1,
+                filterdRssi1,
+                1,
+                filterdRssi2,
+                1,
+                filterdRssi3,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+        );
+    }
+
+    // MAF VO 생성 함수 3
+    private VO createMAFVo3(VO originalVo) {
+        double filterdRssi1 = mafFilter7.push(originalVo.getRssi1());
+        double filterdRssi2 = mafFilter8.push(originalVo.getRssi2());
+        double filterdRssi3 = mafFilter9.push(originalVo.getRssi3());
+
+        return new VO(originalVo.getDeviceName(),
+                1,
+                filterdRssi1,
+                1,
+                filterdRssi2,
+                1,
+                filterdRssi3,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+        );
+    }
+
+    // MAF VO 생성 함수 4
+    private VO createMAFVo4(VO originalVo) {
+        double filterdRssi1 = mafFilter10.push(originalVo.getRssi1());
+        double filterdRssi2 = mafFilter11.push(originalVo.getRssi2());
+        double filterdRssi3 = mafFilter12.push(originalVo.getRssi3());
+
+        return new VO(originalVo.getDeviceName(),
+                1,
+                filterdRssi1,
+                1,
+                filterdRssi2,
+                1,
+                filterdRssi3,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+        );
     }
 }
