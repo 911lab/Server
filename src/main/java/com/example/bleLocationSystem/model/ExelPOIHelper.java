@@ -330,35 +330,41 @@ public class ExelPOIHelper {
         oneBeaconSheet.setColumnWidth(2, 10000);
         oneBeaconSheet.setColumnWidth(3, 10000);
         oneBeaconSheet.setColumnWidth(4, 10000);
+        oneBeaconSheet.setColumnWidth(5, 10000);
 
 
         oneBeaconHeader = oneBeaconSheet.createRow(0);
 
         //헤더 셀(컬럼)
         Cell headerCell = oneBeaconHeader.createCell(0);
-        headerCell.setCellValue("Original VO");
+        headerCell.setCellValue("Original Ul X");
         headerCell.setCellStyle(headerStyle);
 
         headerCell = oneBeaconHeader.createCell(1);
-        headerCell.setCellValue("Maf VO");
+        headerCell.setCellValue("Original Ul Y");
         headerCell.setCellStyle(headerStyle);
 
         headerCell = oneBeaconHeader.createCell(2);
-        headerCell.setCellValue("RO MAF RSSi");
+        headerCell.setCellValue("Original abs Error Distance");
         headerCell.setCellStyle(headerStyle);
 
         headerCell = oneBeaconHeader.createCell(3);
-        headerCell.setCellValue("RO MAF Kalman RSSi");
         headerCell.setCellStyle(headerStyle);
+        headerCell.setCellValue("RO MAF Kalman Filtered Ul X");
 
         headerCell = oneBeaconHeader.createCell(4);
-        headerCell.setCellValue("RO Kalman MAF RSSi");
+        headerCell.setCellValue("RO MAF Kalman Filtered Ul Y");
         headerCell.setCellStyle(headerStyle);
+
+        headerCell = oneBeaconHeader.createCell(5);
+        headerCell.setCellValue("Filterd abs Error Distance");
+        headerCell.setCellStyle(headerStyle);
+
 
     }
 
     //단일 비콘 필터링 테스트
-    public void wrieteOneBeaconTestExcel(VO originalVo, VO MafVo, VO roMafVo, VO roMafKalmanVo, VO roKalmanMafVo, int i) throws IOException  {
+    public void wrieteOneBeaconTestExcel(UserLocation ul, UserLocation filterdUl, int i) throws IOException  {
 
         num = i;
 
@@ -371,35 +377,36 @@ public class ExelPOIHelper {
         //셀 추가
         //ap1
         Cell cell = row.createCell(0);
-        cell.setCellValue(originalVo.getRssi1());
+        cell.setCellValue(ul.getRealLocX());
         cell.setCellStyle(style);
 
         //ap2
         cell = row.createCell(1);
-        cell.setCellValue(MafVo.getRssi1());
+        cell.setCellValue(ul.getRealLocY());
         cell.setCellStyle(style);
 
         //ap3
         cell = row.createCell(2);
-        cell.setCellValue(roMafVo.getRssi1());
+        cell.setCellValue(ul.getDistanceDev());
         cell.setCellStyle(style);
 
 
         //ap4
         cell = row.createCell(3);
-        cell.setCellValue(roMafKalmanVo.getRssi1());
+        cell.setCellValue(filterdUl.getRealLocX());
         cell.setCellStyle(style);
-
 
         //ap5
         cell = row.createCell(4);
-        cell.setCellValue(roKalmanMafVo.getRssi1());
+        cell.setCellValue(filterdUl.getRealLocY());
+        cell.setCellStyle(style);
+
+        cell = row.createCell(5);
+        cell.setCellValue(filterdUl.getDistanceDev());
         cell.setCellStyle(style);
 
 
-
-
-        if(num%1200 == 0)  {
+        if(num%1300 == 0)  {
             createFileAndRewrite();
         }
     }
