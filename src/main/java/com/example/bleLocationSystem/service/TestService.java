@@ -43,7 +43,7 @@ public class TestService {
 
 
     int i=0;
-    double outlier = -78;
+    double outlier = -83;
 
     ExelPOIHelper poiHelper;
 
@@ -69,91 +69,92 @@ public class TestService {
     }
 
     public void trilateration(VO vo) {
-        i++;
+
         originalVo = vo;
 
-        //MAF
-        MafVo = createMAFVo1(originalVo);
+        if(originalVo.getRssi1() < 0) {
+            i++;
+            //MAF
+            MafVo = createMAFVo1(originalVo);
 
-        if(rmOutlier(originalVo)) {//이상치 제거
+            if (rmOutlier(originalVo)) {//이상치 제거
 
-            //KF
+                //KF
 //            roKalmanVo = createFilteredVo(originalVo);
 
-            //RO + MAF
-            roMafVo = createMAFVo2(originalVo);
+                //RO + MAF
+                roMafVo = createMAFVo2(originalVo);
 
-            //RO + MAF + Kalman
-            roMafKalamnVo = createFilteredVo1(roMafVo);
+                //RO + MAF + Kalman
+                roMafKalamnVo = createFilteredVo1(roMafVo);
 
-            //RO + Kalman + MAF
-            roKalmanVo = createFilteredVo2(originalVo);
-            roKalmanMafVo = createMAFVo3(roKalmanVo);
+                //RO + Kalman + MAF
+                roKalmanVo = createFilteredVo2(originalVo);
+                roKalmanMafVo = createMAFVo3(roKalmanVo);
 
+            } else {
+                roMafVo = new VO(originalVo.getDeviceName(),
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1
+                );
+
+                roMafKalamnVo = new VO(originalVo.getDeviceName(),
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1
+                );
+
+                roKalmanMafVo = new VO(originalVo.getDeviceName(),
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1
+                );
+
+            }
+
+
+            createCsv(originalVo, MafVo, roMafVo, roMafKalamnVo, roKalmanMafVo);
         }
-        else {
-            roMafVo = new VO(originalVo.getDeviceName(),
-                    1,
-                    1,
-                    1,
-                    1,
-                    1,
-                    1,
-                    1,
-                    1,
-                    1,
-                    1,
-                    1,
-                    1,
-                    1,
-                    1,
-                    1,
-                    1
-            );
-
-            roMafKalamnVo = new VO(originalVo.getDeviceName(),
-                    1,
-                    1,
-                    1,
-                    1,
-                    1,
-                    1,
-                    1,
-                    1,
-                    1,
-                    1,
-                    1,
-                    1,
-                    1,
-                    1,
-                    1,
-                    1
-            );
-
-            roKalmanMafVo = new VO(originalVo.getDeviceName(),
-                    1,
-                    1,
-                    1,
-                    1,
-                    1,
-                    1,
-                    1,
-                    1,
-                    1,
-                    1,
-                    1,
-                    1,
-                    1,
-                    1,
-                    1,
-                    1
-            );
-
-        }
-
-
-        createCsv(originalVo, MafVo, roMafVo, roMafKalamnVo, roKalmanMafVo);
-
     }
 
     //8개 짜리 정지상태 엑셀 파일 만들기
