@@ -43,7 +43,7 @@ public class TestService {
 
 
     int i=0;
-    double outlier = -77;
+    double outlier = -78;
 
     ExelPOIHelper poiHelper;
 
@@ -69,13 +69,14 @@ public class TestService {
     }
 
     public void trilateration(VO vo) {
+        i++;
         originalVo = vo;
 
         //MAF
         MafVo = createMAFVo1(originalVo);
 
         if(rmOutlier(originalVo)) {//이상치 제거
-            i++;
+
             //KF
 //            roKalmanVo = createFilteredVo(originalVo);
 
