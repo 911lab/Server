@@ -21,6 +21,10 @@ public class TestService {
     KalmanFilter kFilterForAp2;
     KalmanFilter kFilterForAp3;
 
+    KalmanFilter kFilterForAp4;
+    KalmanFilter kFilterForAp5;
+    KalmanFilter kFilterForAp6;
+
     MAFilter mafFilter1;
     MAFilter mafFilter2;
     MAFilter mafFilter3;
@@ -36,11 +40,6 @@ public class TestService {
     MAFilter mafFilter9;
 
 
-    MAFilter mafFilter10;
-    MAFilter mafFilter11;
-    MAFilter mafFilter12;
-
-
 
 
     int i=0;
@@ -54,6 +53,10 @@ public class TestService {
         kFilterForAp2 = new KalmanFilter();
         kFilterForAp3 = new KalmanFilter();
 
+        kFilterForAp4 = new KalmanFilter();
+        kFilterForAp5 = new KalmanFilter();
+        kFilterForAp6 = new KalmanFilter();
+
         mafFilter1 = new MAFilter();
         mafFilter2 = new MAFilter();
         mafFilter3 = new MAFilter();
@@ -63,9 +66,6 @@ public class TestService {
         mafFilter7 = new MAFilter();
         mafFilter8 = new MAFilter();
         mafFilter9 = new MAFilter();
-        mafFilter10 = new MAFilter();
-        mafFilter11 = new MAFilter();
-        mafFilter12 = new MAFilter();
     }
 
     public void trilateration(VO vo) {
@@ -83,11 +83,11 @@ public class TestService {
             roMafVo = createMAFVo2(originalVo);
 
             //RO + MAF + Kalman
-            roMafKalamnVo = createFilteredVo(roMafVo);
+            roMafKalamnVo = createFilteredVo1(roMafVo);
 
             //RO + Kalman + MAF
-            roKalmanVo = createFilteredVo(originalVo);
-            roKalmanMafVo = createMAFVo2(roKalmanVo);
+            roKalmanVo = createFilteredVo2(originalVo);
+            roKalmanMafVo = createMAFVo3(roKalmanVo);
 
         }
         else {
@@ -174,8 +174,8 @@ public class TestService {
         return !(vo.getRssi1() <= outlier) && !(vo.getRssi2() <= outlier) && !(vo.getRssi3() <= outlier) && !(vo.getRssi1() > 0);
     }
 
-    //칼만 필터 VO 생성 함수
-    public VO createFilteredVo(VO originalVo) {
+    //칼만 필터 VO 생성 함수 1
+    public VO createFilteredVo1(VO originalVo) {
 
         double filterdRssi1 = kFilterForAp1.kalmanFiltering(originalVo.getRssi1());
         double filterdRssi2 = kFilterForAp2.kalmanFiltering(originalVo.getRssi2());
@@ -199,6 +199,33 @@ public class TestService {
                         1,
                         1
                         );
+    }
+
+    //칼만 필터 VO 생성 함수 2
+    public VO createFilteredVo2(VO originalVo) {
+
+        double filterdRssi1 = kFilterForAp4.kalmanFiltering(originalVo.getRssi1());
+        double filterdRssi2 = kFilterForAp5.kalmanFiltering(originalVo.getRssi2());
+        double filterdRssi3 = kFilterForAp6.kalmanFiltering(originalVo.getRssi3());
+
+        return new VO(originalVo.getDeviceName(),
+                1,
+                filterdRssi1,
+                1,
+                filterdRssi2,
+                1,
+                filterdRssi3,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+        );
     }
 
 
@@ -280,29 +307,4 @@ public class TestService {
         );
     }
 
-    // MAF VO 생성 함수 4
-    private VO createMAFVo4(VO originalVo) {
-        double filterdRssi1 = mafFilter10.push(originalVo.getRssi1());
-        double filterdRssi2 = mafFilter11.push(originalVo.getRssi2());
-        double filterdRssi3 = mafFilter12.push(originalVo.getRssi3());
-
-        return new VO(originalVo.getDeviceName(),
-                1,
-                filterdRssi1,
-                1,
-                filterdRssi2,
-                1,
-                filterdRssi3,
-                1,
-                1,
-                1,
-                1,
-                1,
-                1,
-                1,
-                1,
-                1,
-                1
-        );
-    }
 }
