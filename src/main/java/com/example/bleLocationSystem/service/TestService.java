@@ -1,10 +1,12 @@
 package com.example.bleLocationSystem.service;
 
 import com.example.bleLocationSystem.model.*;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
+@Slf4j
 public class TestService {
     VO originalVo;
     VO roKalmanVo;
@@ -58,9 +60,19 @@ public class TestService {
 
 
     int i=0;
-    // 15m -> -83
+
     // 10m -> -78
     double outlier = -78;
+    double width = 10.0;
+    double height = 5.0*Math.sqrt(3);
+
+    // 15m -> -83
+    //double outlier = -83;
+    //double width = 15.0;
+    //double height = 15.0*Math.sqrt(3)/2;
+
+
+
 
     ExelPOIHelper poiHelper;
 
@@ -79,6 +91,8 @@ public class TestService {
 //        mafFilter7 = new MAFilter();
 //        mafFilter8 = new MAFilter();
 //        mafFilter9 = new MAFilter();
+
+
     }
 
     public void trilateration(VO vo) {
@@ -106,10 +120,12 @@ public class TestService {
 //                roKalmanVo = createFilteredVo2(originalVo);
 //                roKalmanMafVo = createMAFVo3(roKalmanVo);
 
+                //log.info("width = {}", width/2);
+                //log.info("height = {}", height);
 
                 filteredAp1 = new Ap(0, 0, roMafKalamnVo.getDistance1());
-                filteredAp2 = new Ap(10, 0, roMafKalamnVo.getDistance2());
-                filteredAp3 = new Ap(5, 10, roMafKalamnVo.getDistance3());
+                filteredAp2 = new Ap(width, 0, roMafKalamnVo.getDistance2());
+                filteredAp3 = new Ap(width/2.0, height, roMafKalamnVo.getDistance3());
 
                 Trilateration filteredTr = new Trilateration(roMafKalamnVo.getDeviceName(), filteredAp1, filteredAp2, filteredAp3);
 
@@ -120,8 +136,8 @@ public class TestService {
             }
 
             ap1 = new Ap(0, 0, originalVo.getDistance1());
-            ap2 = new Ap(10, 0, originalVo.getDistance2());
-            ap3 = new Ap(5, 10, originalVo.getDistance3());
+            ap2 = new Ap(width, 0, originalVo.getDistance2());
+            ap3 = new Ap(width/2.0, height, originalVo.getDistance3());
 
             Trilateration tr = new Trilateration(originalVo.getDeviceName(), ap1, ap2, ap3);
 

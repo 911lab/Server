@@ -377,12 +377,12 @@ public class ExelPOIHelper {
         //셀 추가
         //ap1
         Cell cell = row.createCell(0);
-        cell.setCellValue(ul.getRealLocX());
+        cell.setCellValue(ul.getX());
         cell.setCellStyle(style);
 
         //ap2
         cell = row.createCell(1);
-        cell.setCellValue(ul.getRealLocY());
+        cell.setCellValue(ul.getY());
         cell.setCellStyle(style);
 
         //ap3
@@ -393,12 +393,12 @@ public class ExelPOIHelper {
 
         //ap4
         cell = row.createCell(3);
-        cell.setCellValue(filterdUl.getRealLocX());
+        cell.setCellValue(filterdUl.getX());
         cell.setCellStyle(style);
 
         //ap5
         cell = row.createCell(4);
-        cell.setCellValue(filterdUl.getRealLocY());
+        cell.setCellValue(filterdUl.getY());
         cell.setCellStyle(style);
 
         cell = row.createCell(5);
@@ -406,7 +406,9 @@ public class ExelPOIHelper {
         cell.setCellStyle(style);
 
 
-        if(num%1300 == 0)  {
+        if(num%1200 == 0)  {
+            log.info("realLocX = {}", ul.getRealLocX());
+            log.info("realLocY = {}", ul.getRealLocY());
             createFileAndRewrite();
         }
     }
@@ -416,7 +418,7 @@ public class ExelPOIHelper {
 //        String path = currDir.getAbsolutePath();
 //        String fileLocation = path.substring(0, path.length() - 1) + "temp.xlsx";
 
-        String fileLocation = "C:\\Users\\heehe\\Desktop\\bleExel\\112\\mAFTest_15m.xlsx";
+        String fileLocation = "C:\\Users\\heehe\\Desktop\\bleExel\\112\\basicTrilaterationTest_10m_worst.xlsx";
 
 //        String fileLocation = "C:\\Users\\JaeHyuk\\Desktop\\bleExel\\1016\\beaconTest_11111111111111.xlsx";
 

@@ -1,12 +1,14 @@
 package com.example.bleLocationSystem.model;
 
 import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@Slf4j
 //User Location Result
 public class UserLocation {
 
@@ -15,11 +17,24 @@ public class UserLocation {
     private double y;
 
     //실제 위치
+    //10m
     private double realLocX = 5;
-    private double realLocY = 5;
+    //best
+    //private double realLocY = 5.0*Math.sqrt(3)/3.0;
+    //worst
+    private double realLocY = (5.0*Math.sqrt(3))-1.0;
+
+    //15m
+    //private double realLocX = 15.0/2.0;
+    //best
+    //private double realLocY = 5.0*Math.sqrt(3)/2.0;
+
+    //worst
+    //private double realLocY = (15.0*Math.sqrt(3)/2.0)-1.0;
 
     //거리 편차
     private double distanceDev;
+
 
     public UserLocation(double x, double y) {
         this.x = x;
@@ -28,6 +43,8 @@ public class UserLocation {
 //        double realLocX= UserPoint.getRealLocX();
 //        double realLocY= UserPoint.getRealLocY();
 
+//        log.info("realLocX = {}", realLocX);
+//        log.info("realLocY = {}", realLocY);
         setDistanceDeviation(realLocX,realLocY);
     }
 
