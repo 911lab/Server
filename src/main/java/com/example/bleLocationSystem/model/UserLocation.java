@@ -20,9 +20,9 @@ public class UserLocation {
     //10m
     private double realLocX = 5;
     //best
-    //private double realLocY = 5.0*Math.sqrt(3)/3.0;
+    private double realLocY = 5.0*Math.sqrt(3)/3.0;
     //worst
-    private double realLocY = (5.0*Math.sqrt(3))-1.0;
+//    private double realLocY = (5.0*Math.sqrt(3))-1.0;
 
     //15m
     //private double realLocX = 15.0/2.0;

@@ -326,45 +326,28 @@ public class ExelPOIHelper {
 
 
         oneBeaconSheet.setColumnWidth(0, 10000);
-        oneBeaconSheet.setColumnWidth(1, 10000);
-        oneBeaconSheet.setColumnWidth(2, 10000);
-        oneBeaconSheet.setColumnWidth(3, 10000);
-        oneBeaconSheet.setColumnWidth(4, 10000);
-        oneBeaconSheet.setColumnWidth(5, 10000);
+//        oneBeaconSheet.setColumnWidth(1, 10000);
+
 
 
         oneBeaconHeader = oneBeaconSheet.createRow(0);
 
         //헤더 셀(컬럼)
         Cell headerCell = oneBeaconHeader.createCell(0);
-        headerCell.setCellValue("Original Ul X");
+        headerCell.setCellValue("Loc Filtered Ul abs Error Distance");
         headerCell.setCellStyle(headerStyle);
 
-        headerCell = oneBeaconHeader.createCell(1);
-        headerCell.setCellValue("Original Ul Y");
-        headerCell.setCellStyle(headerStyle);
+//        headerCell = oneBeaconHeader.createCell(1);
+//        headerCell.setCellValue("Original Ul Y");
+//        headerCell.setCellStyle(headerStyle);
 
-        headerCell = oneBeaconHeader.createCell(2);
-        headerCell.setCellValue("Original abs Error Distance");
-        headerCell.setCellStyle(headerStyle);
 
-        headerCell = oneBeaconHeader.createCell(3);
-        headerCell.setCellStyle(headerStyle);
-        headerCell.setCellValue("RO MAF Kalman Filtered Ul X");
-
-        headerCell = oneBeaconHeader.createCell(4);
-        headerCell.setCellValue("RO MAF Kalman Filtered Ul Y");
-        headerCell.setCellStyle(headerStyle);
-
-        headerCell = oneBeaconHeader.createCell(5);
-        headerCell.setCellValue("Filterd abs Error Distance");
-        headerCell.setCellStyle(headerStyle);
 
 
     }
 
     //단일 비콘 필터링 테스트
-    public void wrieteOneBeaconTestExcel(UserLocation ul, UserLocation filterdUl, int i) throws IOException  {
+    public void wrieteOneBeaconTestExcel(UserLocation filterdUl, int i) throws IOException  {
 
         num = i;
 
@@ -377,38 +360,20 @@ public class ExelPOIHelper {
         //셀 추가
         //ap1
         Cell cell = row.createCell(0);
-        cell.setCellValue(ul.getX());
-        cell.setCellStyle(style);
-
-        //ap2
-        cell = row.createCell(1);
-        cell.setCellValue(ul.getY());
-        cell.setCellStyle(style);
-
-        //ap3
-        cell = row.createCell(2);
-        cell.setCellValue(ul.getDistanceDev());
-        cell.setCellStyle(style);
-
-
-        //ap4
-        cell = row.createCell(3);
-        cell.setCellValue(filterdUl.getX());
-        cell.setCellStyle(style);
-
-        //ap5
-        cell = row.createCell(4);
-        cell.setCellValue(filterdUl.getY());
-        cell.setCellStyle(style);
-
-        cell = row.createCell(5);
         cell.setCellValue(filterdUl.getDistanceDev());
         cell.setCellStyle(style);
 
+        //ap2
+//        cell = row.createCell(1);
+//        cell.setCellValue(ul.getY());
+//        cell.setCellStyle(style);
+
+
+
 
         if(num%1200 == 0)  {
-            log.info("realLocX = {}", ul.getRealLocX());
-            log.info("realLocY = {}", ul.getRealLocY());
+            log.info("realLocX = {}", filterdUl.getRealLocX());
+            log.info("realLocY = {}", filterdUl.getRealLocY());
             createFileAndRewrite();
         }
     }
@@ -418,7 +383,7 @@ public class ExelPOIHelper {
 //        String path = currDir.getAbsolutePath();
 //        String fileLocation = path.substring(0, path.length() - 1) + "temp.xlsx";
 
-        String fileLocation = "C:\\Users\\heehe\\Desktop\\bleExel\\112\\basicTrilaterationTest_10m_worst.xlsx";
+        String fileLocation = "C:\\Users\\heehe\\Desktop\\bleExel\\112\\RO_TrilaterationTest_10m.xlsx";
 
 //        String fileLocation = "C:\\Users\\JaeHyuk\\Desktop\\bleExel\\1016\\beaconTest_11111111111111.xlsx";
 

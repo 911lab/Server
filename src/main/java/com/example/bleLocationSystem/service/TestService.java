@@ -62,11 +62,13 @@ public class TestService {
     int i=0;
 
     // 10m -> -78
+    double setting = 10.0;
     double outlier = -78;
     double width = 10.0;
     double height = 5.0*Math.sqrt(3);
 
     // 15m -> -83
+//    double setting = 15.0;
     //double outlier = -83;
     //double width = 15.0;
     //double height = 15.0*Math.sqrt(3)/2;
@@ -93,6 +95,7 @@ public class TestService {
 //        mafFilter9 = new MAFilter();
 
 
+
     }
 
     public void trilateration(VO vo) {
@@ -100,11 +103,12 @@ public class TestService {
         originalVo = vo;
 
         if(originalVo.getRssi1() < 0 && originalVo.getRssi2() < 0 && originalVo.getRssi3() < 0) {
-            i++;
+
             //MAF
 //            MafVo = createMAFVo1(originalVo);
 
             if (rmOutlier(originalVo)) {//이상치 제거
+
 
                 //KF
 //            roKalmanVo = createFilteredVo(originalVo);
@@ -130,31 +134,38 @@ public class TestService {
                 Trilateration filteredTr = new Trilateration(roMafKalamnVo.getDeviceName(), filteredAp1, filteredAp2, filteredAp3);
 
                 filteredUl = filteredTr.calcUserLocation();
+
+                //좌표 이상치 제거
+                if(!rmXYOutlier(filteredUl)) {
+                    i++;
+                    createCsv(filteredUl);
+                }
+
+
+
             }
-            else {
-                filteredUl = new UserLocation(-999,-999);
-            }
+//            else {
+//                filteredUl = new UserLocation(-999,-999);
+//            }
 
-            ap1 = new Ap(0, 0, originalVo.getDistance1());
-            ap2 = new Ap(width, 0, originalVo.getDistance2());
-            ap3 = new Ap(width/2.0, height, originalVo.getDistance3());
+//            ap1 = new Ap(0, 0, originalVo.getDistance1());
+//            ap2 = new Ap(width, 0, originalVo.getDistance2());
+//            ap3 = new Ap(width/2.0, height, originalVo.getDistance3());
+//
+//            Trilateration tr = new Trilateration(originalVo.getDeviceName(), ap1, ap2, ap3);
+//
+//            ul = tr.calcUserLocation();
 
-            Trilateration tr = new Trilateration(originalVo.getDeviceName(), ap1, ap2, ap3);
-
-            ul = tr.calcUserLocation();
-
-
-            createCsv(ul, filteredUl);
         }
     }
 
     //8개 짜리 정지상태 엑셀 파일 만들기
-    public void createCsv(UserLocation ul, UserLocation filterdUl) {
+    public void createCsv(UserLocation filterdUl) {
         try {
             // 비콘 8개 각각 성능 테스트를 위한 엑셀 생성
 //            poiHelper.writeTestExcel(originalVo, i);
 
-            poiHelper.wrieteOneBeaconTestExcel(ul, filterdUl,i);
+            poiHelper.wrieteOneBeaconTestExcel(filterdUl,i);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -308,6 +319,30 @@ public class TestService {
         double distance = Math.pow(10, (tempAlpha-tempRssi)/(10*lossNum));
 
         return distance;
+    }
+
+
+
+    //좌표 이상치 제거
+    public boolean rmXYOutlier(UserLocation ul){
+//        System.out.println("x,y=\t"+ul.getX()+",\t"+ul.getY());
+        if (ul.getY()>height){
+//            System.out.println("yCUT");
+            return true;
+        }
+        if (ul.getY()<0){
+//            System.out.println("yCUT");
+            return true;
+        }
+        if (ul.getX()>width){
+//            System.out.println("xCUT");
+            return true;
+        }
+        if (ul.getX()<0) {
+//            System.out.println("xCUT");
+            return true;
+        }
+        return false;
     }
 
 }
