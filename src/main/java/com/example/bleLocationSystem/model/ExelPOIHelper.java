@@ -326,7 +326,7 @@ public class ExelPOIHelper {
 
 
         oneBeaconSheet.setColumnWidth(0, 10000);
-//        oneBeaconSheet.setColumnWidth(1, 10000);
+        oneBeaconSheet.setColumnWidth(1, 10000);
 
 
 
@@ -334,12 +334,12 @@ public class ExelPOIHelper {
 
         //헤더 셀(컬럼)
         Cell headerCell = oneBeaconHeader.createCell(0);
-        headerCell.setCellValue("Loc Filtered Ul abs Error Distance");
+        headerCell.setCellValue("MAF Filtered Ul abs Error Distance");
         headerCell.setCellStyle(headerStyle);
 
-//        headerCell = oneBeaconHeader.createCell(1);
-//        headerCell.setCellValue("Original Ul Y");
-//        headerCell.setCellStyle(headerStyle);
+        headerCell = oneBeaconHeader.createCell(1);
+        headerCell.setCellValue("RO MAF Filtered Ul abs Error Distance");
+        headerCell.setCellStyle(headerStyle);
 
 
 
@@ -347,7 +347,7 @@ public class ExelPOIHelper {
     }
 
     //단일 비콘 필터링 테스트
-    public void wrieteOneBeaconTestExcel(UserLocation filterdUl, int i) throws IOException  {
+    public void wrieteOneBeaconTestExcel(UserLocation mafUl, UserLocation roMafUl, int i) throws IOException  {
 
         num = i;
 
@@ -360,20 +360,20 @@ public class ExelPOIHelper {
         //셀 추가
         //ap1
         Cell cell = row.createCell(0);
-        cell.setCellValue(filterdUl.getDistanceDev());
+        cell.setCellValue(mafUl.getDistanceDev());
         cell.setCellStyle(style);
 
         //ap2
-//        cell = row.createCell(1);
-//        cell.setCellValue(ul.getY());
-//        cell.setCellStyle(style);
+        cell = row.createCell(1);
+        cell.setCellValue(roMafUl.getDistanceDev());
+        cell.setCellStyle(style);
 
 
 
 
-        if(num%1200 == 0)  {
-            log.info("realLocX = {}", filterdUl.getRealLocX());
-            log.info("realLocY = {}", filterdUl.getRealLocY());
+        if(num%5000 == 0)  {
+            log.info("realLocX = {}", mafUl.getRealLocX());
+            log.info("realLocY = {}", mafUl.getRealLocY());
             createFileAndRewrite();
         }
     }
@@ -383,7 +383,7 @@ public class ExelPOIHelper {
 //        String path = currDir.getAbsolutePath();
 //        String fileLocation = path.substring(0, path.length() - 1) + "temp.xlsx";
 
-        String fileLocation = "C:\\Users\\heehe\\Desktop\\bleExel\\112\\RO_TrilaterationTest_10m.xlsx";
+        String fileLocation = "C:\\Users\\heehe\\Desktop\\bleExel\\112\\RO_RO_MAF_TrilaterationTest_15m_worst.xlsx";
 
 //        String fileLocation = "C:\\Users\\JaeHyuk\\Desktop\\bleExel\\1016\\beaconTest_11111111111111.xlsx";
 

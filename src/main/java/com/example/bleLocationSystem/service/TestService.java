@@ -56,22 +56,29 @@ public class TestService {
 
     UserLocation filteredUl;
 
+    UserLocation roMafUl;
+    UserLocation mafUl;
+
+
+    LocMAFilter locMAFilter;
+    LocMAFilter locMAFilter2;
+
 
 
 
     int i=0;
 
     // 10m -> -78
-    double setting = 10.0;
-    double outlier = -78;
-    double width = 10.0;
-    double height = 5.0*Math.sqrt(3);
+    //double setting = 10.0;
+    //double outlier = -78;
+    //double width = 10.0;
+    //double height = 5.0*Math.sqrt(3);   //8.66
 
     // 15m -> -83
-//    double setting = 15.0;
-    //double outlier = -83;
-    //double width = 15.0;
-    //double height = 15.0*Math.sqrt(3)/2;
+    double setting = 15.0;
+    double outlier = -83;
+    double width = 15.0;
+    double height = 15.0*Math.sqrt(3)/2;  //12.99
 
 
 
@@ -94,11 +101,14 @@ public class TestService {
 //        mafFilter8 = new MAFilter();
 //        mafFilter9 = new MAFilter();
 
+        locMAFilter = new LocMAFilter();
+        locMAFilter2 = new LocMAFilter();
+
 
 
     }
 
-    public void trilateration(VO vo) {
+    public Integer trilateration(VO vo) {
 
         originalVo = vo;
 
@@ -135,12 +145,28 @@ public class TestService {
 
                 filteredUl = filteredTr.calcUserLocation();
 
+                mafUl = locMAFilter.push(filteredUl);
+
+                if (mafUl == null) {
+                    mafUl = new UserLocation(-999,-999);
+                }
+//                log.info("next !!!!");
+
+
                 //좌표 이상치 제거
                 if(!rmXYOutlier(filteredUl)) {
-                    i++;
-                    createCsv(filteredUl);
+
+                    roMafUl = locMAFilter2.push(filteredUl);
+                    if (roMafUl == null) {
+                        roMafUl = new UserLocation(-999,-999);
+                    }
+                }
+                else {
+                    roMafUl = new UserLocation(-999,-999);
                 }
 
+                i++;
+                createCsv(mafUl, roMafUl);
 
 
             }
@@ -156,16 +182,18 @@ public class TestService {
 //
 //            ul = tr.calcUserLocation();
 
+
         }
+        return 1;
     }
 
     //8개 짜리 정지상태 엑셀 파일 만들기
-    public void createCsv(UserLocation filterdUl) {
+    public void createCsv(UserLocation mafUl, UserLocation roMafUl) {
         try {
             // 비콘 8개 각각 성능 테스트를 위한 엑셀 생성
 //            poiHelper.writeTestExcel(originalVo, i);
 
-            poiHelper.wrieteOneBeaconTestExcel(filterdUl,i);
+            poiHelper.wrieteOneBeaconTestExcel(mafUl, roMafUl,i);
 
         } catch (IOException e) {
             e.printStackTrace();

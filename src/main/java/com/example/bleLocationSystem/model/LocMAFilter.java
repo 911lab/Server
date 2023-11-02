@@ -1,8 +1,11 @@
 package com.example.bleLocationSystem.model;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 public class LocMAFilter {
     int size;
 
@@ -38,6 +41,8 @@ public class LocMAFilter {
         yQueue.add(tempUl.getY());
 
         queueSize = xQueue.size();
+
+        log.info("queue size = {}", queueSize);
 
         if(queueSize < size) {
             return null;
