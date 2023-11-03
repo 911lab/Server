@@ -1,6 +1,7 @@
 package com.example.bleLocationSystem.service;
 
 import com.example.bleLocationSystem.model.*;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -71,14 +72,19 @@ public class TestService {
     // 10m -> -78
     double setting = 10.0;
     double outlier = -78;
+    @Getter
     double width = 10.0;
+    @Getter
     double height = 5.0*Math.sqrt(3);   //8.66
 
     // 15m -> -83
 //    double setting = 15.0;
 //    double outlier = -83;
+//    @Getter
 //    double width = 15.0;
+//    @Getter
 //    double height = 15.0*Math.sqrt(3)/2;  //12.99
+
 
 
 
@@ -108,7 +114,7 @@ public class TestService {
 
     }
 
-    public Integer trilateration(VO vo) {
+    public UserLocation trilateration(VO vo) {
 
         originalVo = vo;
 
@@ -170,9 +176,9 @@ public class TestService {
 
 
             }
-//            else {
-//                filteredUl = new UserLocation(-999,-999);
-//            }
+            else {
+                roMafUl = null;
+            }
 
 //            ap1 = new Ap(0, 0, originalVo.getDistance1());
 //            ap2 = new Ap(width, 0, originalVo.getDistance2());
@@ -184,7 +190,7 @@ public class TestService {
 
 
         }
-        return 1;
+        return roMafUl;
     }
 
     //8개 짜리 정지상태 엑셀 파일 만들기

@@ -1,6 +1,7 @@
 package com.example.bleLocationSystem.controller;
 
 import ch.qos.logback.core.net.SyslogOutputStream;
+import com.example.bleLocationSystem.TestUI;
 import com.example.bleLocationSystem.UI;
 import com.example.bleLocationSystem.model.UserLocation;
 import com.example.bleLocationSystem.model.VO;
@@ -25,13 +26,21 @@ public class ApController {
 //    @Autowired
 //    ApService apService;
 
+    
+    //실제
 //    ApService apService = new ApService();
-    UI ui = new UI();
+//    UI ui = new UI();
+//    UI ui = new UI(apService.getW(),apService.getH());
 
     Map<String, Integer> map = new HashMap<String, Integer>();
 
-//    UI ui = new UI(apService.getW(),apService.getH());
+
+    //Test
     TestService testService = new TestService();
+
+    TestUI ui = new TestUI(testService.getWidth(),testService.getHeight());
+
+
 
     ArrayList<UserLocation> ul = new ArrayList<>();
     //앱으로부터 ap1, ap2, ap3 각각의 거리값 받기
@@ -57,6 +66,10 @@ public class ApController {
 
 //        --------------Test--------------
         testService.trilateration(vo);
+
+        if(ul != null) {
+            ui.setUserLocation(ul);
+        }
 
         return ResponseEntity.status(HttpStatus.OK).body(null);
 
