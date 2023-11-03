@@ -99,10 +99,15 @@ public class TestUI extends JFrame  {
 
 
             if(x!=-1 && y!=-1) {
-                x=movePoint(x*(m/beaconW),0,maxX);
-                y=movePoint(y*(m/beaconH),0,maxY);
-                ox=movePoint(ox*(m/beaconW),0,maxX);
-                oy=movePoint(oy*(m/beaconH),0,maxY);
+//                x=movePoint(x*(m/beaconW),0,maxX);
+//                y=movePoint(y*(m/beaconH),0,maxY);
+//                ox=movePoint(ox*(m/beaconW),0,maxX);
+//                oy=movePoint(oy*(m/beaconH),0,maxY);
+
+                x=x*(m/beaconW);
+                y=y*(m/beaconH);
+                ox=ox*(m/beaconW);
+                oy=oy*(m/beaconH);
 
                 g2.translate(0,maxY);
                 if(i%2==0)

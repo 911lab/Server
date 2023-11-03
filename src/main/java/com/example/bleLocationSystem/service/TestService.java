@@ -151,11 +151,11 @@ public class TestService {
 
                 filteredUl = filteredTr.calcUserLocation();
 
-                mafUl = locMAFilter.push(filteredUl);
+//                mafUl = locMAFilter.push(filteredUl);
 
-                if (mafUl == null) {
-                    mafUl = new UserLocation(-999,-999);
-                }
+//                if (mafUl == null) {
+//                    mafUl = new UserLocation(-999,-999);
+//                }
 //                log.info("next !!!!");
 
 
@@ -164,20 +164,24 @@ public class TestService {
 
                     roMafUl = locMAFilter2.push(filteredUl);
                     if (roMafUl == null) {
-                        roMafUl = new UserLocation(-999,-999);
+                        log.info("Loc MAF Cut !!!");
+                        return null;
                     }
                 }
                 else {
-                    roMafUl = new UserLocation(-999,-999);
+                    log.info("Loc RO Cut !!!");
+                    return null;
                 }
 
                 i++;
-                createCsv(mafUl, roMafUl);
+//                createCsv(mafUl, roMafUl);
+                log.info("row i : {}", i);
 
 
             }
             else {
-                roMafUl = null;
+                log.info("Rssi RO Cut !!!");
+                return null;
             }
 
 //            ap1 = new Ap(0, 0, originalVo.getDistance1());
