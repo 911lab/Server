@@ -42,7 +42,7 @@ public class LocMAFilter {
 
         queueSize = xQueue.size();
 
-        log.info("queue size = {}", queueSize);
+//        log.info("queue size = {}", queueSize);
 
         if(queueSize < size) {
             return null;

@@ -167,17 +167,14 @@ public class TestService {
                         log.info("Loc MAF Cut !!!");
                         return null;
                     }
+                    i++;
+                    log.info("row i : {}", i);
                 }
                 else {
-                    log.info("Loc RO Cut !!!");
+                    log.info("Loc RO Cut !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                     return null;
                 }
-
-                i++;
 //                createCsv(mafUl, roMafUl);
-                log.info("row i : {}", i);
-
-
             }
             else {
                 log.info("Rssi RO Cut !!!");
@@ -191,8 +188,9 @@ public class TestService {
 //            Trilateration tr = new Trilateration(originalVo.getDeviceName(), ap1, ap2, ap3);
 //
 //            ul = tr.calcUserLocation();
-
-
+        }
+        else {
+            log.info("not yet");
         }
         return roMafUl;
     }

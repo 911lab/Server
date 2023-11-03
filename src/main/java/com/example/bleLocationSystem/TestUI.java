@@ -38,11 +38,11 @@ public class TestUI extends JFrame  {
         add(p, BorderLayout.CENTER);
     }
 
-    public void setUserLocation(ArrayList<UserLocation> ul) {
-        p.ox = ul.get(0).getX();
-        p.oy = ul.get(0).getY();
-        p.x = ul.get(1).getX();
-        p.y = ul.get(1).getY();
+    public void setUserLocation(UserLocation ul) {
+        //p.ox = ul.get(0).getX();
+        //p.oy = ul.get(0).getY();
+        p.x = ul.getX();
+        p.y = ul.getY();
 
         p.repaint();
     }
@@ -106,23 +106,23 @@ public class TestUI extends JFrame  {
 
                 x=x*(m/beaconW);
                 y=y*(m/beaconH);
-                ox=ox*(m/beaconW);
-                oy=oy*(m/beaconH);
+                //ox=ox*(m/beaconW);
+                //oy=oy*(m/beaconH);
 
                 g2.translate(0,maxY);
-                if(i%2==0)
+                //if(i%2==0)
                     g2.setColor(Color.RED);
-                else if(i%2==1)
-                    g2.setColor(Color.GREEN);
-                //g2.fillRect((int)x-radius, -((int)y+radius), radius*2, radius*2);
+                //else if(i%2==1)
+                  //  g2.setColor(Color.GREEN);
+                g2.fillRect((int)x-radius, -((int)y+radius), radius*2, radius*2);
 
                 i++;
-
+/*
                 if(i%2==0)
                     g2.setColor(Color.magenta);
                 else if(i%2==1)
                     g2.setColor(Color.blue);
-                g2.drawOval((int)ox-radius, -((int)oy+radius), radius*2, radius*2);
+                g2.drawOval((int)ox-radius, -((int)oy+radius), radius*2, radius*2);*/
             }
         }
     }

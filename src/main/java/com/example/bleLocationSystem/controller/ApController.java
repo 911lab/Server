@@ -31,6 +31,7 @@ public class ApController {
 //    ApService apService = new ApService();
 //    UI ui = new UI();
 //    UI ui = new UI(apService.getW(),apService.getH());
+//    ArrayList<UserLocation> ul = new ArrayList<>();
 
     Map<String, Integer> map = new HashMap<String, Integer>();
 
@@ -40,9 +41,12 @@ public class ApController {
 
     TestUI ui = new TestUI(testService.getWidth(),testService.getHeight());
 
+    UserLocation ul;
 
 
-    ArrayList<UserLocation> ul = new ArrayList<>();
+
+
+
     //앱으로부터 ap1, ap2, ap3 각각의 거리값 받기
     @PostMapping("/api/distance")
 //    public ResponseEntity<UserLocation> receiveDistance(@RequestBody VO vo) throws Exception {
@@ -65,7 +69,7 @@ public class ApController {
 
 
 //        --------------Test--------------
-        testService.trilateration(vo);
+        ul = testService.trilateration(vo);
 
         if(ul != null) {
             ui.setUserLocation(ul);
