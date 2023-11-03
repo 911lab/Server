@@ -69,16 +69,16 @@ public class TestService {
     int i=0;
 
     // 10m -> -78
-    //double setting = 10.0;
-    //double outlier = -78;
-    //double width = 10.0;
-    //double height = 5.0*Math.sqrt(3);   //8.66
+    double setting = 10.0;
+    double outlier = -78;
+    double width = 10.0;
+    double height = 5.0*Math.sqrt(3);   //8.66
 
     // 15m -> -83
-    double setting = 15.0;
-    double outlier = -83;
-    double width = 15.0;
-    double height = 15.0*Math.sqrt(3)/2;  //12.99
+//    double setting = 15.0;
+//    double outlier = -83;
+//    double width = 15.0;
+//    double height = 15.0*Math.sqrt(3)/2;  //12.99
 
 
 

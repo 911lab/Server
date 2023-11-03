@@ -18,18 +18,18 @@ public class UserLocation {
 
     //실제 위치
     //10m
-    //private double realLocX = 5;
+    private double realLocX = 5;
 
     //best
-    //private double realLocY = 5.0*Math.sqrt(3)/3.0;     //2.88
+//    private double realLocY = 5.0*Math.sqrt(3)/3.0;     //2.88
     //worst
-    //private double realLocY = (5.0*Math.sqrt(3))-1.0; //7.66
+    private double realLocY = (5.0*Math.sqrt(3))-1.0; //7.66
 
     //15m
-    private double realLocX = 15.0/2.0;
+//    private double realLocX = 15.0/2.0;
 
     //best
-    private double realLocY = 5.0*Math.sqrt(3)/2.0;       //4.33
+//    private double realLocY = 5.0*Math.sqrt(3)/2.0;       //4.33
     //worst
 //    private double realLocY = (15.0*Math.sqrt(3)/2.0)-1.0;    //11.99
 

@@ -383,7 +383,7 @@ public class ExelPOIHelper {
 //        String path = currDir.getAbsolutePath();
 //        String fileLocation = path.substring(0, path.length() - 1) + "temp.xlsx";
 
-        String fileLocation = "C:\\Users\\heehe\\Desktop\\bleExel\\112\\RO_RO_MAF_TrilaterationTest_15m_worst.xlsx";
+        String fileLocation = "C:\\Users\\heehe\\Desktop\\bleExel\\112\\RO_RO_MAF_TrilaterationTest_10m_worst.xlsx";
 
 //        String fileLocation = "C:\\Users\\JaeHyuk\\Desktop\\bleExel\\1016\\beaconTest_11111111111111.xlsx";
 
