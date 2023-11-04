@@ -85,6 +85,8 @@ public class ApService extends JFrame {
     Ap filteredAp2;
     Ap filteredAp3;
 
+    int finishedCount;
+
     public ApService() {
 
 
@@ -112,6 +114,8 @@ public class ApService extends JFrame {
 //        t = new Thread(UserPoint);
 
 //        initCheck = false;
+
+        finishedCount = 0;
 
     }
 
@@ -241,7 +245,9 @@ public class ApService extends JFrame {
                 System.out.println("LOC MAF CUT");
                 return null;
             }
-
+            finishedCount++;
+            log.info("Finished Count = {}", finishedCount);
+            
             x = locKalmanFilter.predict();
 //            UserLocation locFilteredUl = new UserLocation(x[0][0], x[1][0]);
 
