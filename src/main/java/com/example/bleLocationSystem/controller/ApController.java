@@ -32,8 +32,8 @@ public class ApController {
 //    UI ui = new UI();
     UI ui = new UI(apService.getW(),apService.getH());
 
-//    ArrayList<UserLocation> ul = new ArrayList<>();
-    UserLocation ul;
+    ArrayList<UserLocation> ul = new ArrayList<>();
+//    UserLocation ul;
 
     Map<String, Integer> map = new HashMap<String, Integer>();
 

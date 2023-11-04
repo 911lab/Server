@@ -46,11 +46,14 @@ public class UI extends JFrame {
         add(p, BorderLayout.CENTER);
     }
 
-    public void setUserLocation(UserLocation ul) {
-        //p.ox = ul.get(0).getX();
-        //p.oy = ul.get(0).getY();
-        p.x = ul.getX();
-        p.y = ul.getY();
+    public void setUserLocation(ArrayList<UserLocation> ul) {
+        p.ox = ul.get(0).getX();
+        p.oy = ul.get(0).getY();
+        p.x = ul.get(1).getX();
+        p.y = ul.get(1).getY();
+
+//        p.x = ul.getX();
+//        p.y = ul.getY();
 
         p.repaint();
     }
@@ -114,8 +117,8 @@ public class UI extends JFrame {
 
                 x=x*(m/beaconW);
                 y=y*(m/beaconH);
-                //ox=ox*(m/beaconW);
-                //oy=oy*(m/beaconH);
+                ox=ox*(m/beaconW);
+                oy=oy*(m/beaconH);
 
                 g2.translate(0,maxY);
                 //if(i%2==0)
@@ -125,12 +128,14 @@ public class UI extends JFrame {
                 g2.fillRect((int)x-radius, -((int)y+radius), radius*2, radius*2);
 
                 i++;
-/*
-                if(i%2==0)
-                    g2.setColor(Color.magenta);
-                else if(i%2==1)
-                    g2.setColor(Color.blue);
-                g2.drawOval((int)ox-radius, -((int)oy+radius), radius*2, radius*2);*/
+
+//                if(i%2==0)
+//                    g2.setColor(Color.magenta);
+//                else if(i%2==1)
+//                    g2.setColor(Color.blue);
+
+                g2.setColor(Color.BLUE);
+                g2.drawOval((int)ox-radius, -((int)oy+radius), radius*2, radius*2);
             }
         }
     }
@@ -225,6 +230,12 @@ public class UI extends JFrame {
 
 
             if(x!=-1 && y!=-1) {
+
+                x=x*(w/beaconW);
+                y=y*(h/beaconH);
+                ox=ox*(w/beaconW);
+                oy=oy*(h/beaconH);
+
                 /*
                 //사각형안으로
                 x=movePoint(x*(m/beaconW),0,maxX);
@@ -237,17 +248,21 @@ public class UI extends JFrame {
                 g2.setColor(Color.RED);
                 //else if(i%2==1)
                 //g2.setColor(Color.GREEN);
-                g2.fillRect((int)(x*(w/beaconW))-radius, -((int)(y*(h/beaconH))+radius), radius*2, radius*2);
+                g2.fillRect((int)x-radius, -((int)y+radius), radius*2, radius*2);
                 g2.setColor(Color.black);
 
-                g2.drawString(String.valueOf(i),(int)(x*(w/beaconW))-radius, -((int)(y*(h/beaconH))+radius));
-                i++;
+                g2.drawString(String.valueOf(i),(int)x-radius, -((int)y+radius));
+
 
                 //if(i%2==0)
                 //g2.setColor(Color.magenta);
                 //else if(i%2==1)
-                //    g2.setColor(Color.blue);
-                //g2.fillOval((int)(ox*(w/beaconW))-radius, -((int)(oy*(h/beaconH))+radius), radius*2, radius*2);
+                g2.setColor(Color.blue);
+                g2.fillOval((int)ox-radius, -((int)oy+radius), radius*2, radius*2);
+
+                g2.setColor(Color.black);
+                g2.drawString(String.valueOf(i),(int)ox-radius, -((int)oy+radius));
+                i++;
             }
         }
     }

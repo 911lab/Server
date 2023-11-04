@@ -119,7 +119,7 @@ public class ApService extends JFrame {
 
     }
 
-    public UserLocation trilateration(VO vo) {
+    public ArrayList<UserLocation> trilateration(VO vo) {
 
 //    public ArrayList<UserLocation> trilateration(VO vo) {
         originalVo = vo;
@@ -224,30 +224,33 @@ public class ApService extends JFrame {
             UserLocation ul = tr.calcUserLocation();
             UserLocation filteredUl = filteredTr.calcUserLocation();
 
-            log.info("original dis1 = {}, dis2 = {}, dis3 = {}", originalVo.getDistance1(), originalVo.getDistance2(), originalVo.getDistance3());
-            log.info("filtered dis1 = {}, dis2 = {}, dis3 = {}", filteredVo.getDistance1(), filteredVo.getDistance2(), filteredVo.getDistance3());
+//            log.info("original dis1 = {}, dis2 = {}, dis3 = {}", originalVo.getDistance1(), originalVo.getDistance2(), originalVo.getDistance3());
+//            log.info("filtered dis1 = {}, dis2 = {}, dis3 = {}", filteredVo.getDistance1(), filteredVo.getDistance2(), filteredVo.getDistance3());
 
-            System.out.printf("Basic Location : (%.2f, %.2f)\n", filteredUl.getX(), filteredUl.getY());
+//            System.out.printf("Basic Location : (%.2f, %.2f)\n", filteredUl.getX(), filteredUl.getY());
 
             //좌표 이상치 제거
             if(rm.rmXYOutlier(filteredUl, w, h))
                 return null;
 
-//            if(i==10){
-//                ulList.add(0,filteredUl);
-//            }
-//            else{
-//                ulList.set(0,filteredUl);
-//            }
+
 
             UserLocation mAFilteredUl = locMAFilter.push(filteredUl);
             if (mAFilteredUl == null) {
                 System.out.println("LOC MAF CUT");
                 return null;
             }
+
+            if(i==10){
+                ulList.add(0,mAFilteredUl);
+            }
+            else{
+                ulList.set(0,mAFilteredUl);
+            }
+
             finishedCount++;
             log.info("Finished Count = {}", finishedCount);
-            
+
             x = locKalmanFilter.predict();
 //            UserLocation locFilteredUl = new UserLocation(x[0][0], x[1][0]);
 
@@ -271,21 +274,21 @@ public class ApService extends JFrame {
 
 //            System.out.printf("Moved Filtered Location : (%.2f, %.2f)  Distance Deviation : %.2fm%n", moveFilteredUl.getX(), moveFilteredUl.getY(), moveFilteredUl.getDistanceDev());
 
-//            if(i==10){
-//                //ulList.add(0,filteredTr.moveUserLocation(filteredUl));
-//                ulList.add(1,updateLocFilteredUl);
-//            }
-//            else{
-//                //ulList.set(0,filteredTr.moveUserLocation(filteredUl));
-//                ulList.set(1,updateLocFilteredUl);
-//            }
+            if(i==10){
+                //ulList.add(0,filteredTr.moveUserLocation(filteredUl));
+                ulList.add(1,updateLocFilteredUl);
+            }
+            else{
+                //ulList.set(0,filteredTr.moveUserLocation(filteredUl));
+                ulList.set(1,updateLocFilteredUl);
+            }
             i++;
 //            createCsv(originalVo, ul, filteredVo, filteredUl);
 //            return locFilteredUl;
 //            return moveFilteredUl;
 
-//            return ulList;
-            return mAFilteredUl;
+            return ulList;
+//            return mAFilteredUl;
 //            return updateLocFilteredUl;
 
         }
