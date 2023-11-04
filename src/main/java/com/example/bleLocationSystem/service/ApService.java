@@ -90,9 +90,9 @@ public class ApService extends JFrame {
 
         poiHelper = new ExelPOIHelper();
 
-//        kFilterForAp1 = new KalmanFilter();
-//        kFilterForAp2 = new KalmanFilter();
-//        kFilterForAp3 = new KalmanFilter();
+        kFilterForAp1 = new KalmanFilter();
+        kFilterForAp2 = new KalmanFilter();
+        kFilterForAp3 = new KalmanFilter();
 
         mafFilter1 = new MAFilter();
         mafFilter2 = new MAFilter();
@@ -147,8 +147,11 @@ public class ApService extends JFrame {
         }
 //        realNoFIlterVo = new VO(originalVo.getDeviceName(), originalVo.getDistance1(), originalVo.getRssi1(), originalVo.getDistance2(), originalVo.getRssi2(), originalVo.getDistance3(), originalVo.getRssi3());
 
-        if(!rm.rmOutlier(selectedVo.getRssi1(),selectedVo.getRssi2(),selectedVo.getRssi3()))//이상치 제거
+        log.info("Selected Rssi1 = {}, Rssi2 = {}, Rssi3 = {}", selectedVo.getRssi1(), selectedVo.getRssi2(), selectedVo.getRssi3());
+
+        if(!rm.rmOutlier(selectedVo.getRssi1(), selectedVo.getRssi2(), selectedVo.getRssi3(), outlier))//이상치 제거
             return null;
+
 
         log.info("start");
 
@@ -166,22 +169,22 @@ public class ApService extends JFrame {
 
             //w = 5, h = 10
             if(triangleNum%2 == 0) {
-                ap1 = new Ap(w*(triangleNum-1), h, selectedVo.getDistance1());
-                ap2 = new Ap(w*triangleNum, 0, selectedVo.getDistance2());
-                ap3 = new Ap(w*(triangleNum+1), h, selectedVo.getDistance3());
+                ap1 = new Ap((w/2.0)*(triangleNum-1), h, selectedVo.getDistance1());
+                ap2 = new Ap((w/2.0)*triangleNum, 0, selectedVo.getDistance2());
+                ap3 = new Ap((w/2.0)*(triangleNum+1), h, selectedVo.getDistance3());
             }
             else {
-                ap1 = new Ap(w*(triangleNum-1), 0, selectedVo.getDistance1());
-                ap2 = new Ap(w*triangleNum, h, selectedVo.getDistance2());
-                ap3 = new Ap(w*(triangleNum+1), 0, selectedVo.getDistance3());
+                ap1 = new Ap((w/2.0)*(triangleNum-1), 0, selectedVo.getDistance1());
+                ap2 = new Ap((w/2.0)*triangleNum, h, selectedVo.getDistance2());
+                ap3 = new Ap((w/2.0)*(triangleNum+1), 0, selectedVo.getDistance3());
             }
-            log.info("selectedVo = {}", selectedVo.toString());
+//            log.info("selectedVo = {}", selectedVo.toString());
             //MAF
             filteredVo = createMAFVo(selectedVo);
-            log.info("filteredVo = {}", filteredVo.toString());
+            //log.info("filteredVo = {}", filteredVo.toString());
 
             //KF
-//            filteredVo = createFilteredVo(originalVo);
+            filteredVo = createFilteredVo(filteredVo);
 
             //Original
 //            rssiFilter.setRssiVo(ap1, ap2, ap3,beforeFilteredVo, originalVo);
@@ -194,14 +197,14 @@ public class ApService extends JFrame {
 
             //w = 5, h = 10
             if(triangleNum%2 == 0) {
-                filteredAp1 = new Ap(w*(triangleNum-1), h, filteredVo.getDistance1());
-                filteredAp2 = new Ap(w*triangleNum, 0, filteredVo.getDistance2());
-                filteredAp3 = new Ap(w*(triangleNum+1), h, filteredVo.getDistance3());
+                filteredAp1 = new Ap((w/2.0)*(triangleNum-1), h, filteredVo.getDistance1());
+                filteredAp2 = new Ap((w/2.0)*triangleNum, 0, filteredVo.getDistance2());
+                filteredAp3 = new Ap((w/2.0)*(triangleNum+1), h, filteredVo.getDistance3());
             }
             else {
-                filteredAp1 = new Ap(w*(triangleNum-1), 0, filteredVo.getDistance1());
-                filteredAp2 = new Ap(w*triangleNum, h, filteredVo.getDistance2());
-                filteredAp3 = new Ap(w*(triangleNum+1), 0, filteredVo.getDistance3());
+                filteredAp1 = new Ap((w/2.0)*(triangleNum-1), 0, filteredVo.getDistance1());
+                filteredAp2 = new Ap((w/2.0)*triangleNum, h, filteredVo.getDistance2());
+                filteredAp3 = new Ap((w/2.0)*(triangleNum+1), 0, filteredVo.getDistance3());
             }
 
             Trilateration tr = new Trilateration(originalVo.getDeviceName(), ap1, ap2, ap3);
@@ -217,8 +220,13 @@ public class ApService extends JFrame {
             UserLocation ul = tr.calcUserLocation();
             UserLocation filteredUl = filteredTr.calcUserLocation();
 
+            log.info("original dis1 = {}, dis2 = {}, dis3 = {}", originalVo.getDistance1(), originalVo.getDistance2(), originalVo.getDistance3());
+            log.info("filtered dis1 = {}, dis2 = {}, dis3 = {}", filteredVo.getDistance1(), filteredVo.getDistance2(), filteredVo.getDistance3());
+
+            System.out.printf("Basic Location : (%.2f, %.2f)\n", filteredUl.getX(), filteredUl.getY());
+
             //좌표 이상치 제거
-            if(rm.rmXYOutlier(filteredUl))
+            if(rm.rmXYOutlier(filteredUl, w, h))
                 return null;
 
 //            if(i==10){
@@ -230,6 +238,7 @@ public class ApService extends JFrame {
 
             UserLocation mAFilteredUl = locMAFilter.push(filteredUl);
             if (mAFilteredUl == null) {
+                System.out.println("LOC MAF CUT");
                 return null;
             }
 
@@ -244,8 +253,7 @@ public class ApService extends JFrame {
 
 //            UserLocation moveFilteredUl = filteredTr.moveUserLocation(updateLocFilteredUl);
 
-//            log.info("originalVo = {}", originalVo.toString());
-//            log.info("filteredVo = {}", filteredVo.toString());
+
 
 //            System.out.printf("Before Location : (%.2f, %.2f)  Distance Deviation : %.2fm%n", ul.getX(), ul.getY(), ul.getDistanceDev());
             System.out.printf("Filtered Location : (%.2f, %.2f)  Distance Deviation : %.2fm%n", filteredUl.getX(), filteredUl.getY(), filteredUl.getDistanceDev());
@@ -308,21 +316,21 @@ public class ApService extends JFrame {
     }
 
     //칼만 필터 VO 생성 함수
-//    public VO createFilteredVo(VO originalVo) {
-//
-//        double filterdRssi1 = kFilterForAp1.kalmanFiltering(originalVo.getRssi1());
-//        double filterdRssi2 = kFilterForAp2.kalmanFiltering(originalVo.getRssi2());
-//        double filterdRssi3 = kFilterForAp3.kalmanFiltering(originalVo.getRssi3());
-//
-//        return new VO(originalVo.getDeviceName(),
-//                        calcDistance(filterdRssi1),
-//                        filterdRssi1,
-//                        calcDistance(filterdRssi2),
-//                        filterdRssi2,
-//                        calcDistance(filterdRssi3),
-//                        filterdRssi3
-//                        );
-//    }
+    public SelectedVO createFilteredVo(SelectedVO originalVo) {
+
+        double filterdRssi1 = kFilterForAp1.kalmanFiltering(originalVo.getRssi1());
+        double filterdRssi2 = kFilterForAp2.kalmanFiltering(originalVo.getRssi2());
+        double filterdRssi3 = kFilterForAp3.kalmanFiltering(originalVo.getRssi3());
+
+        return new SelectedVO(originalVo.getDeviceName(),
+                        calcDistance(filterdRssi1),
+                        filterdRssi1,
+                        calcDistance(filterdRssi2),
+                        filterdRssi2,
+                        calcDistance(filterdRssi3),
+                        filterdRssi3
+                        );
+    }
 
     public double calcDistance(double tempRssi) {
 

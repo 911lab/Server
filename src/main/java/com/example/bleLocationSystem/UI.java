@@ -11,7 +11,7 @@ public class UI extends JFrame {
     private UI.MyPanel8 p;
     double scale = 1;
     double beaconW,beaconH,w1;
-
+    int i;
     public UI (double w, double h) {
         setTitle("Ble Location App");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -20,6 +20,8 @@ public class UI extends JFrame {
 //        beaconH=h;
 //        double widthScale = d.width/1050.0;
 //        double heightScale = (d.height-50)/1050.0;
+
+        i =0;
         w1=w;
         beaconW=w*3+w/2.0;
         beaconH=h;
@@ -141,7 +143,6 @@ public class UI extends JFrame {
         double y = -1;
         double ox = -1;
         double oy = -1;
-        int i =0;
         public void paintComponent(Graphics g) {
             g2=(Graphics2D)g;
 
@@ -237,8 +238,10 @@ public class UI extends JFrame {
                 //else if(i%2==1)
                 //g2.setColor(Color.GREEN);
                 g2.fillRect((int)(x*(w/beaconW))-radius, -((int)(y*(h/beaconH))+radius), radius*2, radius*2);
+                g2.setColor(Color.black);
 
-                //i++;
+                g2.drawString(String.valueOf(i),(int)(x*(w/beaconW))-radius, -((int)(y*(h/beaconH))+radius));
+                i++;
 
                 //if(i%2==0)
                 //g2.setColor(Color.magenta);
