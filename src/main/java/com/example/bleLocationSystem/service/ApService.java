@@ -16,7 +16,7 @@ public class ApService extends JFrame {
 
     VO originalVo;
     SelectedVO filteredVo;
-    SelectedVO beforeFilteredVo;
+//    SelectedVO beforeFilteredVo;
 
     SelectedVO selectedVo;
 
@@ -56,10 +56,23 @@ public class ApService extends JFrame {
     ArrayList<UserLocation> ulList;
     RemoveOutlier rm;
     int i=0;
+
+
+    // 10m -> -78
+    double setting = 10.0;
+    double outlier = -78;
     @Getter
-    double w= 5;
+    double w = 10.0;
     @Getter
-    double h= 10;
+    double h = 5.0*Math.sqrt(3);   //8.66
+
+    // 15m -> -83
+//    double setting = 15.0;
+//    double outlier = -83;
+//    @Getter
+//    double w = 15.0;
+//    @Getter
+//    double h = 15.0*Math.sqrt(3)/2;  //12.99
 
     @Getter
     int triangleNum;
@@ -102,9 +115,9 @@ public class ApService extends JFrame {
 
     }
 
-    //public UserLocation trilateration(VO vo) {
+    public UserLocation trilateration(VO vo) {
 
-    public ArrayList<UserLocation> trilateration(VO vo) {
+//    public ArrayList<UserLocation> trilateration(VO vo) {
         originalVo = vo;
 
         triangleNum = selectTriangle(originalVo);
@@ -143,7 +156,7 @@ public class ApService extends JFrame {
             log.info("i = {}", i);
             if(selectedVo.getRssi1() < 0 && selectedVo.getRssi2() < 0 && selectedVo.getRssi3() < 0) {
                 selectedVo = startFilter.initFirstValue(selectedVo, i);
-                beforeFilteredVo = selectedVo;
+//                beforeFilteredVo = selectedVo;
             } else {
                 i--;
             }
@@ -175,7 +188,7 @@ public class ApService extends JFrame {
             //Temp
 //            rssiFilter.setRssiVo(ap1, ap2, ap3,beforeFilteredVo, filteredVo);
 
-            beforeFilteredVo = filteredVo;
+//            beforeFilteredVo = filteredVo;
 //+-            beforeFilteredVo = originalVo;
 
 
@@ -208,12 +221,12 @@ public class ApService extends JFrame {
             if(rm.rmXYOutlier(filteredUl))
                 return null;
 
-            if(i==10){
-                ulList.add(0,filteredUl);
-            }
-            else{
-                ulList.set(0,filteredUl);
-            }
+//            if(i==10){
+//                ulList.add(0,filteredUl);
+//            }
+//            else{
+//                ulList.set(0,filteredUl);
+//            }
 
             UserLocation mAFilteredUl = locMAFilter.push(filteredUl);
             if (mAFilteredUl == null) {
@@ -231,33 +244,35 @@ public class ApService extends JFrame {
 
 //            UserLocation moveFilteredUl = filteredTr.moveUserLocation(updateLocFilteredUl);
 
-            log.info("originalVo = {}", originalVo.toString());
-            log.info("filteredVo = {}", filteredVo.toString());
+//            log.info("originalVo = {}", originalVo.toString());
+//            log.info("filteredVo = {}", filteredVo.toString());
 
-            System.out.printf("Before Location : (%.2f, %.2f)  Distance Deviation : %.2fm%n", ul.getX(), ul.getY(), ul.getDistanceDev());
+//            System.out.printf("Before Location : (%.2f, %.2f)  Distance Deviation : %.2fm%n", ul.getX(), ul.getY(), ul.getDistanceDev());
             System.out.printf("Filtered Location : (%.2f, %.2f)  Distance Deviation : %.2fm%n", filteredUl.getX(), filteredUl.getY(), filteredUl.getDistanceDev());
 
 //            System.out.printf("LocFiltered Location : (%.2f, %.2f)  Distance Deviation : %.2fm%n", locFilteredUl.getX(), locFilteredUl.getY(), locFilteredUl.getDistanceDev());
 
             System.out.printf("MAF Location (Update) : (%.2f, %.2f)  Distance Deviation : %.2fm%n", mAFilteredUl.getX(), mAFilteredUl.getY(), mAFilteredUl.getDistanceDev());
-            System.out.printf("LocFiltered Location (Update) : (%.2f, %.2f)  Distance Deviation : %.2fm%n", updateLocFilteredUl.getX(), updateLocFilteredUl.getY(), updateLocFilteredUl.getDistanceDev());
+//            System.out.printf("LocFiltered Location (Update) : (%.2f, %.2f)  Distance Deviation : %.2fm%n", updateLocFilteredUl.getX(), updateLocFilteredUl.getY(), updateLocFilteredUl.getDistanceDev());
 
 //            System.out.printf("Moved Filtered Location : (%.2f, %.2f)  Distance Deviation : %.2fm%n", moveFilteredUl.getX(), moveFilteredUl.getY(), moveFilteredUl.getDistanceDev());
 
-            if(i==10){
-                //ulList.add(0,filteredTr.moveUserLocation(filteredUl));
-                ulList.add(1,updateLocFilteredUl);
-            }
-            else{
-                //ulList.set(0,filteredTr.moveUserLocation(filteredUl));
-                ulList.set(1,updateLocFilteredUl);
-            }
+//            if(i==10){
+//                //ulList.add(0,filteredTr.moveUserLocation(filteredUl));
+//                ulList.add(1,updateLocFilteredUl);
+//            }
+//            else{
+//                //ulList.set(0,filteredTr.moveUserLocation(filteredUl));
+//                ulList.set(1,updateLocFilteredUl);
+//            }
             i++;
 //            createCsv(originalVo, ul, filteredVo, filteredUl);
 //            return locFilteredUl;
 //            return moveFilteredUl;
 
-            return ulList;
+//            return ulList;
+            return mAFilteredUl;
+//            return updateLocFilteredUl;
 
         }
         i++;

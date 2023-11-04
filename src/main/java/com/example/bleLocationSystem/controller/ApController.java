@@ -28,20 +28,22 @@ public class ApController {
 
     
     //실제
-//    ApService apService = new ApService();
+    ApService apService = new ApService();
 //    UI ui = new UI();
-//    UI ui = new UI(apService.getW(),apService.getH());
+    UI ui = new UI(apService.getW(),apService.getH());
+
 //    ArrayList<UserLocation> ul = new ArrayList<>();
+    UserLocation ul;
 
     Map<String, Integer> map = new HashMap<String, Integer>();
 
 
     //Test
-    TestService testService = new TestService();
+//    TestService testService = new TestService();
 
-    TestUI ui = new TestUI(testService.getWidth(),testService.getHeight());
+//    TestUI ui = new TestUI(testService.getWidth(),testService.getHeight());
 
-    UserLocation ul;
+//    UserLocation ul;
 
 
 
@@ -54,28 +56,28 @@ public class ApController {
 
 
         //-------------Real--------------
-//        ul = apService.trilateration(vo);
-//
-//        if(ul != null) {
-//            ui.setUserLocation(ul);
-//        }
-//
-//        map.put("triangleNum", apService.getTriangleNum());
-//
-//        return (ul != null) ?
-//                ResponseEntity.status(HttpStatus.OK).body(map) :
-//                ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-
-
-
-//        --------------Test--------------
-        ul = testService.trilateration(vo);
+        ul = apService.trilateration(vo);
 
         if(ul != null) {
             ui.setUserLocation(ul);
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(null);
+        map.put("triangleNum", apService.getTriangleNum());
+
+        return (ul != null) ?
+                ResponseEntity.status(HttpStatus.OK).body(map) :
+                ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+
+
+
+//        --------------Test--------------
+//        ul = testService.trilateration(vo);
+//
+//        if(ul != null) {
+//            ui.setUserLocation(ul);
+//        }
+//
+//        return ResponseEntity.status(HttpStatus.OK).body(null);
 
     }
 }
