@@ -59,20 +59,20 @@ public class ApService extends JFrame {
 
 
     // 10m -> -78
-    double setting = 10.0;
-    double outlier = -78;
-    @Getter
-    double w = 10.0;
-    @Getter
-    double h = 5.0*Math.sqrt(3);   //8.66
+//    double setting = 10.0;
+//    double outlier = -78;
+//    @Getter
+//    double w = 10.0;
+//    @Getter
+//    double h = 5.0*Math.sqrt(3);   //8.66
 
     // 15m -> -83
-//    double setting = 15.0;
-//    double outlier = -83;
-//    @Getter
-//    double w = 15.0;
-//    @Getter
-//    double h = 15.0*Math.sqrt(3)/2;  //12.99
+    double setting = 15.0;
+    double outlier = -83;
+    @Getter
+    double w = 15.0;
+    @Getter
+    double h = 15.0*Math.sqrt(3)/2;  //12.99
 
     @Getter
     int triangleNum;

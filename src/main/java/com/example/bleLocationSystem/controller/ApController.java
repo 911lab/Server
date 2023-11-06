@@ -57,29 +57,29 @@ public class ApController {
 
 
         //-------------Real--------------
-//        ul = apService.trilateration(vo);
-//
-//        if(ul != null) {
-//            ui.setUserLocation(ul);
-//        }
-//
-//        map.put("triangleNum", apService.getTriangleNum());
-//
-//        return (ul != null) ?
-//                ResponseEntity.status(HttpStatus.OK).body(map) :
-//                ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        ul = apService.trilateration(vo);
+
+        if(ul != null) {
+            ui.setUserLocation(ul);
+        }
+
+        map.put("triangleNum", apService.getTriangleNum());
+
+        return (ul != null) ?
+                ResponseEntity.status(HttpStatus.OK).body(map) :
+                ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
 
 
 //        --------------Test--------------
 //        ul = testService.trilateration(vo);
-        testService.trilateration(vo);
+//        testService.trilateration(vo);
 //
 //        if(ul != null) {
 //            ui.setUserLocation(ul);
 //        }
 //
-        return ResponseEntity.status(HttpStatus.OK).body(null);
+//        return ResponseEntity.status(HttpStatus.OK).body(null);
 
     }
 }
