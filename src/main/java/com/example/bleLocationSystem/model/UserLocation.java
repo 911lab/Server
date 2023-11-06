@@ -27,7 +27,6 @@ public class UserLocation {
 
 
     //15m
-
 //    private double realLocX = 15.0/2.0;
 
     //best
