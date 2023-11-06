@@ -3,6 +3,7 @@ package com.example.bleLocationSystem.service;
 import com.example.bleLocationSystem.model.*;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.User;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -54,11 +55,13 @@ public class TestService {
     private int lossNum;
 
     UserLocation ul;
-
     UserLocation filteredUl;
+    UserLocation roUl;
+
+    UserLocation mafUl;
 
     UserLocation roMafUl;
-    UserLocation mafUl;
+
 
 
     LocMAFilter locMAFilter;
@@ -100,25 +103,27 @@ public class TestService {
         mafFilter1 = new MAFilter();
         mafFilter2 = new MAFilter();
         mafFilter3 = new MAFilter();
-//        mafFilter4 = new MAFilter();
-//        mafFilter5 = new MAFilter();
-//        mafFilter6 = new MAFilter();
-//        mafFilter7 = new MAFilter();
-//        mafFilter8 = new MAFilter();
-//        mafFilter9 = new MAFilter();
 
         locMAFilter = new LocMAFilter();
         locMAFilter2 = new LocMAFilter();
 
-
-
     }
 
-    public UserLocation trilateration(VO vo) {
+    public void trilateration(VO vo) {
 
         originalVo = vo;
 
         if(originalVo.getRssi1() < 0 && originalVo.getRssi2() < 0 && originalVo.getRssi3() < 0) {
+            i++;
+            log.info("row i : {}", i);
+
+            ap1 = new Ap(0, 0, originalVo.getDistance1());
+            ap2 = new Ap(width, 0, originalVo.getDistance2());
+            ap3 = new Ap(width/2.0, height, originalVo.getDistance3());
+
+            Trilateration tr = new Trilateration(originalVo.getDeviceName(), ap1, ap2, ap3);
+
+            ul = tr.calcUserLocation();
 
             //MAF
 //            MafVo = createMAFVo1(originalVo);
@@ -160,48 +165,48 @@ public class TestService {
 
 
                 //좌표 이상치 제거
-                if(!rmXYOutlier(filteredUl)) {
+                if(rmXYOutlier(filteredUl)) {
+                    //Loc RO
+                    roUl = new UserLocation(filteredUl.getX(), filteredUl.getY());
 
-                    roMafUl = locMAFilter2.push(filteredUl);
+                    //Loc RO + Loc MAF
+                    roMafUl = locMAFilter2.push(roUl);
                     if (roMafUl == null) {
-                        log.info("Loc MAF Cut !!!");
-                        return null;
+                        roMafUl = new UserLocation(-999, -999);
                     }
-                    i++;
-                    log.info("row i : {}", i);
+
+                } else {
+                    roUl = new UserLocation(-888, -888);
+                    roMafUl = new UserLocation(-888, -888);
                 }
-                else {
-                    log.info("Loc RO Cut !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                    return null;
+
+                //Loc MAF
+                mafUl = locMAFilter.push(filteredUl);
+                if (mafUl == null) {
+                    mafUl = new UserLocation(-999, -999);
                 }
-//                createCsv(mafUl, roMafUl);
+
             }
             else {
-                log.info("Rssi RO Cut !!!");
-                return null;
+                filteredUl = new UserLocation(-9999, -9999);
+                roUl = new UserLocation(-9999, -9999);
+                mafUl = new UserLocation(-9999, -9999);
+                roMafUl = new UserLocation(-9999, -9999);
+
             }
 
-//            ap1 = new Ap(0, 0, originalVo.getDistance1());
-//            ap2 = new Ap(width, 0, originalVo.getDistance2());
-//            ap3 = new Ap(width/2.0, height, originalVo.getDistance3());
-//
-//            Trilateration tr = new Trilateration(originalVo.getDeviceName(), ap1, ap2, ap3);
-//
-//            ul = tr.calcUserLocation();
+            createCsv(ul, filteredUl, roUl, mafUl, roMafUl);
         }
-        else {
-            log.info("not yet");
-        }
-        return roMafUl;
+//        return roMafUl;
     }
 
-    //8개 짜리 정지상태 엑셀 파일 만들기
-    public void createCsv(UserLocation mafUl, UserLocation roMafUl) {
+    //Three beacon Stop Test Csv
+    public void createCsv(UserLocation ul, UserLocation filteredUl, UserLocation roUl, UserLocation mafUl, UserLocation roMafUl) {
         try {
             // 비콘 8개 각각 성능 테스트를 위한 엑셀 생성
 //            poiHelper.writeTestExcel(originalVo, i);
 
-            poiHelper.wrieteOneBeaconTestExcel(mafUl, roMafUl,i);
+            poiHelper.writeThreeBeaconStopExcel(ul, filteredUl, roUl, mafUl, roMafUl,i);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -364,21 +369,26 @@ public class TestService {
 //        System.out.println("x,y=\t"+ul.getX()+",\t"+ul.getY());
         if (ul.getY()>height){
 //            System.out.println("yCUT");
-            return true;
+//            return new UserLocation(-888, -888);
+            return false;
         }
         if (ul.getY()<0){
 //            System.out.println("yCUT");
-            return true;
+//            return new UserLocation(-888, -888);
+            return false;
         }
         if (ul.getX()>width){
 //            System.out.println("xCUT");
-            return true;
+//            return new UserLocation(-888, -888);
+            return false;
         }
         if (ul.getX()<0) {
 //            System.out.println("xCUT");
-            return true;
+//            return new UserLocation(-888, -888);
+            return false;
         }
-        return false;
+//        return new UserLocation(ul.getX(), ul.getY());
+        return true;
     }
 
 }

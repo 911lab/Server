@@ -6,6 +6,7 @@ import com.example.bleLocationSystem.UI;
 import com.example.bleLocationSystem.model.UserLocation;
 import com.example.bleLocationSystem.model.VO;
 import com.example.bleLocationSystem.service.ApService;
+import com.example.bleLocationSystem.service.RSSIFilterTestService;
 import com.example.bleLocationSystem.service.TestService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.Nullable;
@@ -39,7 +40,7 @@ public class ApController {
 
 
     //Test
-//    TestService testService = new TestService();
+    TestService testService = new TestService();
 
 //    TestUI ui = new TestUI(testService.getWidth(),testService.getHeight());
 
@@ -56,28 +57,29 @@ public class ApController {
 
 
         //-------------Real--------------
-        ul = apService.trilateration(vo);
-
-        if(ul != null) {
-            ui.setUserLocation(ul);
-        }
-
-        map.put("triangleNum", apService.getTriangleNum());
-
-        return (ul != null) ?
-                ResponseEntity.status(HttpStatus.OK).body(map) :
-                ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-
-
-
-//        --------------Test--------------
-//        ul = testService.trilateration(vo);
+//        ul = apService.trilateration(vo);
 //
 //        if(ul != null) {
 //            ui.setUserLocation(ul);
 //        }
 //
-//        return ResponseEntity.status(HttpStatus.OK).body(null);
+//        map.put("triangleNum", apService.getTriangleNum());
+//
+//        return (ul != null) ?
+//                ResponseEntity.status(HttpStatus.OK).body(map) :
+//                ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+
+
+
+//        --------------Test--------------
+//        ul = testService.trilateration(vo);
+        testService.trilateration(vo);
+//
+//        if(ul != null) {
+//            ui.setUserLocation(ul);
+//        }
+//
+        return ResponseEntity.status(HttpStatus.OK).body(null);
 
     }
 }

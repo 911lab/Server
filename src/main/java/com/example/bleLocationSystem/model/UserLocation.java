@@ -25,7 +25,9 @@ public class UserLocation {
     //worst
 //    private double realLocY = (5.0*Math.sqrt(3))-1.0; //7.66
 
+
     //15m
+
 //    private double realLocX = 15.0/2.0;
 
     //best

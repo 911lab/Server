@@ -9,6 +9,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 @Slf4j
 public class ExelPOIHelper {
@@ -51,7 +52,13 @@ public class ExelPOIHelper {
 //        testSetting();
 
         //한개 비콘 필터링 테스트시
-        oneBeaconSetting();
+//        oneBeaconSetting();
+
+        //비콘 필터링 테스트 (7개 필터링 동시에)
+//        rssiFilterSetting();
+
+        //세개 비콘 정지상태 필터링 테스트시
+        threeBeaconStopSetting();
     }
 
     public void styleSetting() {
@@ -378,14 +385,190 @@ public class ExelPOIHelper {
         }
     }
 
+    //비콘 필터링 테스트 (7개 필터링 동시에)
+    public void rssiFilterSetting() {
+        oneBeaconSheet = workbook.createSheet("Beacon");
+
+
+        oneBeaconSheet.setColumnWidth(0, 10000);
+        oneBeaconSheet.setColumnWidth(1, 10000);
+        oneBeaconSheet.setColumnWidth(2, 10000);
+        oneBeaconSheet.setColumnWidth(3, 10000);
+        oneBeaconSheet.setColumnWidth(4, 10000);
+        oneBeaconSheet.setColumnWidth(5, 10000);
+        oneBeaconSheet.setColumnWidth(6, 10000);
+        oneBeaconSheet.setColumnWidth(7, 10000);
+        oneBeaconSheet.setColumnWidth(8, 10000);
+        oneBeaconSheet.setColumnWidth(9, 10000);
+        oneBeaconSheet.setColumnWidth(10, 10000);
+        oneBeaconSheet.setColumnWidth(11, 10000);
+        oneBeaconSheet.setColumnWidth(12, 10000);
+        oneBeaconSheet.setColumnWidth(13, 10000);
+
+        oneBeaconHeader = oneBeaconSheet.createRow(0);
+
+        //헤더 셀(컬럼)
+        Cell headerCell = oneBeaconHeader.createCell(0);
+        headerCell.setCellValue("10m original");
+        headerCell.setCellStyle(headerStyle);
+
+        headerCell = oneBeaconHeader.createCell(1);
+        headerCell.setCellValue("10m RO");
+        headerCell.setCellStyle(headerStyle);
+
+        headerCell = oneBeaconHeader.createCell(2);
+        headerCell.setCellValue("10m Kalman");
+        headerCell.setCellStyle(headerStyle);
+
+        headerCell = oneBeaconHeader.createCell(3);
+        headerCell.setCellValue("10m RO Kalman");
+        headerCell.setCellStyle(headerStyle);
+
+        headerCell = oneBeaconHeader.createCell(4);
+        headerCell.setCellValue("10m MAF");
+        headerCell.setCellStyle(headerStyle);
+
+        headerCell = oneBeaconHeader.createCell(5);
+        headerCell.setCellValue("10m RO MAF");
+        headerCell.setCellStyle(headerStyle);
+
+        headerCell = oneBeaconHeader.createCell(6);
+        headerCell.setCellValue("10m RO MAF Kalman");
+        headerCell.setCellStyle(headerStyle);
+
+
+
+        headerCell = oneBeaconHeader.createCell(7);
+        headerCell.setCellValue("15m original");
+        headerCell.setCellStyle(headerStyle);
+
+        headerCell = oneBeaconHeader.createCell(8);
+        headerCell.setCellValue("15m RO");
+        headerCell.setCellStyle(headerStyle);
+
+        headerCell = oneBeaconHeader.createCell(9);
+        headerCell.setCellValue("15m Kalman");
+        headerCell.setCellStyle(headerStyle);
+
+        headerCell = oneBeaconHeader.createCell(10);
+        headerCell.setCellValue("15m RO Kalman");
+        headerCell.setCellStyle(headerStyle);
+
+        headerCell = oneBeaconHeader.createCell(11);
+        headerCell.setCellValue("15m MAF");
+        headerCell.setCellStyle(headerStyle);
+
+        headerCell = oneBeaconHeader.createCell(12);
+        headerCell.setCellValue("15m RO MAF");
+        headerCell.setCellStyle(headerStyle);
+
+        headerCell = oneBeaconHeader.createCell(13);
+        headerCell.setCellValue("15m RO MAF Kalman");
+        headerCell.setCellStyle(headerStyle);
+
+    }
+
+    //비콘 필터링 테스트 (7개 필터링 동시에)
+    public void wrieteRssiFilterTestExcel(ArrayList<Double> original10m, ArrayList<Double> original15m,
+                                          ArrayList<Double> ro10m, ArrayList<Double> ro15m,
+                                          ArrayList<Double> kalman10m, ArrayList<Double> kalman15m,
+                                          ArrayList<Double> roKalman10m, ArrayList<Double> roKalman15m,
+                                          ArrayList<Double> maf10m, ArrayList<Double> maf15m,
+                                          ArrayList<Double> roMaf10m, ArrayList<Double> roMaf15m,
+                                          ArrayList<Double> roMafKalman10m, ArrayList<Double> roMafKalman15m) throws IOException  {
+
+        for(int i=0; i<original10m.size(); i++) {
+            //data row 생성
+            Row row = oneBeaconSheet.createRow(i+1);
+
+
+            //셀 추가
+            //10m Original
+            Cell cell = row.createCell(0);
+            cell.setCellValue(original10m.get(i));
+            cell.setCellStyle(style);
+
+            //10m RO
+            cell = row.createCell(1);
+            cell.setCellValue(ro10m.get(i));
+            cell.setCellStyle(style);
+
+            //10m Kalman
+            cell = row.createCell(2);
+            cell.setCellValue(kalman10m.get(i));
+            cell.setCellStyle(style);
+
+            //10m RO Kalman
+            cell = row.createCell(3);
+            cell.setCellValue(roKalman10m.get(i));
+            cell.setCellStyle(style);
+
+            //10m MAF
+            cell = row.createCell(4);
+            cell.setCellValue(maf10m.get(i));
+            cell.setCellStyle(style);
+
+            //10m RO MAF
+            cell = row.createCell(5);
+            cell.setCellValue(roMaf10m.get(i));
+            cell.setCellStyle(style);
+
+            //10m RO MAF Kalman
+            cell = row.createCell(6);
+            cell.setCellValue(roMafKalman10m.get(i));
+            cell.setCellStyle(style);
+
+
+
+
+
+            //15m Original
+            cell = row.createCell(7);
+            cell.setCellValue(original15m.get(i));
+            cell.setCellStyle(style);
+
+            //15m RO
+            cell = row.createCell(8);
+            cell.setCellValue(ro15m.get(i));
+            cell.setCellStyle(style);
+
+            //15m Kalman
+            cell = row.createCell(9);
+            cell.setCellValue(kalman15m.get(i));
+            cell.setCellStyle(style);
+
+            //15m RO Kalman
+            cell = row.createCell(10);
+            cell.setCellValue(roKalman15m.get(i));
+            cell.setCellStyle(style);
+
+            //15m MAF
+            cell = row.createCell(11);
+            cell.setCellValue(maf15m.get(i));
+            cell.setCellStyle(style);
+
+            //15m RO MAF
+            cell = row.createCell(12);
+            cell.setCellValue(roMaf15m.get(i));
+            cell.setCellStyle(style);
+
+            //15m RO MAF Kalman
+            cell = row.createCell(13);
+            cell.setCellValue(roMafKalman15m.get(i));
+            cell.setCellStyle(style);
+        }
+
+        createFileAndRewrite();
+    }
+
     public void createFileAndRewrite() throws IOException {
 //        File currDir = new File(".");
 //        String path = currDir.getAbsolutePath();
 //        String fileLocation = path.substring(0, path.length() - 1) + "temp.xlsx";
 
-        String fileLocation = "C:\\Users\\heehe\\Desktop\\bleExel\\112\\RO_RO_MAF_TrilaterationTest_10m_worst.xlsx";
+        String fileLocation = "C:\\Users\\heehe\\Desktop\\.xlsx";
 
-//        String fileLocation = "C:\\Users\\JaeHyuk\\Desktop\\bleExel\\1016\\beaconTest_11111111111111.xlsx";
+//        String fileLocation = "C:\\Users\\JaeHyuk\\Desktop\\rssifilterfinal.xlsx";
 
         FileOutputStream outputStream = new FileOutputStream(fileLocation);
         workbook.write(outputStream);
@@ -393,6 +576,148 @@ public class ExelPOIHelper {
         workbook = new XSSFWorkbook();
 //        styleSetting();
 //        ResultSetting();
+    }
+
+
+    //5개 짜리 Three Beacon Stop Test 엑셀 파일 만들기
+    public void threeBeaconStopSetting() {
+        testSheet = workbook.createSheet("BeaconTest");
+
+        testSheet.setColumnWidth(0, 10000);
+        testSheet.setColumnWidth(1, 10000);
+        testSheet.setColumnWidth(2, 10000);
+        testSheet.setColumnWidth(3, 10000);
+        testSheet.setColumnWidth(4, 10000);
+        testSheet.setColumnWidth(5, 10000);
+        testSheet.setColumnWidth(6, 10000);
+        testSheet.setColumnWidth(7, 10000);
+        testSheet.setColumnWidth(8, 10000);
+        testSheet.setColumnWidth(9, 10000);
+
+        testHeader = testSheet.createRow(0);
+
+        //헤더 셀(컬럼)
+        Cell headerCell = testHeader.createCell(0);
+        headerCell.setCellValue("Original (x,y)");
+        headerCell.setCellStyle(headerStyle);
+
+        headerCell = testHeader.createCell(1);
+        headerCell.setCellValue("Original Ul Dis Dev");
+        headerCell.setCellStyle(headerStyle);
+
+
+
+        headerCell = testHeader.createCell(2);
+        headerCell.setCellValue("Rssi Filtered (x,y)");
+        headerCell.setCellStyle(headerStyle);
+
+        headerCell = testHeader.createCell(3);
+        headerCell.setCellValue("Rssi Filtered Ul Dis Dev");
+        headerCell.setCellStyle(headerStyle);
+
+
+
+        headerCell = testHeader.createCell(4);
+        headerCell.setCellValue("Loc RO (x,y)");
+        headerCell.setCellStyle(headerStyle);
+
+        headerCell = testHeader.createCell(5);
+        headerCell.setCellValue("Loc RO Ul Dis Dev");
+        headerCell.setCellStyle(headerStyle);
+
+
+
+        headerCell = testHeader.createCell(6);
+        headerCell.setCellValue("Loc MAF (x,y)");
+        headerCell.setCellStyle(headerStyle);
+
+        headerCell = testHeader.createCell(7);
+        headerCell.setCellValue("Loc MAF Ul Dis Dev");
+        headerCell.setCellStyle(headerStyle);
+
+
+
+        headerCell = testHeader.createCell(8);
+        headerCell.setCellValue("Loc RO + Loc MAF (x,y)");
+        headerCell.setCellStyle(headerStyle);
+
+        headerCell = testHeader.createCell(9);
+        headerCell.setCellValue("Loc RO + Loc MAF Ul Dis Dev");
+        headerCell.setCellStyle(headerStyle);
+
+    }
+
+
+
+
+
+
+
+    //8개 짜리 정지상태 엑셀 파일 만들기
+    public void writeThreeBeaconStopExcel(UserLocation ul, UserLocation filteredUl, UserLocation roUl, UserLocation mafUl, UserLocation roMafUl, int i) throws IOException  {
+
+        num = i;
+
+        log.info("row i : {}", num);
+
+        //data row 생성
+        Row row = testSheet.createRow(num);
+
+
+        //셀 추가
+        //Original Ul
+        Cell cell = row.createCell(0);
+        String original_xy = String.format("(%.2f, %.2f)", ul.getX(), ul.getY());
+        cell.setCellFormula(original_xy);
+        cell.setCellStyle(style);
+
+        cell = row.createCell(1);
+        cell.setCellValue(ul.getDistanceDev());
+        cell.setCellStyle(style);
+
+        //Rssi Filtered Ul
+        cell = row.createCell(2);
+        String filtered_xy = String.format("(%.2f, %.2f)", filteredUl.getX(), filteredUl.getY());
+        cell.setCellFormula(filtered_xy);
+        cell.setCellStyle(style);
+
+        cell = row.createCell(3);
+        cell.setCellValue(filteredUl.getDistanceDev());
+        cell.setCellStyle(style);
+
+        //Loc RO Ul
+        cell = row.createCell(4);
+        String ro_xy = String.format("(%.2f, %.2f)", roUl.getX(), roUl.getY());
+        cell.setCellFormula(ro_xy);
+        cell.setCellStyle(style);
+
+        cell = row.createCell(5);
+        cell.setCellValue(roUl.getDistanceDev());
+        cell.setCellStyle(style);
+
+        //Loc MAF Ul
+        cell = row.createCell(6);
+        String maf_xy = String.format("(%.2f, %.2f)", mafUl.getX(), mafUl.getY());
+        cell.setCellFormula(maf_xy);
+        cell.setCellStyle(style);
+
+        cell = row.createCell(7);
+        cell.setCellValue(mafUl.getDistanceDev());
+        cell.setCellStyle(style);
+
+        //Loc RO + Loc MAF Ul
+        cell = row.createCell(8);
+        String romaf_xy = String.format("(%.2f, %.2f)", roMafUl.getX(), roMafUl.getY());
+        cell.setCellFormula(romaf_xy);
+        cell.setCellStyle(style);
+
+        cell = row.createCell(9);
+        cell.setCellValue(roMafUl.getDistanceDev());
+        cell.setCellStyle(style);
+
+        if(num%6000 == 0)  {
+            createFileAndRewrite();
+        }
     }
 
 
