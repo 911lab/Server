@@ -667,7 +667,7 @@ public class ExelPOIHelper {
         //Original Ul
         Cell cell = row.createCell(0);
         String original_xy = String.format("(%.2f, %.2f)", ul.getX(), ul.getY());
-        cell.setCellFormula(original_xy);
+        cell.setCellValue(original_xy);
         cell.setCellStyle(style);
 
         cell = row.createCell(1);
@@ -677,7 +677,7 @@ public class ExelPOIHelper {
         //Rssi Filtered Ul
         cell = row.createCell(2);
         String filtered_xy = String.format("(%.2f, %.2f)", filteredUl.getX(), filteredUl.getY());
-        cell.setCellFormula(filtered_xy);
+        cell.setCellValue(filtered_xy);
         cell.setCellStyle(style);
 
         cell = row.createCell(3);
@@ -687,7 +687,7 @@ public class ExelPOIHelper {
         //Loc RO Ul
         cell = row.createCell(4);
         String ro_xy = String.format("(%.2f, %.2f)", roUl.getX(), roUl.getY());
-        cell.setCellFormula(ro_xy);
+        cell.setCellValue(ro_xy);
         cell.setCellStyle(style);
 
         cell = row.createCell(5);
@@ -697,7 +697,7 @@ public class ExelPOIHelper {
         //Loc MAF Ul
         cell = row.createCell(6);
         String maf_xy = String.format("(%.2f, %.2f)", mafUl.getX(), mafUl.getY());
-        cell.setCellFormula(maf_xy);
+        cell.setCellValue(maf_xy);
         cell.setCellStyle(style);
 
         cell = row.createCell(7);
@@ -707,7 +707,7 @@ public class ExelPOIHelper {
         //Loc RO + Loc MAF Ul
         cell = row.createCell(8);
         String romaf_xy = String.format("(%.2f, %.2f)", roMafUl.getX(), roMafUl.getY());
-        cell.setCellFormula(romaf_xy);
+        cell.setCellValue(romaf_xy);
         cell.setCellStyle(style);
 
         cell = row.createCell(9);
