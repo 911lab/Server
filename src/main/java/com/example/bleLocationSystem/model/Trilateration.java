@@ -30,7 +30,7 @@ public class Trilateration {
         double userY = ( (F * A) - (D * C) ) / ( (A * E) - (D * B) );
 
 
-        UserLocation ul = new UserLocation(userX, userY);
+        UserLocation ul = new UserLocation(userX, userY, deviceName);
 
 
         return ul;

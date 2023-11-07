@@ -63,6 +63,6 @@ public class LocMAFilter {
         xQueue.add(xAvg);
         yQueue.add(yAvg);
 
-        return new UserLocation(xAvg, yAvg);
+        return new UserLocation(xAvg, yAvg, tempUl.getDeviceName());
     }
 }

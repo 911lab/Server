@@ -165,37 +165,37 @@ public class TestService {
 
 
                 //좌표 이상치 제거
-                if(rmXYOutlier(filteredUl)) {
-                    //Loc RO
-                    roUl = new UserLocation(filteredUl.getX(), filteredUl.getY());
-
-                    //Loc RO + Loc MAF
-                    roMafUl = locMAFilter2.push(roUl);
-                    if (roMafUl == null) {
-                        roMafUl = new UserLocation(-999, -999);
-                    }
-
-                } else {
-                    roUl = new UserLocation(-888, -888);
-                    roMafUl = new UserLocation(-888, -888);
-                }
-
-                //Loc MAF
-                mafUl = locMAFilter.push(filteredUl);
-                if (mafUl == null) {
-                    mafUl = new UserLocation(-999, -999);
-                }
+//                if(rmXYOutlier(filteredUl)) {
+//                    //Loc RO
+//                    roUl = new UserLocation(filteredUl.getX(), filteredUl.getY());
+//
+//                    //Loc RO + Loc MAF
+//                    roMafUl = locMAFilter2.push(roUl);
+//                    if (roMafUl == null) {
+//                        roMafUl = new UserLocation(-999, -999);
+//                    }
+//
+//                } else {
+//                    roUl = new UserLocation(-888, -888);
+//                    roMafUl = new UserLocation(-888, -888);
+//                }
+//
+//                //Loc MAF
+//                mafUl = locMAFilter.push(filteredUl);
+//                if (mafUl == null) {
+//                    mafUl = new UserLocation(-999, -999);
+//                }
+//
+//            }
+//            else {
+//                filteredUl = new UserLocation(-9999, -9999);
+//                roUl = new UserLocation(-9999, -9999);
+//                mafUl = new UserLocation(-9999, -9999);
+//                roMafUl = new UserLocation(-9999, -9999);
 
             }
-            else {
-                filteredUl = new UserLocation(-9999, -9999);
-                roUl = new UserLocation(-9999, -9999);
-                mafUl = new UserLocation(-9999, -9999);
-                roMafUl = new UserLocation(-9999, -9999);
 
-            }
-
-            createCsv(ul, filteredUl, roUl, mafUl, roMafUl);
+//            createCsv(ul, filteredUl, roUl, mafUl, roMafUl);
         }
 //        return roMafUl;
     }

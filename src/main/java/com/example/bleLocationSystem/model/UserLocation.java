@@ -37,10 +37,13 @@ public class UserLocation {
     //거리 편차
     private double distanceDev;
 
+    private String deviceName;
 
-    public UserLocation(double x, double y) {
+
+    public UserLocation(double x, double y, String deviceName) {
         this.x = x;
         this.y = y;
+        this.deviceName = deviceName;
 
 //        double realLocX= UserPoint.getRealLocX();
 //        double realLocY= UserPoint.getRealLocY();

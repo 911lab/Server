@@ -258,7 +258,7 @@ public class ApService extends JFrame {
                                        {mAFilteredUl.getY()}};
 
             x2 = locKalmanFilter.update(tempArr);
-            UserLocation updateLocFilteredUl = new UserLocation(x2[0][0], x2[1][0]);
+            UserLocation updateLocFilteredUl = new UserLocation(x2[0][0], x2[1][0], mAFilteredUl.getDeviceName());
 
 //            UserLocation moveFilteredUl = filteredTr.moveUserLocation(updateLocFilteredUl);
 

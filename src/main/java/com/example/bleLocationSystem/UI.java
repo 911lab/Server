@@ -6,12 +6,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class UI extends JFrame {
     private UI.MyPanel8 p;
     double scale = 1;
     double beaconW,beaconH,w1;
     int i;
+    int j;
     public UI (double w, double h) {
         setTitle("Ble Location App");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -21,7 +23,8 @@ public class UI extends JFrame {
 //        double widthScale = d.width/1050.0;
 //        double heightScale = (d.height-50)/1050.0;
 
-        i =0;
+        i = 0;
+        j = 0;
         w1=w;
         beaconW=w*3+w/2.0;
         beaconH=h;
@@ -44,6 +47,7 @@ public class UI extends JFrame {
         //p = new MyPanel();
         p = new UI.MyPanel8();
         add(p, BorderLayout.CENTER);
+
     }
 
 //    public void setUserLocation(ArrayList<UserLocation> ul) {
@@ -58,8 +62,9 @@ public class UI extends JFrame {
         //1개짜리
         p.x = ul.getX();
         p.y = ul.getY();
-
+        p.deviceName = ul.getDeviceName();
         p.repaint();
+
     }
 
     public class MyPanel extends JPanel {
@@ -68,9 +73,14 @@ public class UI extends JFrame {
         int maxX,maxY;
         double x = -1;
         double y = -1;
+
+
+
         double ox = -1;
         double oy = -1;
         int i =0;
+
+        int j = 0;
         public void paintComponent(Graphics g) {
             g2=(Graphics2D)g;
 
@@ -152,7 +162,18 @@ public class UI extends JFrame {
         double y = -1;
         double ox = -1;
         double oy = -1;
+
+        ArrayList<Double> hjx = new ArrayList<Double>(Arrays.asList(-1.0, -1.0, -1.0, -1.0 ,-1.0));
+        ArrayList<Double> hjy = new ArrayList<Double>(Arrays.asList(-1.0, -1.0, -1.0, -1.0 ,-1.0));
+        ArrayList<Double> elsex = new ArrayList<Double>(Arrays.asList(-1.0, -1.0, -1.0, -1.0 ,-1.0));
+        ArrayList<Double> elsey = new ArrayList<Double>(Arrays.asList(-1.0, -1.0, -1.0, -1.0 ,-1.0));
+
+
+
+
+        String deviceName;
         public void paintComponent(Graphics g) {
+
             g2=(Graphics2D)g;
 
             float dash0[] = {1,0f};
@@ -232,13 +253,22 @@ public class UI extends JFrame {
             g2.drawString("Ap8("+(w1/2)*7+", "+beaconH+")",(int)(w/beaconW*(w1/2)*7)-30*radius, 0+5*radius);     //8
 
 
-
             if(x!=-1 && y!=-1) {
 
-                x=x*(w/beaconW);
-                y=y*(h/beaconH);
-                ox=ox*(w/beaconW);
-                oy=oy*(h/beaconH);
+                if(deviceName.equals("HJ")) {
+                    hjx.set(i%5, x*(w/beaconW));
+                    hjx.set(i%5, y*(h/beaconH));
+                    i++;
+                } else {
+                    elsex.set(j%5, x*(w/beaconW));
+                    elsex.set(j%5, y*(h/beaconH));
+                    j++;
+                }
+
+//                x=x*(w/beaconW);
+//                y=y*(h/beaconH);
+//                ox=ox*(w/beaconW);
+//                oy=oy*(h/beaconH);
 
                 /*
                 //사각형안으로
@@ -247,16 +277,41 @@ public class UI extends JFrame {
                 ox=movePoint(ox*(m/beaconW),0,maxX);
                 oy=movePoint(oy*(m/beaconH),0,maxY);
 */
+
                 //1개 찍을때
                 g2.translate(0,maxY); //원점이동
                 //if(i%2==0)
-                g2.setColor(Color.RED);
+
+                for(int k=0; k<hjx.size(); k++) {
+                    g2.setColor(Color.RED);
+                    int n = k+i%5;
+                    if(hjx.get(n) != -1 && hjy.get(n) != -1) {
+                        g2.fillRect((int)(Math.round(hjx.get(n)))-radius, -((int)(Math.round(hjy.get(n)))+radius), radius*2, radius*2);
+                        g2.setColor(Color.black);
+                        g2.drawString(String.valueOf(k),(int)(Math.round(hjx.get(n)))-radius, -((int)(Math.round(hjy.get(n)))+radius));
+                    }
+
+                }
+
+
+                for(int k=0; k<elsex.size(); k++) {
+                    g2.setColor(Color.BLUE);
+                    int q = k+j%5;
+                    if(elsex.get(q) != -1 && elsey.get(q) != -1) {
+                        g2.fillRect((int)Math.round(elsex.get(q))-radius, -((int)Math.round(elsey.get(q))+radius), radius*2, radius*2);
+                        g2.setColor(Color.black);
+                        g2.drawString(String.valueOf(k),(int)Math.round(elsex.get(q))-radius, -((int)Math.round(elsey.get(q))+radius));
+                    }
+
+
+                }
+
+
                 //else if(i%2==1)
                 //g2.setColor(Color.GREEN);
-                g2.fillRect((int)x-radius, -((int)y+radius), radius*2, radius*2);
-                g2.setColor(Color.black);
 
-                g2.drawString(String.valueOf(i),(int)x-radius, -((int)y+radius));
+
+//                g2.drawString(String.valueOf(i),(int)x-radius, -((int)y+radius));
 
 
                 //2개 같이 찍을때
@@ -268,7 +323,7 @@ public class UI extends JFrame {
 
 //                g2.setColor(Color.black);
 //                g2.drawString(String.valueOf(i),(int)ox-radius, -((int)oy+radius));
-                i++;
+
             }
         }
     }
