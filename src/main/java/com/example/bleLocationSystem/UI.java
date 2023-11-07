@@ -46,14 +46,18 @@ public class UI extends JFrame {
         add(p, BorderLayout.CENTER);
     }
 
-    public void setUserLocation(ArrayList<UserLocation> ul) {
-        p.ox = ul.get(0).getX();
-        p.oy = ul.get(0).getY();
-        p.x = ul.get(1).getX();
-        p.y = ul.get(1).getY();
+//    public void setUserLocation(ArrayList<UserLocation> ul) {
+    public void setUserLocation(UserLocation ul) {
+        //2개짜리
+//        p.ox = ul.get(0).getX();
+//        p.oy = ul.get(0).getY();
+//        p.x = ul.get(1).getX();
+//        p.y = ul.get(1).getY();
 
-//        p.x = ul.getX();
-//        p.y = ul.getY();
+
+        //1개짜리
+        p.x = ul.getX();
+        p.y = ul.getY();
 
         p.repaint();
     }
@@ -243,6 +247,7 @@ public class UI extends JFrame {
                 ox=movePoint(ox*(m/beaconW),0,maxX);
                 oy=movePoint(oy*(m/beaconH),0,maxY);
 */
+                //1개 찍을때
                 g2.translate(0,maxY); //원점이동
                 //if(i%2==0)
                 g2.setColor(Color.RED);
@@ -254,14 +259,15 @@ public class UI extends JFrame {
                 g2.drawString(String.valueOf(i),(int)x-radius, -((int)y+radius));
 
 
+                //2개 같이 찍을때
                 //if(i%2==0)
                 //g2.setColor(Color.magenta);
                 //else if(i%2==1)
-                g2.setColor(Color.blue);
-                g2.fillOval((int)ox-radius, -((int)oy+radius), radius*2, radius*2);
+//                g2.setColor(Color.blue);
+//                g2.fillOval((int)ox-radius, -((int)oy+radius), radius*2, radius*2);
 
-                g2.setColor(Color.black);
-                g2.drawString(String.valueOf(i),(int)ox-radius, -((int)oy+radius));
+//                g2.setColor(Color.black);
+//                g2.drawString(String.valueOf(i),(int)ox-radius, -((int)oy+radius));
                 i++;
             }
         }

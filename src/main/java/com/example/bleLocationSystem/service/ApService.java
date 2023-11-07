@@ -119,9 +119,9 @@ public class ApService extends JFrame {
 
     }
 
-    public ArrayList<UserLocation> trilateration(VO vo) {
-
 //    public ArrayList<UserLocation> trilateration(VO vo) {
+
+    public UserLocation trilateration(VO vo) {
         originalVo = vo;
 
         triangleNum = selectTriangle(originalVo);
@@ -241,12 +241,12 @@ public class ApService extends JFrame {
                 return null;
             }
 
-            if(i==10){
-                ulList.add(0,mAFilteredUl);
-            }
-            else{
-                ulList.set(0,mAFilteredUl);
-            }
+//            if(i==10){
+//                ulList.add(0,mAFilteredUl);
+//            }
+//            else{
+//                ulList.set(0,mAFilteredUl);
+//            }
 
             finishedCount++;
             log.info("Finished Count = {}", finishedCount);
@@ -274,20 +274,22 @@ public class ApService extends JFrame {
 
 //            System.out.printf("Moved Filtered Location : (%.2f, %.2f)  Distance Deviation : %.2fm%n", moveFilteredUl.getX(), moveFilteredUl.getY(), moveFilteredUl.getDistanceDev());
 
-            if(i==10){
-                //ulList.add(0,filteredTr.moveUserLocation(filteredUl));
-                ulList.add(1,updateLocFilteredUl);
-            }
-            else{
-                //ulList.set(0,filteredTr.moveUserLocation(filteredUl));
-                ulList.set(1,updateLocFilteredUl);
-            }
+            //2개찍을떄
+//            if(i==10){
+//                //ulList.add(0,filteredTr.moveUserLocation(filteredUl));
+//                ulList.add(1,updateLocFilteredUl);
+//            }
+//            else{
+//                //ulList.set(0,filteredTr.moveUserLocation(filteredUl));
+//                ulList.set(1,updateLocFilteredUl);
+//            }
+
             i++;
 //            createCsv(originalVo, ul, filteredVo, filteredUl);
 //            return locFilteredUl;
 //            return moveFilteredUl;
 
-            return ulList;
+            return updateLocFilteredUl;
 //            return mAFilteredUl;
 //            return updateLocFilteredUl;
 

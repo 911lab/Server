@@ -33,14 +33,14 @@ public class ApController {
 //    UI ui = new UI();
     UI ui = new UI(apService.getW(),apService.getH());
 
-    ArrayList<UserLocation> ul = new ArrayList<>();
-//    UserLocation ul;
+//    ArrayList<UserLocation> ul = new ArrayList<>();
+    UserLocation ul;
 
     Map<String, Integer> map = new HashMap<String, Integer>();
 
 
     //Test
-    TestService testService = new TestService();
+//    TestService testService = new TestService();
 
 //    TestUI ui = new TestUI(testService.getWidth(),testService.getHeight());
 
