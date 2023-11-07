@@ -1,6 +1,7 @@
 package com.example.bleLocationSystem;
 
 import com.example.bleLocationSystem.model.UserLocation;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,12 +9,19 @@ import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+@Slf4j
 public class UI extends JFrame {
     private UI.MyPanel8 p;
     double scale = 1;
     double beaconW,beaconH,w1;
     int i;
     int j;
+
+    ArrayList<Integer> hjx;
+    ArrayList<Integer> hjy;
+    ArrayList<Integer> elsex;
+    ArrayList<Integer> elsey;
+
     public UI (double w, double h) {
         setTitle("Ble Location App");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -25,6 +33,12 @@ public class UI extends JFrame {
 
         i = 0;
         j = 0;
+
+        hjx = new ArrayList<Integer>(Arrays.asList(-1, -1, -1, -1 ,-1));
+        hjy = new ArrayList<Integer>(Arrays.asList(-1, -1, -1, -1 ,-1));
+        elsex = new ArrayList<Integer>(Arrays.asList(-1, -1, -1, -1 ,-1));
+        elsey = new ArrayList<Integer>(Arrays.asList(-1, -1, -1, -1 ,-1));
+
         w1=w;
         beaconW=w*3+w/2.0;
         beaconH=h;
@@ -63,7 +77,17 @@ public class UI extends JFrame {
         p.x = ul.getX();
         p.y = ul.getY();
         p.deviceName = ul.getDeviceName();
+        //p.repaint();
+        //p.revalidate();
+        //p.repaint();
+
+        //p.g2.dispose();
+        //p.update(p.g2);
         p.repaint();
+
+        //p.revalidate();
+        //p.repaint();
+
 
     }
 
@@ -163,18 +187,19 @@ public class UI extends JFrame {
         double ox = -1;
         double oy = -1;
 
-        ArrayList<Double> hjx = new ArrayList<Double>(Arrays.asList(-1.0, -1.0, -1.0, -1.0 ,-1.0));
-        ArrayList<Double> hjy = new ArrayList<Double>(Arrays.asList(-1.0, -1.0, -1.0, -1.0 ,-1.0));
-        ArrayList<Double> elsex = new ArrayList<Double>(Arrays.asList(-1.0, -1.0, -1.0, -1.0 ,-1.0));
-        ArrayList<Double> elsey = new ArrayList<Double>(Arrays.asList(-1.0, -1.0, -1.0, -1.0 ,-1.0));
-
-
+        //ArrayList<Double> hjx = new ArrayList<Double>(Arrays.asList(-1.0, -1.0, -1.0, -1.0 ,-1.0));
+        //ArrayList<Double> hjy = new ArrayList<Double>(Arrays.asList(-1.0, -1.0, -1.0, -1.0 ,-1.0));
+        //ArrayList<Double> elsex = new ArrayList<Double>(Arrays.asList(-1.0, -1.0, -1.0, -1.0 ,-1.0));
+        //ArrayList<Double> elsey = new ArrayList<Double>(Arrays.asList(-1.0, -1.0, -1.0, -1.0 ,-1.0));
 
 
         String deviceName;
         public void paintComponent(Graphics g) {
 
+
             g2=(Graphics2D)g;
+
+            g2.clearRect(0, 0, 4000, 1000);
 
             float dash0[] = {1,0f};
             float dash3[] = {3,3f};
@@ -253,15 +278,18 @@ public class UI extends JFrame {
             g2.drawString("Ap8("+(w1/2)*7+", "+beaconH+")",(int)(w/beaconW*(w1/2)*7)-30*radius, 0+5*radius);     //8
 
 
+
+            log.info("x={} y={}",x, y);
+
             if(x!=-1 && y!=-1) {
 
                 if(deviceName.equals("HJ")) {
-                    hjx.set(i%5, x*(w/beaconW));
-                    hjx.set(i%5, y*(h/beaconH));
+                    hjx.set(i%5, (int)(x*(w/beaconW)));
+                    hjy.set(i%5, (int)(y*(h/beaconH)));
                     i++;
                 } else {
-                    elsex.set(j%5, x*(w/beaconW));
-                    elsex.set(j%5, y*(h/beaconH));
+                    elsex.set(j%5, (int)(x*(w/beaconW)));
+                    elsey.set(j%5, (int)(y*(h/beaconH)));
                     j++;
                 }
 
@@ -282,25 +310,32 @@ public class UI extends JFrame {
                 g2.translate(0,maxY); //원점이동
                 //if(i%2==0)
 
+                log.info("hjx.size() = {}", hjx.size());
+                log.info("i = {}", i);
                 for(int k=0; k<hjx.size(); k++) {
                     g2.setColor(Color.RED);
-                    int n = k+i%5;
-                    if(hjx.get(n) != -1 && hjy.get(n) != -1) {
-                        g2.fillRect((int)(Math.round(hjx.get(n)))-radius, -((int)(Math.round(hjy.get(n)))+radius), radius*2, radius*2);
+                    int n = (k+i)%5;
+                    log.info("hj[{}]=({},{})", n, hjx.get(n), hjy.get(n));
+                    if(hjx.get(n) >= 0 && hjy.get(n) >= 0) {
+                        //g2.fillRect((int)(Math.round(hjx.get(n)))-radius, -((int)(Math.round(hjy.get(n)))+radius), radius*2, radius*2);
+                        g2.fillRect(hjx.get(n)-radius, -(hjy.get(n)+radius), radius*2, radius*2);
                         g2.setColor(Color.black);
-                        g2.drawString(String.valueOf(k),(int)(Math.round(hjx.get(n)))-radius, -((int)(Math.round(hjy.get(n)))+radius));
+                        g2.drawString("HJ",hjx.get(n)-radius, -(hjy.get(n)+radius));
                     }
 
                 }
 
-
+                log.info("elsex.size() = {}", elsex.size());
+                log.info("j = {}", j);
                 for(int k=0; k<elsex.size(); k++) {
                     g2.setColor(Color.BLUE);
-                    int q = k+j%5;
-                    if(elsex.get(q) != -1 && elsey.get(q) != -1) {
-                        g2.fillRect((int)Math.round(elsex.get(q))-radius, -((int)Math.round(elsey.get(q))+radius), radius*2, radius*2);
+                    int q = (k+j)%5;
+                    log.info("BG[{}]=({},{})", q, elsex.get(q), elsey.get(q));
+                    if(elsex.get(q) >= 0 && elsey.get(q) >= 0) {
+                        //g2.fillRect((int)Math.round(elsex.get(q))-radius, -((int)Math.round(elsey.get(q))+radius), radius*2, radius*2);
+                        //g2.fillRect(elsex.get(q)-radius, -(elsey.get(q)+radius), radius*2, radius*2);
                         g2.setColor(Color.black);
-                        g2.drawString(String.valueOf(k),(int)Math.round(elsex.get(q))-radius, -((int)Math.round(elsey.get(q))+radius));
+                        //g2.drawString("BG",elsex.get(q)-radius, -(elsey.get(q)+radius));
                     }
 
 
