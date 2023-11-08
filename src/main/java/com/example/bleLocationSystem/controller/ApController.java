@@ -36,7 +36,8 @@ public class ApController {
 //    ArrayList<UserLocation> ul = new ArrayList<>();
     UserLocation ul;
 
-    Map<String, Integer> map = new HashMap<String, Integer>();
+    //Map<String, Integer> map = new HashMap<String, Integer>();
+    Map<String, Double> map = new HashMap<String, Double>();
 
 
     //Test
@@ -53,7 +54,8 @@ public class ApController {
     //앱으로부터 ap1, ap2, ap3 각각의 거리값 받기
     @PostMapping("/api/distance")
 //    public ResponseEntity<UserLocation> receiveDistance(@RequestBody VO vo) throws Exception {
-    public ResponseEntity<Map<String, Integer>> receiveDistance(VO vo) throws Exception {
+//    public ResponseEntity<Map<String, Integer>> receiveDistance(VO vo) throws Exception {
+    public ResponseEntity<Map<String, Double>> receiveDistance(VO vo) throws Exception {
 
 
         //-------------Real--------------
@@ -61,9 +63,12 @@ public class ApController {
 
         if(ul != null) {
             ui.setUserLocation(ul);
+            map.put("triangleNum", apService.getTriangleNum()*1.0);
+            map.put("x", ul.getX());
+            map.put("y", ul.getY());
         }
 
-        map.put("triangleNum", apService.getTriangleNum());
+
 
         return (ul != null) ?
                 ResponseEntity.status(HttpStatus.OK).body(map) :
