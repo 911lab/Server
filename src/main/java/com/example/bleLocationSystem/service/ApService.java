@@ -79,9 +79,10 @@ public class ApService extends JFrame {
 //    @Getter
 //    double h = 5.0*Math.sqrt(3);   //8.66
 
-    // 15m -> -83
+    // 15m -> -83  -> -77
     double setting = 15.0;
-    double outlier = -83;
+    double outlier = -77.0;
+    double minOutlier = -30.0;
     @Getter
     double w = 15.0;
     @Getter
@@ -178,7 +179,23 @@ public class ApService extends JFrame {
         log.info("Selected Rssi1 = {}, Rssi2 = {}, Rssi3 = {}", selectedVo.getRssi1(), selectedVo.getRssi2(), selectedVo.getRssi3());
 
         if(!rm.rmOutlier(selectedVo.getRssi1(), selectedVo.getRssi2(), selectedVo.getRssi3(), outlier))//이상치 제거
-            return null;
+        {
+            if(selectedVo.getRssi1() <= minOutlier || selectedVo.getRssi2() <= minOutlier ||selectedVo.getRssi3() <= minOutlier) {
+                if(selectedVo.getRssi1() <= outlier) {
+                    selectedVo.setRssi1(outlier);
+                }
+                if(selectedVo.getRssi2() <= outlier) {
+                    selectedVo.setRssi2(outlier);
+                }
+                if(selectedVo.getRssi3() <= outlier) {
+                    selectedVo.setRssi3(outlier);
+                }
+            } else {
+                return null;
+            }
+
+        }
+//            return null;
 
 
         if(selectedVo.getDeviceName().equals("HJ")) {
@@ -451,9 +468,9 @@ public class ApService extends JFrame {
 //            return locFilteredUl;
 //            return moveFilteredUl;
 
-                return mAFilteredUl;
+//                return mAFilteredUl;
 //            return mAFilteredUl;
-//            return updateLocFilteredUl;
+            return updateLocFilteredUl;
 
             }
             j++;
