@@ -17,6 +17,21 @@ public class Trilateration {
     private Ap ap2;
     private Ap ap3;
 
+    int proximityNum;
+
+    public Trilateration(String deviceName, Ap proximityAp, int proximityNum) {
+        this.deviceName = deviceName;
+        this.ap1 = proximityAp;
+        this.proximityNum = proximityNum;
+    }
+
+    public Trilateration(String deviceName, Ap ap1, Ap ap2, Ap ap3) {
+        this.deviceName = deviceName;
+        this.ap1 = ap1;
+        this.ap2 = ap2;
+        this.ap3 = ap3;
+    }
+
     // 삼변측량 기법을 통한 사용자 위치 계산
     public UserLocation calcUserLocation() {
         double A = 2*(ap3.getX()-ap1.getX());
@@ -32,6 +47,32 @@ public class Trilateration {
 
         UserLocation ul = new UserLocation(userX, userY, deviceName);
 
+        return ul;
+    }
+
+    // Proximity 기법을 통한 사용자 위치 추정
+    public UserLocation calcProximityLocation() {
+
+        double userX;
+        double userY;
+
+        if(proximityNum == 1) {
+            userX = (ap1.getDistance()+1.0)*(Math.sqrt(3)*1.0)/(2.0);
+            userY = (ap1.getDistance()+1.0)/(2.0);
+        } else if(proximityNum == 8) {
+            userX = (ap1.getX()*1.0) - ap1.getDistance()*(Math.sqrt(3)*1.0)/(2.0);
+            userY = (ap1.getY()*1.0) - ap1.getDistance()/(2.0);
+
+        } else if (proximityNum % 2 == 0) {
+            userX = ap1.getX();
+            userY = ap1.getY() - ap1.getDistance();
+
+        } else {
+            userX = ap1.getX();
+            userY = ap1.getY() + ap1.getDistance();
+        }
+
+        UserLocation ul = new UserLocation(userX, userY, deviceName);
 
         return ul;
     }

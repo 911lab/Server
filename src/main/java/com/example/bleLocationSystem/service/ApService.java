@@ -53,6 +53,8 @@ public class ApService extends JFrame {
 
     VO realNoFIlterVo;
 
+    UserLocation filteredUl;
+
     MAFilter mafFilter1;
     MAFilter mafFilter2;
     MAFilter mafFilter3;
@@ -95,11 +97,15 @@ public class ApService extends JFrame {
     Ap ap2;
     Ap ap3;
 
+    Ap proximityAp;
+
     Ap filteredAp1;
     Ap filteredAp2;
     Ap filteredAp3;
 
     int finishedCount;
+
+    int checkProximityNum;
 
     public ApService() {
 
@@ -150,78 +156,115 @@ public class ApService extends JFrame {
     public UserLocation trilateration(VO vo) {
         originalVo = vo;
 
-        triangleNum = selectTriangle(originalVo);
+        checkProximityNum = checkProximity(originalVo);
 
-        switch (triangleNum) {
-            case 0:
-                return null;
-            case 1:
-                selectedVo = createSelectVO(originalVo.getDeviceName(), originalVo.getRssi1(),originalVo.getRssi2(),originalVo.getRssi3());
-                break;
-            case 2:
-                selectedVo = createSelectVO(originalVo.getDeviceName(), originalVo.getRssi2(),originalVo.getRssi3(),originalVo.getRssi4());
-                break;
-            case 3:
-                selectedVo = createSelectVO(originalVo.getDeviceName(), originalVo.getRssi3(),originalVo.getRssi4(),originalVo.getRssi4());
-                break;
-            case 4:
-                selectedVo = createSelectVO(originalVo.getDeviceName(), originalVo.getRssi4(),originalVo.getRssi5(),originalVo.getRssi6());
-                break;
-            case 5:
-                selectedVo = createSelectVO(originalVo.getDeviceName(), originalVo.getRssi5(),originalVo.getRssi6(),originalVo.getRssi7());
-                break;
-            case 6:
-                selectedVo = createSelectVO(originalVo.getDeviceName(), originalVo.getRssi6(),originalVo.getRssi7(),originalVo.getRssi8());
-                break;
-        }
-//        realNoFIlterVo = new VO(originalVo.getDeviceName(), originalVo.getDistance1(), originalVo.getRssi1(), originalVo.getDistance2(), originalVo.getRssi2(), originalVo.getDistance3(), originalVo.getRssi3());
+        if(checkProximityNum != 0) {
 
-        log.info("Selected Rssi1 = {}, Rssi2 = {}, Rssi3 = {}", selectedVo.getRssi1(), selectedVo.getRssi2(), selectedVo.getRssi3());
-
-        if(!rm.rmOutlier(selectedVo.getRssi1(), selectedVo.getRssi2(), selectedVo.getRssi3(), outlier))//이상치 제거
-        {
-            if(selectedVo.getRssi1() <= minOutlier || selectedVo.getRssi2() <= minOutlier ||selectedVo.getRssi3() <= minOutlier) {
-                if(selectedVo.getRssi1() <= outlier) {
-                    selectedVo.setRssi1(outlier);
-                }
-                if(selectedVo.getRssi2() <= outlier) {
-                    selectedVo.setRssi2(outlier);
-                }
-                if(selectedVo.getRssi3() <= outlier) {
-                    selectedVo.setRssi3(outlier);
-                }
-            } else {
-                return null;
+            switch (checkProximityNum) {
+                case 0:
+                    return null;
+                case 1: case 2:
+                    selectedVo = createSelectVO(originalVo.getDeviceName(), originalVo.getRssi1(), originalVo.getRssi2(), originalVo.getRssi3());
+                    break;
+                case 3:
+                    selectedVo = createSelectVO(originalVo.getDeviceName(), originalVo.getRssi2(), originalVo.getRssi3(), originalVo.getRssi4());
+                    break;
+                case 4:
+                    selectedVo = createSelectVO(originalVo.getDeviceName(), originalVo.getRssi3(), originalVo.getRssi4(), originalVo.getRssi5());
+                    break;
+                case 5:
+                    selectedVo = createSelectVO(originalVo.getDeviceName(), originalVo.getRssi4(), originalVo.getRssi5(), originalVo.getRssi6());
+                    break;
+                case 6:
+                    selectedVo = createSelectVO(originalVo.getDeviceName(), originalVo.getRssi5(), originalVo.getRssi6(), originalVo.getRssi7());
+                    break;
+                case 7: case 8:
+                    selectedVo = createSelectVO(originalVo.getDeviceName(), originalVo.getRssi6(), originalVo.getRssi7(), originalVo.getRssi8());
+                    break;
             }
 
-        }
+            if (selectedVo != null) {
+
+                if (checkProximityNum == 1 ) {
+                    proximityAp = new Ap(0, 0, selectedVo.getDistance1());
+                }
+                else if (checkProximityNum == 8) {  //beacon의 갯수 -> 가장 마지막 번호
+                    proximityAp = new Ap((w / 2.0) * (checkProximityNum - 1), h, selectedVo.getDistance3());
+                }
+                else if (checkProximityNum % 2 == 0) {
+                    proximityAp = new Ap((w / 2.0) * (checkProximityNum - 1), h, selectedVo.getDistance2());
+                }
+                else {
+                    proximityAp = new Ap((w / 2.0) * (checkProximityNum - 1), 0, selectedVo.getDistance2());
+                }
+            }
+
+            Trilateration proximityTr = new Trilateration(originalVo.getDeviceName(), proximityAp, checkProximityNum);
+
+            filteredUl = proximityTr.calcProximityLocation();
+
+        }else {
+
+            triangleNum = selectTriangle(originalVo);
+
+            switch (triangleNum) {
+                case 0:
+                    return null;
+                case 1:
+                    selectedVo = createSelectVO(originalVo.getDeviceName(), originalVo.getRssi1(), originalVo.getRssi2(), originalVo.getRssi3());
+                    break;
+                case 2:
+                    selectedVo = createSelectVO(originalVo.getDeviceName(), originalVo.getRssi2(), originalVo.getRssi3(), originalVo.getRssi4());
+                    break;
+                case 3:
+                    selectedVo = createSelectVO(originalVo.getDeviceName(), originalVo.getRssi3(), originalVo.getRssi4(), originalVo.getRssi4());
+                    break;
+                case 4:
+                    selectedVo = createSelectVO(originalVo.getDeviceName(), originalVo.getRssi4(), originalVo.getRssi5(), originalVo.getRssi6());
+                    break;
+                case 5:
+                    selectedVo = createSelectVO(originalVo.getDeviceName(), originalVo.getRssi5(), originalVo.getRssi6(), originalVo.getRssi7());
+                    break;
+                case 6:
+                    selectedVo = createSelectVO(originalVo.getDeviceName(), originalVo.getRssi6(), originalVo.getRssi7(), originalVo.getRssi8());
+                    break;
+            }
+//        realNoFIlterVo = new VO(originalVo.getDeviceName(), originalVo.getDistance1(), originalVo.getRssi1(), originalVo.getDistance2(), originalVo.getRssi2(), originalVo.getDistance3(), originalVo.getRssi3());
+
+            log.info("Selected Rssi1 = {}, Rssi2 = {}, Rssi3 = {}", selectedVo.getRssi1(), selectedVo.getRssi2(), selectedVo.getRssi3());
+
+            //RSSI 이상치 제거
+            if (!rm.rmOutlier(selectedVo.getRssi1(), selectedVo.getRssi2(), selectedVo.getRssi3(), outlier))
+            {
+                return null;
+            }
 //            return null;
 
 
-        if(selectedVo.getDeviceName().equals("HJ")) {
+//        if(selectedVo.getDeviceName().equals("HJ")) {
 
-            if(i <= 10) {
+            if (i <= 10) {
                 log.info("i = {}", i);
-                if(selectedVo.getRssi1() < 0 && selectedVo.getRssi2() < 0 && selectedVo.getRssi3() < 0) {
+                if (selectedVo.getRssi1() < 0 && selectedVo.getRssi2() < 0 && selectedVo.getRssi3() < 0) {
                     selectedVo = startFilter.initFirstValue(selectedVo, i);
+                    i++;
 //                beforeFilteredVo = selectedVo;
                 } else {
                     return null;
                 }
             }
 
-            if(selectedVo != null) {
+            if (selectedVo != null) {
 
                 //w = 5, h = 10
-                if(triangleNum%2 == 0) {
-                    ap1 = new Ap((w/2.0)*(triangleNum-1), h, selectedVo.getDistance1());
-                    ap2 = new Ap((w/2.0)*triangleNum, 0, selectedVo.getDistance2());
-                    ap3 = new Ap((w/2.0)*(triangleNum+1), h, selectedVo.getDistance3());
-                }
-                else {
-                    ap1 = new Ap((w/2.0)*(triangleNum-1), 0, selectedVo.getDistance1());
-                    ap2 = new Ap((w/2.0)*triangleNum, h, selectedVo.getDistance2());
-                    ap3 = new Ap((w/2.0)*(triangleNum+1), 0, selectedVo.getDistance3());
+                if (triangleNum % 2 == 0) {
+                    ap1 = new Ap((w / 2.0) * (triangleNum - 1), h, selectedVo.getDistance1());
+                    ap2 = new Ap((w / 2.0) * triangleNum, 0, selectedVo.getDistance2());
+                    ap3 = new Ap((w / 2.0) * (triangleNum + 1), h, selectedVo.getDistance3());
+                } else {
+                    ap1 = new Ap((w / 2.0) * (triangleNum - 1), 0, selectedVo.getDistance1());
+                    ap2 = new Ap((w / 2.0) * triangleNum, h, selectedVo.getDistance2());
+                    ap3 = new Ap((w / 2.0) * (triangleNum + 1), 0, selectedVo.getDistance3());
                 }
 //            log.info("selectedVo = {}", selectedVo.toString());
                 //MAF
@@ -240,16 +283,16 @@ public class ApService extends JFrame {
 //+-            beforeFilteredVo = originalVo;
 
 
+                //AP 좌표 설정
                 //w = 5, h = 10
-                if(triangleNum%2 == 0) {
-                    filteredAp1 = new Ap((w/2.0)*(triangleNum-1), h, filteredVo.getDistance1());
-                    filteredAp2 = new Ap((w/2.0)*triangleNum, 0, filteredVo.getDistance2());
-                    filteredAp3 = new Ap((w/2.0)*(triangleNum+1), h, filteredVo.getDistance3());
-                }
-                else {
-                    filteredAp1 = new Ap((w/2.0)*(triangleNum-1), 0, filteredVo.getDistance1());
-                    filteredAp2 = new Ap((w/2.0)*triangleNum, h, filteredVo.getDistance2());
-                    filteredAp3 = new Ap((w/2.0)*(triangleNum+1), 0, filteredVo.getDistance3());
+                if (triangleNum % 2 == 0) {
+                    filteredAp1 = new Ap((w / 2.0) * (triangleNum - 1), h, filteredVo.getDistance1());
+                    filteredAp2 = new Ap((w / 2.0) * triangleNum, 0, filteredVo.getDistance2());
+                    filteredAp3 = new Ap((w / 2.0) * (triangleNum + 1), h, filteredVo.getDistance3());
+                } else {
+                    filteredAp1 = new Ap((w / 2.0) * (triangleNum - 1), 0, filteredVo.getDistance1());
+                    filteredAp2 = new Ap((w / 2.0) * triangleNum, h, filteredVo.getDistance2());
+                    filteredAp3 = new Ap((w / 2.0) * (triangleNum + 1), 0, filteredVo.getDistance3());
                 }
 
                 Trilateration tr = new Trilateration(originalVo.getDeviceName(), ap1, ap2, ap3);
@@ -263,24 +306,31 @@ public class ApService extends JFrame {
 //        }
 
                 UserLocation ul = tr.calcUserLocation();
-                UserLocation filteredUl = filteredTr.calcUserLocation();
+                filteredUl = filteredTr.calcUserLocation();
+
+            }
+            else {
+                return null;
+            }
+        }
 
 //            log.info("original dis1 = {}, dis2 = {}, dis3 = {}", originalVo.getDistance1(), originalVo.getDistance2(), originalVo.getDistance3());
 //            log.info("filtered dis1 = {}, dis2 = {}, dis3 = {}", filteredVo.getDistance1(), filteredVo.getDistance2(), filteredVo.getDistance3());
 
 //            System.out.printf("Basic Location : (%.2f, %.2f)\n", filteredUl.getX(), filteredUl.getY());
 
-                //좌표 이상치 제거
-                if(rm.rmXYOutlier(filteredUl, w, h))
-                    return null;
 
+        //좌표 이상치 제거
+        if (rm.rmXYOutlier(filteredUl, w, h))
+            return null;
 
+        //위치 MAF
+        UserLocation mAFilteredUl = locMAFilter.push(filteredUl);
 
-                UserLocation mAFilteredUl = locMAFilter.push(filteredUl);
-                if (mAFilteredUl == null) {
-                    System.out.println("LOC MAF CUT");
-                    return null;
-                }
+        if (mAFilteredUl == null) {
+            System.out.println("LOC MAF CUT");
+            return null;
+        }
 
 //            if(i==10){
 //                ulList.add(0,mAFilteredUl);
@@ -289,20 +339,20 @@ public class ApService extends JFrame {
 //                ulList.set(0,mAFilteredUl);
 //            }
 
-                finishedCount++;
-                //log.info("Finished Count = {}", finishedCount);
+        finishedCount++;
+            //log.info("Finished Count = {}", finishedCount);
 
-                x = locKalmanFilter.predict();
+        //2D 칼만 필터
+        x = locKalmanFilter.predict();
 //            UserLocation locFilteredUl = new UserLocation(x[0][0], x[1][0]);
 
-                tempArr = new double[][] {{mAFilteredUl.getX()},
-                        {mAFilteredUl.getY()}};
+        tempArr = new double[][]{{mAFilteredUl.getX()}, {mAFilteredUl.getY()}};
 
-                x2 = locKalmanFilter.update(tempArr);
-                UserLocation updateLocFilteredUl = new UserLocation(x2[0][0], x2[1][0], mAFilteredUl.getDeviceName());
+        x2 = locKalmanFilter.update(tempArr);
+
+        UserLocation updateLocFilteredUl = new UserLocation(x2[0][0], x2[1][0], mAFilteredUl.getDeviceName());
 
 //            UserLocation moveFilteredUl = filteredTr.moveUserLocation(updateLocFilteredUl);
-
 
 
 //            System.out.printf("Before Location : (%.2f, %.2f)  Distance Deviation : %.2fm%n", ul.getX(), ul.getY(), ul.getDistanceDev());
@@ -310,12 +360,12 @@ public class ApService extends JFrame {
 
 //            System.out.printf("LocFiltered Location : (%.2f, %.2f)  Distance Deviation : %.2fm%n", locFilteredUl.getX(), locFilteredUl.getY(), locFilteredUl.getDistanceDev());
 
-                //System.out.printf("MAF Location (Update) : (%.2f, %.2f)  Distance Deviation : %.2fm%n", mAFilteredUl.getX(), mAFilteredUl.getY(), mAFilteredUl.getDistanceDev());
-                System.out.printf("LocFiltered Location (Update) : (%.2f, %.2f)  Distance Deviation : %.2fm%n", updateLocFilteredUl.getX(), updateLocFilteredUl.getY(), updateLocFilteredUl.getDistanceDev());
+            //System.out.printf("MAF Location (Update) : (%.2f, %.2f)  Distance Deviation : %.2fm%n", mAFilteredUl.getX(), mAFilteredUl.getY(), mAFilteredUl.getDistanceDev());
+            System.out.printf("LocFiltered Location (Update) : (%.2f, %.2f)  Distance Deviation : %.2fm%n", updateLocFilteredUl.getX(), updateLocFilteredUl.getY(), updateLocFilteredUl.getDistanceDev());
 
 //            System.out.printf("Moved Filtered Location : (%.2f, %.2f)  Distance Deviation : %.2fm%n", moveFilteredUl.getX(), moveFilteredUl.getY(), moveFilteredUl.getDistanceDev());
 
-                //2개찍을떄
+            //2개찍을떄
 //            if(i==10){
 //                //ulList.add(0,filteredTr.moveUserLocation(filteredUl));
 //                ulList.add(1,updateLocFilteredUl);
@@ -325,162 +375,235 @@ public class ApService extends JFrame {
 //                ulList.set(1,updateLocFilteredUl);
 //            }
 
-                i++;
+//            i++;
 //            createCsv(originalVo, ul, filteredVo, filteredUl);
 //            return locFilteredUl;
 //            return moveFilteredUl;
 
-                return mAFilteredUl;
+        return updateLocFilteredUl;
 //            return mAFilteredUl;
 //            return updateLocFilteredUl;
 
-            }
-            i++;
-            return null;
-        } else if(selectedVo.getDeviceName().equals("BG")) {
-            if(j <= 10) {
-                log.info("j = {}", j);
-                if(selectedVo.getRssi1() < 0 && selectedVo.getRssi2() < 0 && selectedVo.getRssi3() < 0) {
-                    selectedVo = startFilter2.initFirstValue(selectedVo, j);
-//                beforeFilteredVo = selectedVo;
-                } else {
-                    return null;
-                }
-            }
 
-            if(selectedVo != null) {
+//            i++;
+//
+//            return null;
 
-                //w = 5, h = 10
-                if(triangleNum%2 == 0) {
-                    ap1 = new Ap((w/2.0)*(triangleNum-1), h, selectedVo.getDistance1());
-                    ap2 = new Ap((w/2.0)*triangleNum, 0, selectedVo.getDistance2());
-                    ap3 = new Ap((w/2.0)*(triangleNum+1), h, selectedVo.getDistance3());
-                }
-                else {
-                    ap1 = new Ap((w/2.0)*(triangleNum-1), 0, selectedVo.getDistance1());
-                    ap2 = new Ap((w/2.0)*triangleNum, h, selectedVo.getDistance2());
-                    ap3 = new Ap((w/2.0)*(triangleNum+1), 0, selectedVo.getDistance3());
-                }
-//            log.info("selectedVo = {}", selectedVo.toString());
-                //MAF
-                filteredVo = createMAFVo2(selectedVo);
-                //log.info("filteredVo = {}", filteredVo.toString());
-
-                //KF
-                filteredVo = createFilteredVo2(filteredVo);
-
-                //Original
-//            rssiFilter.setRssiVo(ap1, ap2, ap3,beforeFilteredVo, originalVo);
-                //Temp
-//            rssiFilter.setRssiVo(ap1, ap2, ap3,beforeFilteredVo, filteredVo);
-
-//            beforeFilteredVo = filteredVo;
-//+-            beforeFilteredVo = originalVo;
-
-
-                //w = 5, h = 10
-                if(triangleNum%2 == 0) {
-                    filteredAp1 = new Ap((w/2.0)*(triangleNum-1), h, filteredVo.getDistance1());
-                    filteredAp2 = new Ap((w/2.0)*triangleNum, 0, filteredVo.getDistance2());
-                    filteredAp3 = new Ap((w/2.0)*(triangleNum+1), h, filteredVo.getDistance3());
-                }
-                else {
-                    filteredAp1 = new Ap((w/2.0)*(triangleNum-1), 0, filteredVo.getDistance1());
-                    filteredAp2 = new Ap((w/2.0)*triangleNum, h, filteredVo.getDistance2());
-                    filteredAp3 = new Ap((w/2.0)*(triangleNum+1), 0, filteredVo.getDistance3());
-                }
-
-                Trilateration tr = new Trilateration(originalVo.getDeviceName(), ap1, ap2, ap3);
-
-                Trilateration filteredTr = new Trilateration(filteredVo.getDeviceName(), filteredAp1, filteredAp2, filteredAp3);
-
-
-//        if(!initCheck) {
-//            t.start();
-//            initCheck = true;
+//        } else if(selectedVo.getDeviceName().equals("BG")) {
+//            if(j <= 10) {
+//                log.info("j = {}", j);
+//                if(selectedVo.getRssi1() < 0 && selectedVo.getRssi2() < 0 && selectedVo.getRssi3() < 0) {
+//                    selectedVo = startFilter2.initFirstValue(selectedVo, j);
+////                beforeFilteredVo = selectedVo;
+//                } else {
+//                    return null;
+//                }
+//            }
+//
+//            if(selectedVo != null) {
+//
+//                //w = 5, h = 10
+//                if(triangleNum%2 == 0) {
+//                    ap1 = new Ap((w/2.0)*(triangleNum-1), h, selectedVo.getDistance1());
+//                    ap2 = new Ap((w/2.0)*triangleNum, 0, selectedVo.getDistance2());
+//                    ap3 = new Ap((w/2.0)*(triangleNum+1), h, selectedVo.getDistance3());
+//                }
+//                else {
+//                    ap1 = new Ap((w/2.0)*(triangleNum-1), 0, selectedVo.getDistance1());
+//                    ap2 = new Ap((w/2.0)*triangleNum, h, selectedVo.getDistance2());
+//                    ap3 = new Ap((w/2.0)*(triangleNum+1), 0, selectedVo.getDistance3());
+//                }
+////            log.info("selectedVo = {}", selectedVo.toString());
+//                //MAF
+//                filteredVo = createMAFVo2(selectedVo);
+//                //log.info("filteredVo = {}", filteredVo.toString());
+//
+//                //KF
+//                filteredVo = createFilteredVo2(filteredVo);
+//
+//                //Original
+////            rssiFilter.setRssiVo(ap1, ap2, ap3,beforeFilteredVo, originalVo);
+//                //Temp
+////            rssiFilter.setRssiVo(ap1, ap2, ap3,beforeFilteredVo, filteredVo);
+//
+////            beforeFilteredVo = filteredVo;
+////+-            beforeFilteredVo = originalVo;
+//
+//
+//                //w = 5, h = 10
+//                if(triangleNum%2 == 0) {
+//                    filteredAp1 = new Ap((w/2.0)*(triangleNum-1), h, filteredVo.getDistance1());
+//                    filteredAp2 = new Ap((w/2.0)*triangleNum, 0, filteredVo.getDistance2());
+//                    filteredAp3 = new Ap((w/2.0)*(triangleNum+1), h, filteredVo.getDistance3());
+//                }
+//                else {
+//                    filteredAp1 = new Ap((w/2.0)*(triangleNum-1), 0, filteredVo.getDistance1());
+//                    filteredAp2 = new Ap((w/2.0)*triangleNum, h, filteredVo.getDistance2());
+//                    filteredAp3 = new Ap((w/2.0)*(triangleNum+1), 0, filteredVo.getDistance3());
+//                }
+//
+//                Trilateration tr = new Trilateration(originalVo.getDeviceName(), ap1, ap2, ap3);
+//
+//                Trilateration filteredTr = new Trilateration(filteredVo.getDeviceName(), filteredAp1, filteredAp2, filteredAp3);
+//
+//
+////        if(!initCheck) {
+////            t.start();
+////            initCheck = true;
+////        }
+//
+//                UserLocation ul = tr.calcUserLocation();
+//                UserLocation filteredUl = filteredTr.calcUserLocation();
+//
+////            log.info("original dis1 = {}, dis2 = {}, dis3 = {}", originalVo.getDistance1(), originalVo.getDistance2(), originalVo.getDistance3());
+////            log.info("filtered dis1 = {}, dis2 = {}, dis3 = {}", filteredVo.getDistance1(), filteredVo.getDistance2(), filteredVo.getDistance3());
+//
+////            System.out.printf("Basic Location : (%.2f, %.2f)\n", filteredUl.getX(), filteredUl.getY());
+//
+//                //좌표 이상치 제거
+//                if(rm.rmXYOutlier(filteredUl, w, h))
+//                    return null;
+//
+//
+//
+//                UserLocation mAFilteredUl = locMAFilter2.push(filteredUl);
+//                if (mAFilteredUl == null) {
+//                    System.out.println("LOC MAF CUT");
+//                    return null;
+//                }
+//
+////            if(i==10){
+////                ulList.add(0,mAFilteredUl);
+////            }
+////            else{
+////                ulList.set(0,mAFilteredUl);
+////            }
+//
+//                finishedCount++;
+//                //log.info("Finished Count = {}", finishedCount);
+//
+//                x = locKalmanFilter2.predict();
+////            UserLocation locFilteredUl = new UserLocation(x[0][0], x[1][0]);
+//
+//                tempArr = new double[][] {{mAFilteredUl.getX()},
+//                        {mAFilteredUl.getY()}};
+//
+//                x2 = locKalmanFilter2.update(tempArr);
+//                UserLocation updateLocFilteredUl = new UserLocation(x2[0][0], x2[1][0], mAFilteredUl.getDeviceName());
+//
+////            UserLocation moveFilteredUl = filteredTr.moveUserLocation(updateLocFilteredUl);
+//
+//
+//
+////            System.out.printf("Before Location : (%.2f, %.2f)  Distance Deviation : %.2fm%n", ul.getX(), ul.getY(), ul.getDistanceDev());
+////            System.out.printf("Filtered Location : (%.2f, %.2f)  Distance Deviation : %.2fm%n", filteredUl.getX(), filteredUl.getY(), filteredUl.getDistanceDev());
+//
+////            System.out.printf("LocFiltered Location : (%.2f, %.2f)  Distance Deviation : %.2fm%n", locFilteredUl.getX(), locFilteredUl.getY(), locFilteredUl.getDistanceDev());
+//
+//                //System.out.printf("MAF Location (Update) : (%.2f, %.2f)  Distance Deviation : %.2fm%n", mAFilteredUl.getX(), mAFilteredUl.getY(), mAFilteredUl.getDistanceDev());
+//                System.out.printf("LocFiltered Location (Update) : (%.2f, %.2f)  Distance Deviation : %.2fm%n", updateLocFilteredUl.getX(), updateLocFilteredUl.getY(), updateLocFilteredUl.getDistanceDev());
+//
+////            System.out.printf("Moved Filtered Location : (%.2f, %.2f)  Distance Deviation : %.2fm%n", moveFilteredUl.getX(), moveFilteredUl.getY(), moveFilteredUl.getDistanceDev());
+//
+//                //2개찍을떄
+////            if(i==10){
+////                //ulList.add(0,filteredTr.moveUserLocation(filteredUl));
+////                ulList.add(1,updateLocFilteredUl);
+////            }
+////            else{
+////                //ulList.set(0,filteredTr.moveUserLocation(filteredUl));
+////                ulList.set(1,updateLocFilteredUl);
+////            }
+//
+//                j++;
+////            createCsv(originalVo, ul, filteredVo, filteredUl);
+////            return locFilteredUl;
+////            return moveFilteredUl;
+//
+////                return mAFilteredUl;
+////            return mAFilteredUl;
+//            return updateLocFilteredUl;
+//
+//            }
+//            j++;
+//            return null;
 //        }
+//        //log.info("start");
+//
+//
+//        //i++;
+//        return null;
+//        }
+//        return null;
+    }
 
-                UserLocation ul = tr.calcUserLocation();
-                UserLocation filteredUl = filteredTr.calcUserLocation();
+    private int checkProximity(VO originalVo) {
 
-//            log.info("original dis1 = {}, dis2 = {}, dis3 = {}", originalVo.getDistance1(), originalVo.getDistance2(), originalVo.getDistance3());
-//            log.info("filtered dis1 = {}, dis2 = {}, dis3 = {}", filteredVo.getDistance1(), filteredVo.getDistance2(), filteredVo.getDistance3());
+        VO vo = originalVo;
+        double errorValue = -999.9;
+        double valueTemp;
+        int keyTemp;
 
-//            System.out.printf("Basic Location : (%.2f, %.2f)\n", filteredUl.getX(), filteredUl.getY());
+        double valueTemp2;
+        int keyTemp2;
 
-                //좌표 이상치 제거
-                if(rm.rmXYOutlier(filteredUl, w, h))
-                    return null;
+        Map<Integer, Double> map = new HashMap<Integer, Double>();
+        map.put(1, vo.getRssi1());
+        map.put(2, vo.getRssi2());
+        map.put(3, vo.getRssi3());
+        map.put(4, vo.getRssi4());
+        map.put(5, vo.getRssi5());
+        map.put(6, vo.getRssi6());
+        map.put(7, vo.getRssi7());
+        map.put(8, vo.getRssi8());
 
-
-
-                UserLocation mAFilteredUl = locMAFilter2.push(filteredUl);
-                if (mAFilteredUl == null) {
-                    System.out.println("LOC MAF CUT");
-                    return null;
-                }
-
-//            if(i==10){
-//                ulList.add(0,mAFilteredUl);
-//            }
-//            else{
-//                ulList.set(0,mAFilteredUl);
-//            }
-
-                finishedCount++;
-                //log.info("Finished Count = {}", finishedCount);
-
-                x = locKalmanFilter2.predict();
-//            UserLocation locFilteredUl = new UserLocation(x[0][0], x[1][0]);
-
-                tempArr = new double[][] {{mAFilteredUl.getX()},
-                        {mAFilteredUl.getY()}};
-
-                x2 = locKalmanFilter2.update(tempArr);
-                UserLocation updateLocFilteredUl = new UserLocation(x2[0][0], x2[1][0], mAFilteredUl.getDeviceName());
-
-//            UserLocation moveFilteredUl = filteredTr.moveUserLocation(updateLocFilteredUl);
-
-
-
-//            System.out.printf("Before Location : (%.2f, %.2f)  Distance Deviation : %.2fm%n", ul.getX(), ul.getY(), ul.getDistanceDev());
-//            System.out.printf("Filtered Location : (%.2f, %.2f)  Distance Deviation : %.2fm%n", filteredUl.getX(), filteredUl.getY(), filteredUl.getDistanceDev());
-
-//            System.out.printf("LocFiltered Location : (%.2f, %.2f)  Distance Deviation : %.2fm%n", locFilteredUl.getX(), locFilteredUl.getY(), locFilteredUl.getDistanceDev());
-
-                //System.out.printf("MAF Location (Update) : (%.2f, %.2f)  Distance Deviation : %.2fm%n", mAFilteredUl.getX(), mAFilteredUl.getY(), mAFilteredUl.getDistanceDev());
-                System.out.printf("LocFiltered Location (Update) : (%.2f, %.2f)  Distance Deviation : %.2fm%n", updateLocFilteredUl.getX(), updateLocFilteredUl.getY(), updateLocFilteredUl.getDistanceDev());
-
-//            System.out.printf("Moved Filtered Location : (%.2f, %.2f)  Distance Deviation : %.2fm%n", moveFilteredUl.getX(), moveFilteredUl.getY(), moveFilteredUl.getDistanceDev());
-
-                //2개찍을떄
-//            if(i==10){
-//                //ulList.add(0,filteredTr.moveUserLocation(filteredUl));
-//                ulList.add(1,updateLocFilteredUl);
-//            }
-//            else{
-//                //ulList.set(0,filteredTr.moveUserLocation(filteredUl));
-//                ulList.set(1,updateLocFilteredUl);
-//            }
-
-                j++;
-//            createCsv(originalVo, ul, filteredVo, filteredUl);
-//            return locFilteredUl;
-//            return moveFilteredUl;
-
-//                return mAFilteredUl;
-//            return mAFilteredUl;
-            return updateLocFilteredUl;
-
+        for(int i=0; i<8; i++) {
+            if( map.get(i+1) > 0 ) {
+                map.put(i+1, errorValue);
             }
-            j++;
-            return null;
         }
-        //log.info("start");
+
+        valueTemp = map.get(1);
+        keyTemp=1;
+
+        for(int i = 2; i<9; i++) {
+            if(valueTemp < map.get(i) && 0>map.get(i)) {
+                keyTemp = i;
+                valueTemp = map.get(i);
+            }
+        }
+
+        if(keyTemp==1) {
+            keyTemp2 = 2;
+            valueTemp2 = map.get(2);
+
+            for(int i = 3; i<9; i++) {
+
+                if(valueTemp < map.get(i) && 0>map.get(i)) {
+                    keyTemp2 = i;
+                    valueTemp2 = map.get(i);
+                }
+            }
+
+        } else {
+            keyTemp2=1;
+            valueTemp2 = map.get(1);
+
+            for(int i = 2; i<9; i++) {
+
+                if(valueTemp < map.get(i) && 0>map.get(i) && keyTemp != i) {
+                    keyTemp2 = i;
+                    valueTemp2 = map.get(i);
+                }
+            }
+        }
 
 
-        //i++;
-        return null;
+        if(valueTemp >= -50 && valueTemp2 < -50) {
+            return keyTemp;
+        }
+
+        return 0;
     }
 
     private SelectedVO createSelectVO(String name, double rssi1, double rssi2, double rssi3) {
