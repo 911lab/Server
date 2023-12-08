@@ -6,8 +6,12 @@ import lombok.extern.slf4j.Slf4j;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Line2D;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 
 @Slf4j
 public class UI extends JFrame {
@@ -50,18 +54,16 @@ public class UI extends JFrame {
         else
             scale=widthScale;
 
-        setSize((int)(4050*scale),(int)(1050*scale)+50);
+        setSize((int)(4050*scale),(int)(1050*scale)+50+100);
         setLocationRelativeTo(null);
         makeUI();
 
         setVisible(true);
-
     }
     private void makeUI() {
         //p = new MyPanel();
         p = new UI.MyPanel8();
         add(p, BorderLayout.CENTER);
-
     }
 
 //    public void setUserLocation(ArrayList<UserLocation> ul) {
@@ -209,7 +211,23 @@ public class UI extends JFrame {
             int h = (int)(1000*scale);
             int w = (int)(4000*scale);
 
-            g2.translate(10, 5); // 원점을 (10, 5)로 이동시킨다.
+
+            g2.translate(10, 50); // 원점을 (10, 30)로 이동시킨다.
+
+            try {
+                InetAddress ipAddress = InetAddress.getLocalHost();
+                String ipNum = ipAddress.getHostAddress();
+                g2.setColor(Color.BLACK);
+                g2.setFont(new Font("맑은 고딕",Font.BOLD,15));
+                g2.drawString("서버 IP : " + ipNum,0, 0);            //1
+            } catch (UnknownHostException e) {
+                e.printStackTrace();
+            }
+
+
+            g2.translate(0, 25); // 원점을 (10, 30)로 이동시킨다.
+
+
             maxX=(int)(beaconW*(w/beaconW));
             maxY=(int)(beaconH*(h/beaconH));
 
@@ -249,7 +267,7 @@ public class UI extends JFrame {
             //ap찍기
             g2.setColor(Color.BLUE);
             radius = (int)(10*scale);
-            g2.setFont(new Font("궁서",Font.BOLD,15));
+            g2.setFont(new Font("맑은 고딕",Font.BOLD,15));
             /*
             g2.fillOval(maxX/2-radius, 0-radius, radius*2, radius*2);      //3
             g2.drawString("Ap3("+beaconW/2+", "+beaconH+")",maxX/2-radius, 0+5*radius);  //3
@@ -269,13 +287,13 @@ public class UI extends JFrame {
             g2.drawString("Ap7("+(w1*3)+", 0.0)",(int)(w/beaconW*w1*3)-20*radius, maxY+5*radius);     //7
 
             g2.fillOval((int)((w/beaconW)*(w1/2))-radius, 0-radius, radius*2, radius*2);      //2(5,10)
-            g2.drawString("Ap2("+((w1/2))+", "+beaconH+")",(int)(w/beaconW*(w1/2))-radius, 0+5*radius);  //2
+            g2.drawString("Ap2("+((w1/2))+", "+beaconH+")",(int)(w/beaconW*(w1/2))-radius, 0-radius);  //2
             g2.fillOval((int)((w/beaconW)*(w1/2)*3)-radius, 0-radius, radius*2, radius*2);     //4(15,10)
-            g2.drawString("Ap4("+((w1/2)*3)+", "+beaconH+")",(int)(w/beaconW*(w1/2)*3)-20*radius, 0+5*radius);     //4
+            g2.drawString("Ap4("+((w1/2)*3)+", "+beaconH+")",(int)(w/beaconW*(w1/2)*3)-20*radius, 0-radius);     //4
             g2.fillOval((int)((w/beaconW)*(w1/2)*5)-radius, 0-radius, radius*2, radius*2);     //6(25,10)
-            g2.drawString("Ap6("+((w1/2)*5)+", "+beaconH+")",(int)(w/beaconW*(w1/2)*5)-20*radius, 0+5*radius);     //6
+            g2.drawString("Ap6("+((w1/2)*5)+", "+beaconH+")",(int)(w/beaconW*(w1/2)*5)-20*radius, 0-radius);     //6
             g2.fillOval((int)((w/beaconW)*(w1/2)*7)-radius, 0-radius, radius*2, radius*2);     //8(35,10)
-            g2.drawString("Ap8("+(w1/2)*7+", "+beaconH+")",(int)(w/beaconW*(w1/2)*7)-30*radius, 0+5*radius);     //8
+            g2.drawString("Ap8("+(w1/2)*7+", "+beaconH+")",(int)(w/beaconW*(w1/2)*7)-30*radius, 0-radius);     //8
 
 
 
