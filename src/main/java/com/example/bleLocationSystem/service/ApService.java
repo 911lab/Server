@@ -599,7 +599,7 @@ public class ApService extends JFrame {
         }
 
 
-        if(valueTemp >= -50 && valueTemp2 < -50) {
+        if(valueTemp >= -42 && valueTemp2 < -42) {
             return keyTemp;
         }
 
