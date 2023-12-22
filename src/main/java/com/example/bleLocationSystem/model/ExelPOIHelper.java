@@ -20,14 +20,14 @@ public class ExelPOIHelper {
     //엑셀 시트
     Sheet sheet;
     Sheet testSheet;
-
     Sheet oneBeaconSheet;
+    Sheet Ex2Sheet;
 
     //헤더 로우
     Row header;
     Row testHeader;
-
     Row oneBeaconHeader;
+    Row Ex2Header;
 
     //헤더 스타일
     CellStyle headerStyle;
@@ -40,6 +40,8 @@ public class ExelPOIHelper {
     String strFilterdloc;
 
     int num;
+    int nowNum;
+
 
     public ExelPOIHelper() {
         workbook = new XSSFWorkbook();
@@ -58,8 +60,13 @@ public class ExelPOIHelper {
 //        rssiFilterSetting();
 
         //세개 비콘 정지상태 필터링 테스트시
-        threeBeaconStopSetting();
+//        threeBeaconStopSetting();
+
+        //실험 2 셋팅
+        forEx2Setting();
+        nowNum = 0;
     }
+
 
     public void styleSetting() {
         //칼럼 셀 스타일(헤더 : 칼럼)
@@ -719,5 +726,120 @@ public class ExelPOIHelper {
         }
     }
 
+
+
+    //-----------------------------------------------------------for Ex2-----------------------------------------------------------
+    public void forEx2Setting() {
+        Ex2Sheet = workbook.createSheet("Ex2");
+
+
+        Ex2Sheet.setColumnWidth(0, 10000);
+        Ex2Sheet.setColumnWidth(1, 10000);
+        Ex2Sheet.setColumnWidth(2, 10000);
+        Ex2Sheet.setColumnWidth(3, 10000);
+        Ex2Sheet.setColumnWidth(4, 10000);
+        Ex2Sheet.setColumnWidth(5, 10000);
+        Ex2Sheet.setColumnWidth(6, 10000);
+        Ex2Sheet.setColumnWidth(7, 10000);
+
+        Ex2Header = Ex2Sheet.createRow(0);
+
+        //헤더 셀(컬럼)
+        Cell headerCell = Ex2Header.createCell(0);
+        headerCell.setCellValue("Weight Location");
+        headerCell.setCellStyle(headerStyle);
+
+        headerCell = Ex2Header.createCell(1);
+        headerCell.setCellValue("Weight Ul Distance MAE");
+        headerCell.setCellStyle(headerStyle);
+
+
+
+        headerCell = Ex2Header.createCell(2);
+        headerCell.setCellValue("Kalman Location");
+        headerCell.setCellStyle(headerStyle);
+
+        headerCell = Ex2Header.createCell(3);
+        headerCell.setCellValue("Kalman Ul Distance MAE");
+        headerCell.setCellStyle(headerStyle);
+
+
+
+        headerCell = Ex2Header.createCell(4);
+        headerCell.setCellValue("Proposed Location");
+        headerCell.setCellStyle(headerStyle);
+
+        headerCell = Ex2Header.createCell(5);
+        headerCell.setCellValue("Proposed Ul Distance MAE");
+        headerCell.setCellStyle(headerStyle);
+
+
+
+        headerCell = Ex2Header.createCell(6);
+        headerCell.setCellValue("Proposed without Proximity Location");
+        headerCell.setCellStyle(headerStyle);
+
+        headerCell = Ex2Header.createCell(7);
+        headerCell.setCellValue("Proposed without Proximity MAE");
+        headerCell.setCellStyle(headerStyle);
+
+    }
+
+    public void writeExcelforEx2(UserLocation weightUl, UserLocation kalmanUl, UserLocation proposedUl, UserLocation proposedWithoutProximity,
+                                 int weightFinishNum, int kalmanFinishNum, int proposedFinishNum, int proposedwithoutProximityFinishNum) throws IOException {
+
+        nowNum++;
+        log.info("Now Row : {}", nowNum);
+
+        //data row 생성
+        Row row = Ex2Sheet.createRow(nowNum);
+
+        //셀 추가
+        
+        //Weight Ul
+        Cell cell = row.createCell(0);
+        String weightUl_xy = String.format("(%.2f, %.2f)", weightUl.getX(), weightUl.getY());
+        cell.setCellValue(weightUl_xy);
+        cell.setCellStyle(style);
+
+        cell = row.createCell(1);
+        cell.setCellValue(weightUl.getDistanceDev());
+        cell.setCellStyle(style);
+
+        //Kalman Ul
+        cell = row.createCell(2);
+        String kalmanUl_xy = String.format("(%.2f, %.2f)", kalmanUl.getX(), kalmanUl.getY());
+        cell.setCellValue(kalmanUl_xy);
+        cell.setCellStyle(style);
+
+        cell = row.createCell(3);
+        cell.setCellValue(kalmanUl.getDistanceDev());
+        cell.setCellStyle(style);
+
+        //Proposed Ul
+        cell = row.createCell(4);
+        String proposedUl_xy = String.format("(%.2f, %.2f)", proposedUl.getX(), proposedUl.getY());
+        cell.setCellValue(proposedUl_xy);
+        cell.setCellStyle(style);
+
+        cell = row.createCell(5);
+        cell.setCellValue(proposedUl.getDistanceDev());
+        cell.setCellStyle(style);
+
+        //Proposed without
+        cell = row.createCell(6);
+        String proposedWithoutProximity_xy = String.format("(%.2f, %.2f)", proposedWithoutProximity.getX(), proposedWithoutProximity.getY());
+        cell.setCellValue(proposedWithoutProximity_xy);
+        cell.setCellStyle(style);
+
+        cell = row.createCell(7);
+        cell.setCellValue(proposedWithoutProximity.getDistanceDev());
+        cell.setCellStyle(style);
+
+        //1000번
+        if (num % 1000 == 0) {
+            createFileAndRewrite();
+        }
+    }
 
 }

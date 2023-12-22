@@ -17,74 +17,75 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
 @Slf4j //로깅 어노테이션
 public class ApController {
-//    @Autowired
-//    ApService apService;
 
-    
     //실제
-    ApService apService = new ApService();
-//    UI ui = new UI();
-    UI ui = new UI(apService.getW(),apService.getH());
-
-//    ArrayList<UserLocation> ul = new ArrayList<>();
-    UserLocation ul;
-
-    //Map<String, Integer> map = new HashMap<String, Integer>();
-    Map<String, Double> map = new HashMap<String, Double>();
+//    ApService apService = new ApService();
+//    UI ui = new UI(apService.getW(),apService.getH());
+//    UserLocation ul;
+//    Map<String, Double> map = new HashMap<String, Double>();
 
 
     //Test
-//    TestService testService = new TestService();
-
-//    TestUI ui = new TestUI(testService.getWidth(),testService.getHeight());
-
+    TestService testService = new TestService();
+    TestUI ui = new TestUI(testService.getW(), testService.getH());
 //    UserLocation ul;
-
+    ArrayList<UserLocation> ulList;
+    Map<String, Double> map = new HashMap<String, Double>();
 
 
 
 
     //앱으로부터 ap1, ap2, ap3 각각의 거리값 받기
+
+    //실제
+//    @PostMapping("/api/distance")
+//    public ResponseEntity<Map<String, Double>> receiveDistance(VO vo) throws Exception {
+
+    //테스트시
     @PostMapping("/api/distance")
-//    public ResponseEntity<UserLocation> receiveDistance(@RequestBody VO vo) throws Exception {
-//    public ResponseEntity<Map<String, Integer>> receiveDistance(VO vo) throws Exception {
-    public ResponseEntity<Map<String, Double>> receiveDistance(VO vo) throws Exception {
+    public ResponseEntity<UserLocation> receiveDistance(VO vo) throws Exception {
 
 
         //-------------Real--------------
-        ul = apService.trilateration(vo);
-
-        if(ul != null) {
-            ui.setUserLocation(ul);
-            map.put("triangleNum", apService.getTriangleNum()*1.0);
-            map.put("x", ul.getX());
-            map.put("y", ul.getY());
-        }
-
-
-
-        return (ul != null) ?
-                ResponseEntity.status(HttpStatus.OK).body(map) :
-                ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-
-
-
-//        --------------Test--------------
-//        ul = testService.trilateration(vo);
-//        testService.trilateration(vo);
+//        ul = apService.trilateration(vo);
 //
 //        if(ul != null) {
 //            ui.setUserLocation(ul);
+//            map.put("triangleNum", apService.getTriangleNum()*1.0);
+//            map.put("x", ul.getX());
+//            map.put("y", ul.getY());
 //        }
 //
-//        return ResponseEntity.status(HttpStatus.OK).body(null);
+//        return (ul != null) ?
+//                ResponseEntity.status(HttpStatus.OK).body(map) :
+//                ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+
+
+
+        //--------------Test--------------
+//        ul = testService.trilateration(vo);
+        ulList = null;
+        ulList = testService.trilateration(vo);
+
+        if(ulList != null) {
+            ui.setUserLocation(ulList);
+//            map.put("triangleNum", testService.getTriangleNum()*1.0);
+//            map.put("x", ul.getX());
+//            map.put("y", ul.getY());
+        }
+
+        return (ulList != null) ?
+                ResponseEntity.status(HttpStatus.OK).body(ulList.get(2)) :
+                ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
     }
 }

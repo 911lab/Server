@@ -1,16 +1,30 @@
 package com.example.bleLocationSystem;
 
 import com.example.bleLocationSystem.model.UserLocation;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Line2D;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
-public class TestUI extends JFrame  {
+import java.util.Arrays;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
-    private MyPanel8 p;
+
+@Slf4j
+public class TestUI extends JFrame {
+    private TestUI.MyPanel8 p;
     double scale = 1;
     double beaconW,beaconH,w1;
+    int i;
+    int j;
+
+    ArrayList<Integer> hjx;
+    ArrayList<Integer> hjy;
+    ArrayList<Integer> elsex;
+    ArrayList<Integer> elsey;
 
     public TestUI (double w, double h) {
         setTitle("Ble Location App");
@@ -20,6 +34,15 @@ public class TestUI extends JFrame  {
 //        beaconH=h;
 //        double widthScale = d.width/1050.0;
 //        double heightScale = (d.height-50)/1050.0;
+
+        i = 0;
+        j = 0;
+
+//        hjx = new ArrayList<Integer>(Arrays.asList(-1, -1, -1, -1 ,-1));
+//        hjy = new ArrayList<Integer>(Arrays.asList(-1, -1, -1, -1 ,-1));
+//        elsex = new ArrayList<Integer>(Arrays.asList(-1, -1, -1, -1 ,-1));
+//        elsey = new ArrayList<Integer>(Arrays.asList(-1, -1, -1, -1 ,-1));
+
         w1=w;
         beaconW=w*3+w/2.0;
         beaconH=h;
@@ -31,26 +54,46 @@ public class TestUI extends JFrame  {
         else
             scale=widthScale;
 
-        setSize((int)(4050*scale),(int)(1050*scale)+50);
+        setSize((int)(4050*scale),(int)(1050*scale)+50+100);
         setLocationRelativeTo(null);
         makeUI();
 
         setVisible(true);
-
     }
     private void makeUI() {
         //p = new MyPanel();
-        p = new MyPanel8();
+        p = new TestUI.MyPanel8();
         add(p, BorderLayout.CENTER);
     }
 
-    public void setUserLocation(UserLocation ul) {
-        //p.ox = ul.get(0).getX();
-        //p.oy = ul.get(0).getY();
-        p.x = ul.getX();
-        p.y = ul.getY();
+        public void setUserLocation(ArrayList<UserLocation> ul) {
+//    public void setUserLocation(UserLocation ul) {
+        //2개짜리
+        p.wx = ul.get(0).getX();
+        p.wy = ul.get(0).getY();
+        p.kx = ul.get(1).getX();
+        p.ky = ul.get(1).getY();
+        p.px = ul.get(2).getX();
+        p.py = ul.get(2).getY();
+        p.pwpx = ul.get(3).getX();
+        p.pwpy = ul.get(3).getY();
 
+        //1개짜리
+//        p.x = ul.getX();
+//        p.y = ul.getY();
+//        p.deviceName = ul.getDeviceName();
+        //p.repaint();
+        //p.revalidate();
+        //p.repaint();
+
+        //p.g2.dispose();
+        //p.update(p.g2);
         p.repaint();
+
+        //p.revalidate();
+        //p.repaint();
+
+
     }
 
     public class MyPanel extends JPanel {
@@ -59,9 +102,14 @@ public class TestUI extends JFrame  {
         int maxX,maxY;
         double x = -1;
         double y = -1;
+
+
+
         double ox = -1;
         double oy = -1;
         int i =0;
+
+        int j = 0;
         public void paintComponent(Graphics g) {
             g2=(Graphics2D)g;
 
@@ -112,23 +160,25 @@ public class TestUI extends JFrame  {
 
                 x=x*(m/beaconW);
                 y=y*(m/beaconH);
-                //ox=ox*(m/beaconW);
-                //oy=oy*(m/beaconH);
+                ox=ox*(m/beaconW);
+                oy=oy*(m/beaconH);
 
                 g2.translate(0,maxY);
                 //if(i%2==0)
-                    g2.setColor(Color.RED);
+                g2.setColor(Color.RED);
                 //else if(i%2==1)
-                  //  g2.setColor(Color.GREEN);
+                //  g2.setColor(Color.GREEN);
                 g2.fillRect((int)x-radius, -((int)y+radius), radius*2, radius*2);
 
                 i++;
-/*
-                if(i%2==0)
-                    g2.setColor(Color.magenta);
-                else if(i%2==1)
-                    g2.setColor(Color.blue);
-                g2.drawOval((int)ox-radius, -((int)oy+radius), radius*2, radius*2);*/
+
+//                if(i%2==0)
+//                    g2.setColor(Color.magenta);
+//                else if(i%2==1)
+//                    g2.setColor(Color.blue);
+
+                g2.setColor(Color.BLUE);
+                g2.drawOval((int)ox-radius, -((int)oy+radius), radius*2, radius*2);
             }
         }
     }
@@ -137,13 +187,29 @@ public class TestUI extends JFrame  {
         Graphics2D g2;
         int radius;
         int maxX,maxY;
-        double x = -1;
-        double y = -1;
-        double ox = -1;
-        double oy = -1;
-        int i =0;
+
+        double wx = -1;
+        double wy = -1;
+        double kx = -1;
+        double ky = -1;
+        double px = -1;
+        double py = -1;
+        double pwpx = -1;
+        double pwpy = -1;
+
+        //ArrayList<Double> hjx = new ArrayList<Double>(Arrays.asList(-1.0, -1.0, -1.0, -1.0 ,-1.0));
+        //ArrayList<Double> hjy = new ArrayList<Double>(Arrays.asList(-1.0, -1.0, -1.0, -1.0 ,-1.0));
+        //ArrayList<Double> elsex = new ArrayList<Double>(Arrays.asList(-1.0, -1.0, -1.0, -1.0 ,-1.0));
+        //ArrayList<Double> elsey = new ArrayList<Double>(Arrays.asList(-1.0, -1.0, -1.0, -1.0 ,-1.0));
+
+
+        String deviceName;
         public void paintComponent(Graphics g) {
+
+
             g2=(Graphics2D)g;
+
+            g2.clearRect(0, 0, 4000, 1000);
 
             float dash0[] = {1,0f};
             float dash3[] = {3,3f};
@@ -153,7 +219,23 @@ public class TestUI extends JFrame  {
             int h = (int)(1000*scale);
             int w = (int)(4000*scale);
 
-            g2.translate(10, 5); // 원점을 (10, 5)로 이동시킨다.
+
+            g2.translate(10, 50); // 원점을 (10, 30)로 이동시킨다.
+
+            try {
+                InetAddress ipAddress = InetAddress.getLocalHost();
+                String ipNum = ipAddress.getHostAddress();
+                g2.setColor(Color.BLACK);
+                g2.setFont(new Font("맑은 고딕",Font.BOLD,15));
+                g2.drawString("서버 IP : " + ipNum,0, 0);            //1
+            } catch (UnknownHostException e) {
+                e.printStackTrace();
+            }
+
+
+            g2.translate(0, 25); // 원점을 (10, 30)로 이동시킨다.
+
+
             maxX=(int)(beaconW*(w/beaconW));
             maxY=(int)(beaconH*(h/beaconH));
 
@@ -193,7 +275,7 @@ public class TestUI extends JFrame  {
             //ap찍기
             g2.setColor(Color.BLUE);
             radius = (int)(10*scale);
-            g2.setFont(new Font("궁서",Font.BOLD,15));
+            g2.setFont(new Font("맑은 고딕",Font.BOLD,15));
             /*
             g2.fillOval(maxX/2-radius, 0-radius, radius*2, radius*2);      //3
             g2.drawString("Ap3("+beaconW/2+", "+beaconH+")",maxX/2-radius, 0+5*radius);  //3
@@ -213,39 +295,57 @@ public class TestUI extends JFrame  {
             g2.drawString("Ap7("+(w1*3)+", 0.0)",(int)(w/beaconW*w1*3)-20*radius, maxY+5*radius);     //7
 
             g2.fillOval((int)((w/beaconW)*(w1/2))-radius, 0-radius, radius*2, radius*2);      //2(5,10)
-            g2.drawString("Ap2("+((w1/2))+", "+beaconH+")",(int)(w/beaconW*(w1/2))-radius, 0+5*radius);  //2
+            g2.drawString("Ap2("+((w1/2))+", "+beaconH+")",(int)(w/beaconW*(w1/2))-radius, 0-radius);  //2
             g2.fillOval((int)((w/beaconW)*(w1/2)*3)-radius, 0-radius, radius*2, radius*2);     //4(15,10)
-            g2.drawString("Ap4("+((w1/2)*3)+", "+beaconH+")",(int)(w/beaconW*(w1/2)*3)-20*radius, 0+5*radius);     //4
+            g2.drawString("Ap4("+((w1/2)*3)+", "+beaconH+")",(int)(w/beaconW*(w1/2)*3)-20*radius, 0-radius);     //4
             g2.fillOval((int)((w/beaconW)*(w1/2)*5)-radius, 0-radius, radius*2, radius*2);     //6(25,10)
-            g2.drawString("Ap6("+((w1/2)*5)+", "+beaconH+")",(int)(w/beaconW*(w1/2)*5)-20*radius, 0+5*radius);     //6
+            g2.drawString("Ap6("+((w1/2)*5)+", "+beaconH+")",(int)(w/beaconW*(w1/2)*5)-20*radius, 0-radius);     //6
             g2.fillOval((int)((w/beaconW)*(w1/2)*7)-radius, 0-radius, radius*2, radius*2);     //8(35,10)
-            g2.drawString("Ap8("+(w1/2)*7+", "+beaconH+")",(int)(w/beaconW*(w1/2)*7)-30*radius, 0+5*radius);     //8
+            g2.drawString("Ap8("+(w1/2)*7+", "+beaconH+")",(int)(w/beaconW*(w1/2)*7)-30*radius, 0-radius);     //8
 
+            //측위 결과 출력
+            g2.translate(0,maxY); //원점이동
 
-
-            if(x!=-1 && y!=-1) {
-                /*
-                //사각형안으로
-                x=movePoint(x*(m/beaconW),0,maxX);
-                y=movePoint(y*(m/beaconH),0,maxY);
-                ox=movePoint(ox*(m/beaconW),0,maxX);
-                oy=movePoint(oy*(m/beaconH),0,maxY);
-*/
-                g2.translate(0,maxY); //원점이동
-                //if(i%2==0)
+            if(wx!=-1 && wy!=-1) {
                 g2.setColor(Color.RED);
+                g2.fillRect((int)wx-radius, (int)-(wy+radius), radius*2, radius*2);
+            }
+
+            if(kx!=-1 && ky!=-1) {
+                g2.setColor(Color.BLUE);
+                g2.fillRect((int)wx-radius, (int)-(wy+radius), radius*2, radius*2);
+            }
+
+            if(px!=-1 && py!=-1) {
+                g2.setColor(Color.BLACK);
+                g2.fillRect((int)wx-radius, (int)-(wy+radius), radius*2, radius*2);
+            }
+
+            if(pwpx!=-1 && pwpy!=-1) {
+                g2.setColor(Color.MAGENTA);
+                g2.fillRect((int)wx-radius, (int)-(wy+radius), radius*2, radius*2);
+            }
+
+
+
                 //else if(i%2==1)
                 //g2.setColor(Color.GREEN);
-                g2.fillRect((int)(x*(w/beaconW))-radius, -((int)(y*(h/beaconH))+radius), radius*2, radius*2);
 
-                //i++;
 
+//                g2.drawString(String.valueOf(i),(int)x-radius, -((int)y+radius));
+
+
+                //2개 같이 찍을때
                 //if(i%2==0)
                 //g2.setColor(Color.magenta);
                 //else if(i%2==1)
-                //    g2.setColor(Color.blue);
-                //g2.fillOval((int)(ox*(w/beaconW))-radius, -((int)(oy*(h/beaconH))+radius), radius*2, radius*2);
-            }
+//                g2.setColor(Color.blue);
+//                g2.fillOval((int)ox-radius, -((int)oy+radius), radius*2, radius*2);
+
+//                g2.setColor(Color.black);
+//                g2.drawString(String.valueOf(i),(int)ox-radius, -((int)oy+radius));
+
+
         }
     }
     public double movePoint(double p, double min, double max){
@@ -254,6 +354,5 @@ public class TestUI extends JFrame  {
         else if(p>max)
             return max;
         return p;
-
     }
 }
