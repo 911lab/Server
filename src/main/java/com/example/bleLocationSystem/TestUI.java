@@ -209,7 +209,8 @@ public class TestUI extends JFrame {
 
             g2=(Graphics2D)g;
 
-            g2.clearRect(0, 0, 4000, 1000);
+            //화면 초기화할때
+//            g2.clearRect(0, 0, 4000, 1000);
 
             float dash0[] = {1,0f};
             float dash3[] = {3,3f};
@@ -308,22 +309,22 @@ public class TestUI extends JFrame {
 
             if(wx!=-1 && wy!=-1) {
                 g2.setColor(Color.RED);
-                g2.fillRect((int)wx-radius, (int)-(wy+radius), radius*2, radius*2);
+                g2.fillRect((int)(wx*(w/beaconW))-radius, -((int)(wy*(h/beaconH))+radius), radius*2, radius*2);
             }
 
             if(kx!=-1 && ky!=-1) {
                 g2.setColor(Color.BLUE);
-                g2.fillRect((int)wx-radius, (int)-(wy+radius), radius*2, radius*2);
+                g2.fillRect((int)(kx*(w/beaconW))-radius, -((int)(ky*(h/beaconH))+radius), radius*2, radius*2);
             }
 
             if(px!=-1 && py!=-1) {
                 g2.setColor(Color.BLACK);
-                g2.fillRect((int)wx-radius, (int)-(wy+radius), radius*2, radius*2);
+                g2.fillRect((int)(px*(w/beaconW))-radius, -((int)(py*(h/beaconH))+radius), radius*2, radius*2);
             }
 
             if(pwpx!=-1 && pwpy!=-1) {
-                g2.setColor(Color.MAGENTA);
-                g2.fillRect((int)wx-radius, (int)-(wy+radius), radius*2, radius*2);
+                g2.setColor(Color.GRAY);
+                g2.fillRect((int)(pwpx*(w/beaconW))-radius, -((int)(pwpy*(h/beaconH))+radius), radius*2, radius*2);
             }
 
 

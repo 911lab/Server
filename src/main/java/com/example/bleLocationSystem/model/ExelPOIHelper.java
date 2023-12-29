@@ -572,7 +572,7 @@ public class ExelPOIHelper {
 //        File currDir = new File(".");
 //        String path = currDir.getAbsolutePath();
 //        String fileLocation = path.substring(0, path.length() - 1) + "temp.xlsx";
-        String fileLocation = "C:\\Users\\heehe\\Desktop\\bleExel\\threebeacontest_10m_center2.xlsx";
+        String fileLocation = "C:\\Users\\heehe\\Desktop\\bleExel\\1222\\Ex2_20.xlsx";
 
 //        String fileLocation = "C:\\Users\\JaeHyuk\\Desktop\\rssifilterfinal.xlsx";
 
@@ -837,7 +837,7 @@ public class ExelPOIHelper {
         cell.setCellStyle(style);
 
         //1000번
-        if (num % 1000 == 0) {
+        if (nowNum == 1000) {
             createFileAndRewrite();
         }
     }

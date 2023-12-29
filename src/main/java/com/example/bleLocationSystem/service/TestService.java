@@ -197,7 +197,7 @@ public class TestService {
         locKalmanFilter = new LocKalmanFilter(0.1, 1, 1, 1, 0.1, 0.1);
         locKalmanFilter2 = new LocKalmanFilter(0.1, 1, 1, 1, 0.1, 0.1);
 
-        //ulList = new ArrayList<UserLocation>();
+
         rm = new RemoveOutlier();
 //        locKalmanFilter = new LocKalmanFilter(1, 1, 1, 1, 0.1, 0.1);
 
@@ -205,6 +205,8 @@ public class TestService {
 //        t = new Thread(UserPoint);
 
 //        initCheck = false;
+
+        ulList = new ArrayList<UserLocation>();
 
         finishedCount = 0;
 
