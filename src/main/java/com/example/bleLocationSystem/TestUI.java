@@ -319,6 +319,8 @@ public class TestUI extends JFrame {
             //측위 결과 출력
             g2.translate(0,maxY); //원점이동
 
+            g2.setStroke(new BasicStroke(1,BasicStroke.CAP_BUTT,BasicStroke.JOIN_BEVEL,1,dash0,0));//점선
+
             //Weight method
             if(wx!=-1 && wy!=-1) {
                 if(wx!=999 && wy!=999) {
