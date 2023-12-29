@@ -321,65 +321,71 @@ public class TestUI extends JFrame {
 
             //Weight method
             if(wx!=-1 && wy!=-1) {
-                if(preWx != -1 && preWy != -1) {
-                    g2.setColor(Color.RED);
-                    g2.draw(new Line2D.Float((int)(preWx*(w/beaconW)), -(int)(preWy*(h/beaconH)), (int)(wx*(w/beaconW)), -(int)(wy*(h/beaconH)) ));//12
-                    preWx = wx;
-                    preWy = wy;
-                } else {
-                    g2.setColor(Color.RED);
-                    g2.fillRect((int)(wx*(w/beaconW))-radius, -((int)(wy*(h/beaconH))+radius), radius*2, radius*2);
-                    preWx = wx;
-                    preWy = wy;
+                if(wx!=999 && wy!=999) {
+                    if (preWx != -1 && preWy != -1) {
+                        g2.setColor(Color.RED);
+                        g2.draw(new Line2D.Float((int) (preWx * (w / beaconW)), -(int) (preWy * (h / beaconH)), (int) (wx * (w / beaconW)), -(int) (wy * (h / beaconH))));//12
+                        preWx = wx;
+                        preWy = wy;
+                    } else {
+                        g2.setColor(Color.RED);
+                        g2.fillRect((int) (wx * (w / beaconW)) - radius, -((int) (wy * (h / beaconH)) + radius), radius * 2, radius * 2);
+                        preWx = wx;
+                        preWy = wy;
+                    }
                 }
-
             }
 
             //Kalman method
             if(kx!=-1 && ky!=-1) {
-                if(preKx != -1 && preKy != -1) {
-                    g2.setColor(Color.BLUE);
-                    g2.draw(new Line2D.Float((int)(preKx*(w/beaconW)), -(int)(preKy*(h/beaconH)), (int)(kx*(w/beaconW)), -(int)(ky*(h/beaconH)) ));//12
-                    preKx = kx;
-                    preKy = ky;
-                } else {
-                    g2.setColor(Color.BLUE);
-                    g2.fillRect((int)(kx*(w/beaconW))-radius, -((int)(ky*(h/beaconH))+radius), radius*2, radius*2);
-                    preKx = kx;
-                    preKy = ky;
+                if(kx!=999 && ky!=999) {
+                    if (preKx != -1 && preKy != -1) {
+                        g2.setColor(Color.BLUE);
+                        g2.draw(new Line2D.Float((int) (preKx * (w / beaconW)), -(int) (preKy * (h / beaconH)), (int) (kx * (w / beaconW)), -(int) (ky * (h / beaconH))));//12
+                        preKx = kx;
+                        preKy = ky;
+                    } else {
+                        g2.setColor(Color.BLUE);
+                        g2.fillRect((int) (kx * (w / beaconW)) - radius, -((int) (ky * (h / beaconH)) + radius), radius * 2, radius * 2);
+                        preKx = kx;
+                        preKy = ky;
+                    }
                 }
-
             }
 
 
             //Proposed method
             if(px!=-1 && py!=-1) {
-                if(prePx != -1 && prePy != -1) {
-                    g2.setColor(Color.BLACK);
-                    g2.draw(new Line2D.Float((int)(prePx*(w/beaconW)), -(int)(prePy*(h/beaconH)), (int)(px*(w/beaconW)), -(int)(py*(h/beaconH)) ));//12
-                    prePx = px;
-                    prePy = py;
-                } else {
-                    g2.setColor(Color.BLACK);
-                    g2.fillRect((int)(px*(w/beaconW))-radius, -((int)(py*(h/beaconH))+radius), radius*2, radius*2);
-                    prePx = px;
-                    prePy = py;
+                if(px!=999 && py!=999) {
+                    if (prePx != -1 && prePy != -1) {
+                        g2.setColor(Color.BLACK);
+                        g2.draw(new Line2D.Float((int) (prePx * (w / beaconW)), -(int) (prePy * (h / beaconH)), (int) (px * (w / beaconW)), -(int) (py * (h / beaconH))));//12
+                        prePx = px;
+                        prePy = py;
+                    } else {
+                        g2.setColor(Color.BLACK);
+                        g2.fillRect((int) (px * (w / beaconW)) - radius, -((int) (py * (h / beaconH)) + radius), radius * 2, radius * 2);
+                        prePx = px;
+                        prePy = py;
+                    }
                 }
             }
 
 
             //Proposed method without Proximity
-            if(pwpx!=-1 && pwpy!=-1) {
-                if(prePwpx != -1 && prePwpy != -1) {
-                    g2.setColor(Color.GRAY);
-                    g2.draw(new Line2D.Float((int)(prePwpx*(w/beaconW)), -(int)(prePwpy*(h/beaconH)), (int)(pwpx*(w/beaconW)), -(int)(pwpy*(h/beaconH)) ));//12
-                    prePwpx = pwpx;
-                    prePwpy = pwpy;
-                } else {
-                    g2.setColor(Color.GRAY);
-                    g2.fillRect((int)(pwpx*(w/beaconW))-radius, -((int)(pwpy*(h/beaconH))+radius), radius*2, radius*2);
-                    prePwpx = pwpx;
-                    prePwpy = pwpy;
+            if(pwpx!=-1 && pwpy!=-1 ) {
+                if(pwpx!=999 && pwpy!=999) {
+                    if (prePwpx != -1 && prePwpy != -1) {
+                        g2.setColor(Color.GRAY);
+                        g2.draw(new Line2D.Float((int) (prePwpx * (w / beaconW)), -(int) (prePwpy * (h / beaconH)), (int) (pwpx * (w / beaconW)), -(int) (pwpy * (h / beaconH))));//12
+                        prePwpx = pwpx;
+                        prePwpy = pwpy;
+                    } else {
+                        g2.setColor(Color.GRAY);
+                        g2.fillRect((int) (pwpx * (w / beaconW)) - radius, -((int) (pwpy * (h / beaconH)) + radius), radius * 2, radius * 2);
+                        prePwpx = pwpx;
+                        prePwpy = pwpy;
+                    }
                 }
             }
                 //else if(i%2==1)
