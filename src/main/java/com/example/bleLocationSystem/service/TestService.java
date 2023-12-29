@@ -588,7 +588,7 @@ public class TestService {
         System.out.printf("Proposed Location : (%.2f, %.2f)\n", updateLocFilteredUl.getX(), updateLocFilteredUl.getY());
         System.out.printf("Proposed without Proximity Location : (%.2f, %.2f)\n", updateLocFilteredUlforNotProximity.getX(), updateLocFilteredUlforNotProximity.getY());
 
-        createCsvEx2(weightUl, kalmanUl, updateLocFilteredUl, updateLocFilteredUlforNotProximity);
+        //createCsvEx2(weightUl, kalmanUl, updateLocFilteredUl, updateLocFilteredUlforNotProximity);
 
         //4개찍을떄
         if(totalNum==1){
