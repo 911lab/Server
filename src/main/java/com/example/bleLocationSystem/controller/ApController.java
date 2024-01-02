@@ -35,24 +35,31 @@ public class ApController {
 
 
     //Test
-    TestService testService = new TestService();
-    TestUI ui = new TestUI(testService.getW(), testService.getH());
+//    TestService testService = new TestService();
+//    TestUI ui = new TestUI(testService.getW(), testService.getH());
 //    UserLocation ul;
-    ArrayList<UserLocation> ulList;
-    Map<String, Double> map = new HashMap<String, Double>();
+//    ArrayList<UserLocation> ulList;
+//    Map<String, Double> map = new HashMap<String, Double>();
 
+
+    //RSSI Test for Experiment 1
+    VO vooo;
+    RSSIFilterTestService testService = new RSSIFilterTestService();
 
 
 
     //앱으로부터 ap1, ap2, ap3 각각의 거리값 받기
-
     //실제
 //    @PostMapping("/api/distance")
 //    public ResponseEntity<Map<String, Double>> receiveDistance(VO vo) throws Exception {
 
     //테스트시
+//    @PostMapping("/api/distance")
+//    public ResponseEntity<UserLocation> receiveDistance(VO vo) throws Exception {
+
+    //논문 실험 1 테스트시
     @PostMapping("/api/distance")
-    public ResponseEntity<UserLocation> receiveDistance(VO vo) throws Exception {
+    public ResponseEntity<VO> receiveDistance(VO vo) throws Exception {
 
 
         //-------------Real--------------
@@ -73,19 +80,31 @@ public class ApController {
 
         //--------------Test--------------
 //        ul = testService.trilateration(vo);
-        ulList = null;
-        ulList = testService.trilateration(vo);
+//        ulList = null;
+//        ulList = testService.trilateration(vo);
 
-        if(ulList != null) {
-            ui.setUserLocation(ulList);
+//        if(ulList != null) {
+//            ui.setUserLocation(ulList);
 //            map.put("triangleNum", testService.getTriangleNum()*1.0);
 //            map.put("x", ul.getX());
 //            map.put("y", ul.getY());
-        }
+//        }
+//
+//        return (ulList != null) ?
+//                ResponseEntity.status(HttpStatus.OK).body(ulList.get(2)) :
+//                ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+//
+//    }
 
-        return (ulList != null) ?
-                ResponseEntity.status(HttpStatus.OK).body(ulList.get(2)) :
-                ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    //--------------RSSI Test for Experiment 1--------------
+    //        ul = testService.trilateration(vo);
+    vooo = null;
+    vooo = testService.trilateration(vo);
 
-    }
+        return (vooo != null) ?
+            ResponseEntity.status(HttpStatus.OK).body(vooo) :
+            ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+
+}
+
 }

@@ -1,6 +1,7 @@
 package com.example.bleLocationSystem.service;
 
 import com.example.bleLocationSystem.model.*;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -10,372 +11,375 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Slf4j
 public class RSSIFilterTestService {
 
+    VO originalVo;
+    SelectedVO filteredVo;
+
+    VO originalVoforNotProximity;
+
+    SelectedVO selectedVo;
+
+    SelectedVO selectedVoforWeightAndKalman;
+    SelectedVO selectedVoforNotProximity;
+
+    SelectedVO weightVo;
+    SelectedVO kalmanVo;
+
+    SelectedVO kfilteredVo;
+
+    SelectedVO realOriginalVo;
+    KalmanFilter kFilterForAp1;
+    KalmanFilter kFilterForAp2;
+    KalmanFilter kFilterForAp3;
+
+    KalmanFilter kFilterForAp4;
+    KalmanFilter kFilterForAp5;
+    KalmanFilter kFilterForAp6;
+
+    KalmanFilter kFilterForAp7;
+    KalmanFilter kFilterForAp8;
+    KalmanFilter kFilterForAp9;
+
+
+    StartFilter startFilter;
+    StartFilter startFilter2;
+
+    RssiFilter rssiFilter;
+
+    LocKalmanFilter locKalmanFilter;
+    LocKalmanFilter locKalmanFilter2;
+
+    double[][] x;
+
+    double[][] x2;
+
+    double[][] tempArr;
+
+    double[][] xforNotProximity;
+
+    double[][] x2forNotProximity;
+
+
+    Up UserPoint;
+    Thread t;
+    private float tempAlpha;
+    private int lossNum;
+
+    boolean initCheck;
+    boolean numCheck;
+
+    VO realNoFIlterVo;
+
+    UserLocation filteredUl;
+
+    MAFilter mafFilter1;
+    MAFilter mafFilter2;
+    MAFilter mafFilter3;
+
+    MAFilter mafFilter4;
+    MAFilter mafFilter5;
+    MAFilter mafFilter6;
+
+    LocMAFilter locMAFilter;
+    LocMAFilter locMAFilter2;
+
     ExelPOIHelper poiHelper;
+    ArrayList<UserLocation> ulList;
+    RemoveOutlier rm;
+    int i=0;
+    int j=0;
 
-    KalmanFilter kFilterFor10m;
-    KalmanFilter kFilterFor15m;
-    KalmanFilter roKFilterFor10m;
-    KalmanFilter roKFilterFor15m;
+    int weightFinishNum;
+    int kalmanFinishNum;
+    int proposedFinishNum;
 
-    KalmanFilter roMafKFilterFor10m;
-    KalmanFilter roMafKFilterFor15m;
-
-    MAFilter mafFilter10m;
-    MAFilter mafFilter15m;
-
-    MAFilter mafFilter10m_romaf;
-    MAFilter mafFilter15m_romaf;
-
-    ArrayList<Double> original10m;
-    ArrayList<Double> original15m;
-
-    ArrayList<Double> array10m;
-    ArrayList<Double> array15m;
+    int totalNum;
 
 
-    ArrayList<Double> ro10m;
-    ArrayList<Double> ro15m;
+    // 10m -> -78
+//    double setting = 10.0;
+//    double outlier = -78;
+//    @Getter
+//    double w = 10.0;
+//    @Getter
+//    double h = 5.0*Math.sqrt(3);   //8.66
 
-    ArrayList<Double> kalman10m;
-    ArrayList<Double> kalman15m;
+    // 15m -> -83  -> -77
+    double setting = 15.0;
+    double outlier = -83.0;
+    double minOutlier = -30.0;
+    @Getter
+    double w = 15.0;
+    @Getter
+    double h = 15.0*Math.sqrt(3)/2;  //12.99
 
-    ArrayList<Double> roKalman10m;
-    ArrayList<Double> roKalman15m;
+    @Getter
+    int triangleNum;
+    @Getter
+    int triangleNumforWeightAndKalman;
+    @Getter
+    int triangleNumforNotProximity;
+    @Getter
+    int proposedwithoutProximityFinishNum;
 
-    ArrayList<Double> maf10m;
-    ArrayList<Double> maf15m;
+    Ap ap1;
+    Ap ap2;
+    Ap ap3;
 
-    ArrayList<Double> roMaf10m;
-    ArrayList<Double> roMaf15m;
+    Ap proximityAp;
 
-    ArrayList<Double> roMafKalman10m;
-    ArrayList<Double> roMafKalman15m;
+    Ap filteredAp1;
+    Ap filteredAp2;
+    Ap filteredAp3;
 
-    double outlier10m = -78;
+    int finishedCount;
 
-    double outlier15m = -83;
+    int checkProximityNum;
+
+    WeightFilter weightFilter1;
+    WeightFilter weightFilter2;
+    WeightFilter weightFilter3;
+
+    private Ap weightAp1;
+    private Ap weightAp2;
+    private Ap weightAp3;
+    private Ap kalmanAp1;
+    private Ap kalmanAp2;
+    private Ap kalmanAp3;
+
+    UserLocation weightUl;
+    UserLocation kalmanUl;
+
+    UserLocation updateLocFilteredUl;
+    Ap ap1forNotProximity;
+    Ap ap2forNotProximity;
+    Ap ap3forNotProximity;
+    SelectedVO filteredVoforNotProximity;
+
+    UserLocation filteredUlforNotProximity;
+    UserLocation updateLocFilteredUlforNotProximity;
+
     public  RSSIFilterTestService() {
         poiHelper = new ExelPOIHelper();
 
-        kFilterFor10m = new KalmanFilter();
-        kFilterFor15m = new KalmanFilter();
+        //RSSI 보정 프로세스
+        startFilter = new StartFilter();
+        startFilter2 = new StartFilter();
 
-        roKFilterFor10m = new KalmanFilter();
-        roKFilterFor15m = new KalmanFilter();
+        weightFilter1 = new WeightFilter();
+        weightFilter2 = new WeightFilter();
+        weightFilter3 = new WeightFilter();
 
-        roMafKFilterFor10m = new KalmanFilter();
-        roMafKFilterFor15m = new KalmanFilter();
+        mafFilter1 = new MAFilter();
+        mafFilter2 = new MAFilter();
+        mafFilter3 = new MAFilter();
 
-        mafFilter10m = new MAFilter();
-        mafFilter15m = new MAFilter();
+        mafFilter4 = new MAFilter();
+        mafFilter5 = new MAFilter();
+        mafFilter6 = new MAFilter();
 
-        mafFilter10m_romaf = new MAFilter();
-        mafFilter15m_romaf = new MAFilter();
+        kFilterForAp1 = new KalmanFilter();
+        kFilterForAp2 = new KalmanFilter();
+        kFilterForAp3 = new KalmanFilter();
 
+        kFilterForAp4 = new KalmanFilter();
+        kFilterForAp5 = new KalmanFilter();
+        kFilterForAp6 = new KalmanFilter();
 
-        array10m = new ArrayList<Double>();
-        array15m = new ArrayList<Double>();
+        kFilterForAp7 = new KalmanFilter();
+        kFilterForAp8 = new KalmanFilter();
+        kFilterForAp9 = new KalmanFilter();
 
-        startFilter();
-        filtering();
+        rm = new RemoveOutlier();
+
+        ulList = new ArrayList<UserLocation>();
+
+        finishedCount = 0;
+
+        weightFinishNum = 0;
+        kalmanFinishNum = 0;
+        proposedFinishNum = 0;
+        proposedwithoutProximityFinishNum = 0;
+
+        totalNum = 0;
     }
 
-    public void startFilter() {
-        try {
-            FileInputStream file = new FileInputStream("C:\\Users\\JaeHyuk\\Desktop\\RSSIFilterTest.xlsx");
-            XSSFWorkbook workbook = new XSSFWorkbook(file);
+    public VO trilateration(VO vo) {
+        originalVo = vo;
+        realOriginalVo = createSelectVO(originalVo.getDeviceName(), originalVo.getRssi1(), originalVo.getRssi1(), originalVo.getRssi1());
 
-            int rowindex=0;
-            int columnindex=0;
-            double value10m=1.0;
-            double value15m=1.0;
+        totalNum++;
+        log.info("--------------- total Num = {} ---------------", totalNum);
 
-            //시트 수 (첫번째에만 존재하므로 0을 준다)
-            //만약 각 시트를 읽기위해서는 FOR문을 한번더 돌려준다
-            XSSFSheet sheet=workbook.getSheetAt(0);
-            //행의 수
-            int rows=sheet.getPhysicalNumberOfRows();
+        //--------------------------------------------------------------Previous Research Method--------------------------------------------------------------
+        //------------------------------가중치 기법------------------------------
+        weightVo = createWeightVo(originalVo);
 
-            log.info("rows = {}", rows);
 
-            for(rowindex=0; rowindex<rows; rowindex++){
 
-                XSSFRow row = sheet.getRow(rowindex);
+        //------------------------------칼만 필터 단일 기법------------------------------
+        kalmanVo = createFilteredVo2(originalVo);
 
-                if(row !=null) {
 
-                    //셀의 수
-                    int cells = row.getPhysicalNumberOfCells();
-                    log.info("cells = {}", cells);
-                    value10m = 1.0;
-                    value15m = 1.0;
+        //--------------------------------------------------------------Proposed RSSI Filtering Method--------------------------------------------------------------
 
-                    XSSFCell cell10m = row.getCell(0);
-
-                    if (cell10m == null) {
-                        array10m.add(value10m);
-                    } else {
-                        value10m = cell10m.getNumericCellValue();
-
-                        log.info("10m value = {}", value10m);
-                        array10m.add(value10m);
-                    }
-
-                    XSSFCell cell15m = row.getCell(1);
-
-                    if (cell15m == null) {
-                        array15m.add(value15m);
-                    } else {
-                        value15m = cell15m.getNumericCellValue();
-
-                        log.info("15m value = {}", value15m);
-                        array15m.add(value15m);
-                    }
-
-                }
-            }
-        }catch(Exception e) {
-            e.printStackTrace();
+        // RSSI 이상치 제거
+        if( originalVo.getRssi1() < outlier && originalVo.getRssi1() > 0 ) {
+            selectedVo = createSelectVO(originalVo.getDeviceName(), 1, 1, 1);
         }
+        else {
+            selectedVo = createSelectVO(originalVo.getDeviceName(), originalVo.getRssi1(), originalVo.getRssi1(), originalVo.getRssi1());
+        }
+
+        //MAF
+        filteredVo = createMAFVo(selectedVo);
+
+        //Kalman
+        kfilteredVo = createFilteredVo(filteredVo);
+
+
+        log.info("Original Rssi1 = {}", realOriginalVo.getRssi1());
+        log.info("Weight Rssi1 = {}", weightVo.getRssi1());
+        log.info("Kalman Rssi = {}", kalmanVo.getRssi1());
+        log.info("Proposed Rssi = {}", kfilteredVo.getRssi1());
+
+        createCsvEx1(realOriginalVo, weightVo, kalmanVo, kfilteredVo, totalNum);
+
+        log.info("----------------------------------------------");
+        return originalVo;
     }
 
-    public void filtering() {
-        original10m = new ArrayList<Double>(array10m);
-        original15m = new ArrayList<Double>(array15m);
+    private SelectedVO createWeightVo(VO originalVo) {
+        double filterdRssi1 = weightFilter1.feedBack(originalVo.getRssi1());
+        double filterdRssi2 = weightFilter2.feedBack(originalVo.getRssi2());
+        double filterdRssi3 = weightFilter3.feedBack(originalVo.getRssi3());
 
-        ro10m = rmOutlier10m(original10m);
-        ro15m = rmOutlier15m(original15m);
 
-        kalman10m = kalmanFilter10m(original10m);
-        kalman15m = kalmanFilter15m(original15m);
+        return new SelectedVO(originalVo.getDeviceName(),
+                calcDistance(filterdRssi1),
+                filterdRssi1,
+                calcDistance(filterdRssi2),
+                filterdRssi2,
+                calcDistance(filterdRssi3),
+                filterdRssi3
+        );
 
-        roKalman10m = roKalmanFilter10m(ro10m);
-        roKalman15m = roKalmanFilter15m(ro15m);
-
-        maf10m = mAF10m(original10m);
-        maf15m = mAF15m(original15m);
-
-        roMaf10m = roMAF10m(ro10m);
-        roMaf15m = roMAF15m(ro15m);
-
-        roMafKalman10m = roMafKalmanFilter10m(roMaf10m);
-        roMafKalman15m = roMafKalmanFilter15m(roMaf15m);
-
-        createCsv(original10m, original15m,
-                ro10m, ro15m,
-                kalman10m, kalman15m,
-                roKalman10m, roKalman15m,
-                maf10m, maf15m,
-                roMaf10m, roMaf15m,
-                roMafKalman10m, roMafKalman15m);
     }
 
-    public void createCsv(ArrayList<Double> original10m, ArrayList<Double> original15m,
-                          ArrayList<Double> ro10m, ArrayList<Double> ro15m,
-                          ArrayList<Double> kalman10m, ArrayList<Double> kalman15m,
-                          ArrayList<Double> roKalman10m, ArrayList<Double> roKalman15m,
-                          ArrayList<Double> maf10m, ArrayList<Double> maf15m,
-                          ArrayList<Double> roMaf10m, ArrayList<Double> roMaf15m,
-                          ArrayList<Double> roMafKalman10m, ArrayList<Double> roMafKalman15m) {
+
+    private SelectedVO createMAFVo(SelectedVO originalVo) {
+        double filterdRssi1 = mafFilter1.push(originalVo.getRssi1());
+        double filterdRssi2 = mafFilter2.push(originalVo.getRssi2());
+        double filterdRssi3 = mafFilter3.push(originalVo.getRssi3());
+
+        return new SelectedVO(originalVo.getDeviceName(),
+                calcDistance(filterdRssi1),
+                filterdRssi1,
+                calcDistance(filterdRssi2),
+                filterdRssi2,
+                calcDistance(filterdRssi3),
+                filterdRssi3
+        );
+    }
+
+    private SelectedVO createMAFVo2(SelectedVO originalVo) {
+        double filterdRssi1 = mafFilter4.push(originalVo.getRssi1());
+        double filterdRssi2 = mafFilter5.push(originalVo.getRssi2());
+        double filterdRssi3 = mafFilter6.push(originalVo.getRssi3());
+
+        return new SelectedVO(originalVo.getDeviceName(),
+                calcDistance(filterdRssi1),
+                filterdRssi1,
+                calcDistance(filterdRssi2),
+                filterdRssi2,
+                calcDistance(filterdRssi3),
+                filterdRssi3
+        );
+    }
+
+    //칼만 필터 VO 생성 함수
+    public SelectedVO createFilteredVo(SelectedVO originalVo) {
+
+        double filterdRssi1 = kFilterForAp1.kalmanFiltering(originalVo.getRssi1());
+        double filterdRssi2 = kFilterForAp2.kalmanFiltering(originalVo.getRssi2());
+        double filterdRssi3 = kFilterForAp3.kalmanFiltering(originalVo.getRssi3());
+
+        return new SelectedVO(originalVo.getDeviceName(),
+                calcDistance(filterdRssi1),
+                filterdRssi1,
+                calcDistance(filterdRssi2),
+                filterdRssi2,
+                calcDistance(filterdRssi3),
+                filterdRssi3
+        );
+    }
+
+    public SelectedVO createFilteredVo2(VO originalVo) {
+
+        double filterdRssi1 = kFilterForAp4.kalmanFiltering(originalVo.getRssi1());
+        double filterdRssi2 = kFilterForAp5.kalmanFiltering(originalVo.getRssi2());
+        double filterdRssi3 = kFilterForAp6.kalmanFiltering(originalVo.getRssi3());
+
+        return new SelectedVO(originalVo.getDeviceName(),
+                calcDistance(filterdRssi1),
+                filterdRssi1,
+                calcDistance(filterdRssi2),
+                filterdRssi2,
+                calcDistance(filterdRssi3),
+                filterdRssi3
+        );
+    }
+
+    public SelectedVO createFilteredVo3(SelectedVO originalVo) {
+
+        double filterdRssi1 = kFilterForAp7.kalmanFiltering(originalVo.getRssi1());
+        double filterdRssi2 = kFilterForAp8.kalmanFiltering(originalVo.getRssi2());
+        double filterdRssi3 = kFilterForAp9.kalmanFiltering(originalVo.getRssi3());
+
+        return new SelectedVO(originalVo.getDeviceName(),
+                calcDistance(filterdRssi1),
+                filterdRssi1,
+                calcDistance(filterdRssi2),
+                filterdRssi2,
+                calcDistance(filterdRssi3),
+                filterdRssi3
+        );
+    }
+
+    private SelectedVO createSelectVO(String name, double rssi1, double rssi2, double rssi3) {
+        return new SelectedVO(name,
+                calcDistance(rssi1),
+                rssi1,
+                calcDistance(rssi2),
+                rssi2,
+                calcDistance(rssi3),
+                rssi3
+        );
+
+    }
+
+    public double calcDistance(double tempRssi) {
+
+        tempAlpha = -30;
+        lossNum = 4;
+
+        double distance = Math.pow(10, (tempAlpha-tempRssi)/(10*lossNum));
+
+        return distance;
+    }
+
+
+    //실험 1 엑셀 파일 만들기
+    public void createCsvEx1(SelectedVO realOriginalVo, SelectedVO weightVo, SelectedVO kalmanVo, SelectedVO proposedVo, int totalNum) {
         try {
-            // 비콘 8개 각각 성능 테스트를 위한 엑셀 생성
-//            poiHelper.writeTestExcel(originalVo, i);
-
-            poiHelper.wrieteRssiFilterTestExcel(original10m, original15m,
-                    ro10m, ro15m,
-                    kalman10m, kalman15m,
-                    roKalman10m, roKalman15m,
-                    maf10m, maf15m,
-                    roMaf10m, roMaf15m,
-                    roMafKalman10m, roMafKalman15m);
+            poiHelper.writeExcelforEx1(realOriginalVo, weightVo, kalmanVo, proposedVo, totalNum);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
-
-    //Remove Outlier
-    //10m
-    public ArrayList<Double> rmOutlier10m(ArrayList<Double> arr){
-        ArrayList<Double> r = new ArrayList<Double>();
-
-        for(int i=0; i < arr.size(); i++) {
-            if(arr.get(i) <= outlier10m) {
-                r.add(1.0);
-            }
-            else {
-                r.add(arr.get(i));
-            }
-        }
-        return r;
-    }
-    //15m
-    public ArrayList<Double> rmOutlier15m(ArrayList<Double> arr) {
-        ArrayList<Double> r = new ArrayList<Double>();
-
-        for(int i=0; i < arr.size(); i++) {
-            if(arr.get(i) <= outlier15m) {
-                r.add(1.0);
-            }
-            else {
-                r.add(arr.get(i));
-            }
-        }
-        return r;
-    }
-
-
-    //Kalman
-    //10m
-    public ArrayList<Double> kalmanFilter10m(ArrayList<Double> arr) {
-        ArrayList<Double> k = new ArrayList<Double>();
-
-        for(int i=0; i < arr.size(); i++) {
-            if(arr.get(i) < 0) {
-                k.add(kFilterFor10m.kalmanFiltering(arr.get(i)));
-            } else {
-                k.add(arr.get(i));
-            }
-        }
-        return k;
-    }
-
-    //15m
-    public ArrayList<Double> kalmanFilter15m(ArrayList<Double> arr) {
-        ArrayList<Double> k = new ArrayList<Double>();
-
-        for(int i=0; i < arr.size(); i++) {
-            if(arr.get(i) < 0) {
-                k.add(kFilterFor15m.kalmanFiltering(arr.get(i)));
-            } else {
-                k.add(arr.get(i));
-            }
-        }
-        return k;
-    }
-
-    //MAF
-    //10m
-    public ArrayList<Double> mAF10m(ArrayList<Double> arr) {
-        ArrayList<Double> m = new ArrayList<Double>();
-
-        for(int i=0; i < arr.size(); i++) {
-            if(arr.get(i) < 0) {
-                m.add(mafFilter10m.push(arr.get(i)));
-            } else {
-                m.add(arr.get(i));
-            }
-        }
-        return m;
-    }
-
-    public ArrayList<Double> mAF15m(ArrayList<Double> arr) {
-        ArrayList<Double> m = new ArrayList<Double>();
-
-        for(int i=0; i < arr.size(); i++) {
-            if(arr.get(i) < 0) {
-                m.add(mafFilter15m.push(arr.get(i)));
-            } else {
-                m.add(arr.get(i));
-            }
-        }
-        return m;
-    }
-
-
-    //ROMAF
-    //10m
-    public ArrayList<Double> roMAF10m(ArrayList<Double> arr) {
-        ArrayList<Double> m = new ArrayList<Double>();
-
-        for(int i=0; i < arr.size(); i++) {
-            if(arr.get(i) < 0) {
-                m.add(mafFilter10m_romaf.push(arr.get(i)));
-            } else {
-                m.add(arr.get(i));
-            }
-        }
-        return m;
-    }
-
-    //15m
-    public ArrayList<Double> roMAF15m(ArrayList<Double> arr) {
-        ArrayList<Double> m = new ArrayList<Double>();
-
-        for(int i=0; i < arr.size(); i++) {
-            if(arr.get(i) < 0) {
-                m.add(mafFilter15m_romaf.push(arr.get(i)));
-            } else {
-                m.add(arr.get(i));
-            }
-        }
-        return m;
-    }
-
-
-    //RO Kalman
-    //10m
-    public ArrayList<Double> roKalmanFilter10m(ArrayList<Double> arr) {
-        ArrayList<Double> k = new ArrayList<Double>();
-
-        for(int i=0; i < arr.size(); i++) {
-            if(arr.get(i) < 0) {
-                k.add(roKFilterFor10m.kalmanFiltering(arr.get(i)));
-            } else {
-                k.add(arr.get(i));
-            }
-        }
-        return k;
-    }
-
-    //15m
-    public ArrayList<Double> roKalmanFilter15m(ArrayList<Double> arr) {
-        ArrayList<Double> k = new ArrayList<Double>();
-
-        for(int i=0; i < arr.size(); i++) {
-            if(arr.get(i) < 0) {
-                k.add(roKFilterFor15m.kalmanFiltering(arr.get(i)));
-            } else {
-                k.add(arr.get(i));
-            }
-        }
-        return k;
-    }
-
-    //RO MAF Kalman
-    //10m
-    public ArrayList<Double> roMafKalmanFilter10m(ArrayList<Double> arr) {
-        ArrayList<Double> k = new ArrayList<Double>();
-
-        for(int i=0; i < arr.size(); i++) {
-            if(arr.get(i) < 0) {
-                k.add(roMafKFilterFor10m.kalmanFiltering(arr.get(i)));
-            } else {
-                k.add(arr.get(i));
-            }
-        }
-        return k;
-    }
-    //15m
-    public ArrayList<Double> roMafKalmanFilter15m(ArrayList<Double> arr) {
-        ArrayList<Double> k = new ArrayList<Double>();
-
-        for(int i=0; i < arr.size(); i++) {
-            if(arr.get(i) < 0) {
-                k.add(roMafKFilterFor15m.kalmanFiltering(arr.get(i)));
-            } else {
-                k.add(arr.get(i));
-            }
-        }
-        return k;
-    }
-
-
 }

@@ -572,7 +572,7 @@ public class ExelPOIHelper {
 //        File currDir = new File(".");
 //        String path = currDir.getAbsolutePath();
 //        String fileLocation = path.substring(0, path.length() - 1) + "temp.xlsx";
-        String fileLocation = "C:\\Users\\heehe\\Desktop\\bleExel\\1222\\Ex2_20.xlsx";
+        String fileLocation = "C:\\Users\\heehe\\Desktop\\bleExel\\0102\\1m.xlsx";
 
 //        String fileLocation = "C:\\Users\\JaeHyuk\\Desktop\\rssifilterfinal.xlsx";
 
@@ -838,6 +838,96 @@ public class ExelPOIHelper {
 
         //1000번
         if (nowNum == 1000) {
+            createFileAndRewrite();
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+    //-----------------------------------------------------------for Ex1-----------------------------------------------------------
+    public void forEx1Setting() {
+        Ex2Sheet = workbook.createSheet("Ex1");
+
+
+        Ex2Sheet.setColumnWidth(0, 10000);
+        Ex2Sheet.setColumnWidth(1, 5000);
+
+        Ex2Sheet.setColumnWidth(2, 10000);
+        Ex2Sheet.setColumnWidth(3, 5000);
+
+        Ex2Sheet.setColumnWidth(4, 10000);
+        Ex2Sheet.setColumnWidth(5, 5000);
+
+        Ex2Sheet.setColumnWidth(6, 10000);
+
+        Ex2Header = Ex2Sheet.createRow(0);
+
+        //헤더 셀(컬럼)
+        Cell headerCell = Ex2Header.createCell(0);
+        headerCell.setCellValue("Original RSSI");
+        headerCell.setCellStyle(headerStyle);
+
+
+        headerCell = Ex2Header.createCell(2);
+        headerCell.setCellValue("Weight RSSI");
+        headerCell.setCellStyle(headerStyle);
+
+
+        headerCell = Ex2Header.createCell(4);
+        headerCell.setCellValue("Kalman RSSI");
+        headerCell.setCellStyle(headerStyle);
+
+
+        headerCell = Ex2Header.createCell(6);
+        headerCell.setCellValue("Proposed RSSI");
+        headerCell.setCellStyle(headerStyle);
+
+
+    }
+
+    public void writeExcelforEx1(SelectedVO originalVo, SelectedVO weightVo, SelectedVO kalmanVo, SelectedVO proposedVo, int totalNum) throws IOException {
+
+
+        //data row 생성
+        Row row = Ex2Sheet.createRow(totalNum);
+
+        //셀 추가
+
+        //Weight RSSI
+        Cell cell = row.createCell(0);
+        cell.setCellValue(originalVo.getRssi1());
+        cell.setCellStyle(style);
+
+
+
+        //Kalman Ul
+        cell = row.createCell(2);
+        cell.setCellValue(weightVo.getRssi1());
+        cell.setCellStyle(style);
+
+
+
+        //Kalman RSSI
+        cell = row.createCell(4);
+        cell.setCellValue(kalmanVo.getRssi1());
+        cell.setCellStyle(style);
+
+
+        //Proposed RSSI
+        cell = row.createCell(6);
+        cell.setCellValue(proposedVo.getRssi1());
+        cell.setCellStyle(style);
+
+
+        //1000번
+        if (totalNum == 1000) {
             createFileAndRewrite();
         }
     }
