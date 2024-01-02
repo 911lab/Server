@@ -257,6 +257,8 @@ public class TestService {
         if(selectedVoforWeightAndKalman != null) {
             //------------------------------가중치 기법------------------------------
             weightVo = createWeightVo(selectedVoforWeightAndKalman);
+            log.info("Kalman Rssi1 = {}, Rssi2 = {}, Rssi3 = {}", weightVo.getRssi1(), weightVo.getRssi2(), weightVo.getRssi3());
+
             if (triangleNumforWeightAndKalman % 2 == 0) {
                 weightAp1 = new Ap((w / 2.0) * (triangleNumforWeightAndKalman - 1), h, weightVo.getDistance1());
                 weightAp2 = new Ap((w / 2.0) * triangleNumforWeightAndKalman, 0, weightVo.getDistance2());
@@ -274,6 +276,8 @@ public class TestService {
 
             //------------------------------칼만 필터 단일 기법------------------------------
             kalmanVo = createFilteredVo2(selectedVoforWeightAndKalman);
+            log.info("Kalman Rssi1 = {}, Rssi2 = {}, Rssi3 = {}", kalmanVo.getRssi1(), kalmanVo.getRssi2(), kalmanVo.getRssi3());
+
             if (triangleNum % 2 == 0) {
                 kalmanAp1 = new Ap((w / 2.0) * (triangleNum - 1), h, kalmanVo.getDistance1());
                 kalmanAp2 = new Ap((w / 2.0) * triangleNum, 0, kalmanVo.getDistance2());
@@ -818,10 +822,11 @@ public class TestService {
                 }
             }
         }
-        
+
         //if(valueTemp < 0 && valueTemp >= -49 && valueTemp2 < -49) {  //3m
         //if(valueTemp < 0 && valueTemp >= -42 && valueTemp2 < -42) {  //2m
-        if(valueTemp < 0 && valueTemp >= -30 && valueTemp2 < -30) {  //1m
+        if(valueTemp < 0 && valueTemp >= -37 && valueTemp2 < -37) {  //1.5m
+//        if(valueTemp < 0 && valueTemp >= -30 && valueTemp2 < -30) {  //1m
             return keyTemp;
         }
 
