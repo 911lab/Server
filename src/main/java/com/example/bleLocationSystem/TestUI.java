@@ -319,7 +319,24 @@ public class TestUI extends JFrame {
             //측위 결과 출력
             g2.translate(0,maxY); //원점이동
 
-            g2.setStroke(new BasicStroke(3,BasicStroke.CAP_BUTT,BasicStroke.JOIN_BEVEL,1,dash0,0));//점선
+            //ex3 : 이동 경로 실선
+            g2.setStroke(new BasicStroke(5,BasicStroke.CAP_BUTT,BasicStroke.JOIN_BEVEL,1,dash0,0));
+            g2.setColor(Color.BLACK);
+            g2.draw(new Line2D.Float((int)(0.5 * (w / beaconW)), -(int)(0.5 * (h / beaconH)), (int)(10 * (w / beaconW)), -(int)(6.5 * (h / beaconH)))); //11->10
+            g2.draw(new Line2D.Float((int)(10 * (w / beaconW)), -(int)(6.5 * (h / beaconH)), (int)(13 * (w / beaconW)), -(int)(6.5 * (h / beaconH)))); //10->9
+            g2.draw(new Line2D.Float((int)(13 * (w / beaconW)), -(int)(6.5 * (h / beaconH)), (int)(13 * (w / beaconW)), -(int)(9 * (h / beaconH)))); //9->8
+            g2.draw(new Line2D.Float((int)(13 * (w / beaconW)), -(int)(9 * (h / beaconH)), (int)(16 * (w / beaconW)), -(int)(9 * (h / beaconH)))); //8->7
+            g2.draw(new Line2D.Float((int)(16 * (w / beaconW)), -(int)(9 * (h / beaconH)), (int)(16 * (w / beaconW)), -(int)(12.5 * (h / beaconH)))); //7->6
+            g2.draw(new Line2D.Float((int)(16 * (w / beaconW)), -(int)(12.5 * (h / beaconH)), (int)(25 * (w / beaconW)), -(int)(12.5 * (h / beaconH)))); //6->5
+            g2.draw(new Line2D.Float((int)(25 * (w / beaconW)), -(int)(12.5 * (h / beaconH)), (int)(25 * (w / beaconW)), -(int)(9.5 * (h / beaconH)))); //5->4
+            g2.draw(new Line2D.Float((int)(25 * (w / beaconW)), -(int)(9.5 * (h / beaconH)), (int)(30 * (w / beaconW)), -(int)(1 * (h / beaconH)))); //4->3
+            g2.draw(new Line2D.Float((int)(30 * (w / beaconW)), -(int)(1 * (h / beaconH)), (int)(36 * (w / beaconW)), -(int)(6.5 * (h / beaconH)))); //3->2
+            g2.draw(new Line2D.Float((int)(36 * (w / beaconW)), -(int)(6.5 * (h / beaconH)), (int)(48.5 * (w / beaconW)), -(int)(6.5 * (h / beaconH)))); //2->1
+
+
+
+
+            g2.setStroke(new BasicStroke(3,BasicStroke.CAP_BUTT,BasicStroke.JOIN_BEVEL,1,dash0,0));//실선
 
             //Weight method
             if(wx!=-1 && wy!=-1) {
