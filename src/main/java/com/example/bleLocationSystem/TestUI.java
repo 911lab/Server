@@ -326,12 +326,12 @@ public class TestUI extends JFrame {
                 if(wx!=999 && wy!=999) {
                     if (preWx != -1 && preWy != -1) {
                         g2.setColor(Color.RED);
-                        g2.draw(new Line2D.Float((int) (preWx * (w / beaconW)), -(int) (preWy * (h / beaconH)), (int) (wx * (w / beaconW)), -(int) (wy * (h / beaconH))));//12
+//                        g2.draw(new Line2D.Float((int) (preWx * (w / beaconW)), -(int) (preWy * (h / beaconH)), (int) (wx * (w / beaconW)), -(int) (wy * (h / beaconH))));//12
                         preWx = wx;
                         preWy = wy;
                     } else {
                         g2.setColor(Color.RED);
-                        g2.fillRect((int) (wx * (w / beaconW)) - radius, -((int) (wy * (h / beaconH)) + radius), radius * 2, radius * 2);
+//                        g2.fillRect((int) (wx * (w / beaconW)) - radius, -((int) (wy * (h / beaconH)) + radius), radius * 2, radius * 2);
                         preWx = wx;
                         preWy = wy;
                     }
@@ -343,12 +343,12 @@ public class TestUI extends JFrame {
                 if(kx!=999 && ky!=999) {
                     if (preKx != -1 && preKy != -1) {
                         g2.setColor(Color.BLUE);
-                        g2.draw(new Line2D.Float((int) (preKx * (w / beaconW)), -(int) (preKy * (h / beaconH)), (int) (kx * (w / beaconW)), -(int) (ky * (h / beaconH))));//12
+//                        g2.draw(new Line2D.Float((int) (preKx * (w / beaconW)), -(int) (preKy * (h / beaconH)), (int) (kx * (w / beaconW)), -(int) (ky * (h / beaconH))));//12
                         preKx = kx;
                         preKy = ky;
                     } else {
                         g2.setColor(Color.BLUE);
-                        g2.fillRect((int) (kx * (w / beaconW)) - radius, -((int) (ky * (h / beaconH)) + radius), radius * 2, radius * 2);
+//                        g2.fillRect((int) (kx * (w / beaconW)) - radius, -((int) (ky * (h / beaconH)) + radius), radius * 2, radius * 2);
                         preKx = kx;
                         preKy = ky;
                     }

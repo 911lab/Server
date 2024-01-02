@@ -818,10 +818,10 @@ public class TestService {
                 }
             }
         }
-
-
-        //if(valueTemp >= -49 && valueTemp2 < -49) { //3m
-        if(valueTemp < 0 && valueTemp >= -42 && valueTemp2 < -42) {  //2m
+        
+        //if(valueTemp < 0 && valueTemp >= -49 && valueTemp2 < -49) {  //3m
+        //if(valueTemp < 0 && valueTemp >= -42 && valueTemp2 < -42) {  //2m
+        if(valueTemp < 0 && valueTemp >= -30 && valueTemp2 < -30) {  //1m
             return keyTemp;
         }
 
