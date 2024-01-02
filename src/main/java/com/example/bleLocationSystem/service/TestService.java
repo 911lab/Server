@@ -257,7 +257,7 @@ public class TestService {
         if(selectedVoforWeightAndKalman != null) {
             //------------------------------가중치 기법------------------------------
             weightVo = createWeightVo(selectedVoforWeightAndKalman);
-            log.info("Kalman Rssi1 = {}, Rssi2 = {}, Rssi3 = {}", weightVo.getRssi1(), weightVo.getRssi2(), weightVo.getRssi3());
+            log.info("Weight Rssi1 = {}, Rssi2 = {}, Rssi3 = {}", weightVo.getRssi1(), weightVo.getRssi2(), weightVo.getRssi3());
 
             if (triangleNumforWeightAndKalman % 2 == 0) {
                 weightAp1 = new Ap((w / 2.0) * (triangleNumforWeightAndKalman - 1), h, weightVo.getDistance1());
@@ -278,14 +278,14 @@ public class TestService {
             kalmanVo = createFilteredVo2(selectedVoforWeightAndKalman);
             log.info("Kalman Rssi1 = {}, Rssi2 = {}, Rssi3 = {}", kalmanVo.getRssi1(), kalmanVo.getRssi2(), kalmanVo.getRssi3());
 
-            if (triangleNum % 2 == 0) {
-                kalmanAp1 = new Ap((w / 2.0) * (triangleNum - 1), h, kalmanVo.getDistance1());
-                kalmanAp2 = new Ap((w / 2.0) * triangleNum, 0, kalmanVo.getDistance2());
-                kalmanAp3 = new Ap((w / 2.0) * (triangleNum + 1), h, kalmanVo.getDistance3());
+            if (triangleNumforWeightAndKalman % 2 == 0) {
+                kalmanAp1 = new Ap((w / 2.0) * (triangleNumforWeightAndKalman - 1), h, kalmanVo.getDistance1());
+                kalmanAp2 = new Ap((w / 2.0) * triangleNumforWeightAndKalman, 0, kalmanVo.getDistance2());
+                kalmanAp3 = new Ap((w / 2.0) * (triangleNumforWeightAndKalman + 1), h, kalmanVo.getDistance3());
             } else {
-                kalmanAp1 = new Ap((w / 2.0) * (triangleNum - 1), 0, kalmanVo.getDistance1());
-                kalmanAp2 = new Ap((w / 2.0) * triangleNum, h, kalmanVo.getDistance2());
-                kalmanAp3 = new Ap((w / 2.0) * (triangleNum + 1), 0, kalmanVo.getDistance3());
+                kalmanAp1 = new Ap((w / 2.0) * (triangleNumforWeightAndKalman - 1), 0, kalmanVo.getDistance1());
+                kalmanAp2 = new Ap((w / 2.0) * triangleNumforWeightAndKalman, h, kalmanVo.getDistance2());
+                kalmanAp3 = new Ap((w / 2.0) * (triangleNumforWeightAndKalman + 1), 0, kalmanVo.getDistance3());
             }
             Trilateration kalmanTr = new Trilateration(kalmanVo.getDeviceName(), kalmanAp1, kalmanAp2, kalmanAp3);
             kalmanUl = kalmanTr.calcUserLocation();
