@@ -572,7 +572,7 @@ public class ExelPOIHelper {
 //        File currDir = new File(".");
 //        String path = currDir.getAbsolutePath();
 //        String fileLocation = path.substring(0, path.length() - 1) + "temp.xlsx";
-        String fileLocation = "C:\\Users\\heehe\\Desktop\\bleExel\\0102\\1m.xlsx";
+        String fileLocation = "C:\\Users\\heehe\\Desktop\\bleExel\\0102\\1m_open.xlsx";
 
 //        String fileLocation = "C:\\Users\\JaeHyuk\\Desktop\\rssifilterfinal.xlsx";
 
