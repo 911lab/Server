@@ -860,15 +860,19 @@ public class ExelPOIHelper {
 
 
         Ex2Sheet.setColumnWidth(0, 10000);
-        Ex2Sheet.setColumnWidth(1, 5000);
+        Ex2Sheet.setColumnWidth(1, 10000);
+        Ex2Sheet.setColumnWidth(2, 5000);
 
-        Ex2Sheet.setColumnWidth(2, 10000);
-        Ex2Sheet.setColumnWidth(3, 5000);
-
+        Ex2Sheet.setColumnWidth(3, 10000);
         Ex2Sheet.setColumnWidth(4, 10000);
         Ex2Sheet.setColumnWidth(5, 5000);
 
         Ex2Sheet.setColumnWidth(6, 10000);
+        Ex2Sheet.setColumnWidth(7, 10000);
+        Ex2Sheet.setColumnWidth(8, 5000);
+
+        Ex2Sheet.setColumnWidth(9, 10000);
+        Ex2Sheet.setColumnWidth(10, 10000);
 
         Ex2Header = Ex2Sheet.createRow(0);
 
@@ -877,19 +881,35 @@ public class ExelPOIHelper {
         headerCell.setCellValue("Original RSSI");
         headerCell.setCellStyle(headerStyle);
 
-
-        headerCell = Ex2Header.createCell(2);
-        headerCell.setCellValue("Weight RSSI");
+        headerCell = Ex2Header.createCell(1);
+        headerCell.setCellValue("Original distance");
         headerCell.setCellStyle(headerStyle);
 
 
+        headerCell = Ex2Header.createCell(3);
+        headerCell.setCellValue("Weight RSSI");
+        headerCell.setCellStyle(headerStyle);
+
         headerCell = Ex2Header.createCell(4);
-        headerCell.setCellValue("Kalman RSSI");
+        headerCell.setCellValue("Weight distance");
         headerCell.setCellStyle(headerStyle);
 
 
         headerCell = Ex2Header.createCell(6);
+        headerCell.setCellValue("Kalman RSSI");
+        headerCell.setCellStyle(headerStyle);
+
+        headerCell = Ex2Header.createCell(7);
+        headerCell.setCellValue("Kalman distance");
+        headerCell.setCellStyle(headerStyle);
+
+
+        headerCell = Ex2Header.createCell(9);
         headerCell.setCellValue("Proposed RSSI");
+        headerCell.setCellStyle(headerStyle);
+
+        headerCell = Ex2Header.createCell(10);
+        headerCell.setCellValue("Proposed distance");
         headerCell.setCellStyle(headerStyle);
 
 
@@ -903,29 +923,45 @@ public class ExelPOIHelper {
 
         //셀 추가
 
-        //Weight RSSI
+        //Original RSSI
         Cell cell = row.createCell(0);
         cell.setCellValue(originalVo.getRssi1());
         cell.setCellStyle(style);
+        //Original Distance
+        cell = row.createCell(1);
+        cell.setCellValue(originalVo.getDistance1());
+        cell.setCellStyle(style);
 
 
-
-        //Kalman Ul
-        cell = row.createCell(2);
+        //Weight Ul
+        cell = row.createCell(3);
         cell.setCellValue(weightVo.getRssi1());
         cell.setCellStyle(style);
+        //Weight Distance
+        cell = row.createCell(4);
+        cell.setCellValue(weightVo.getDistance1());
+        cell.setCellStyle(style);
+
 
 
 
         //Kalman RSSI
-        cell = row.createCell(4);
+        cell = row.createCell(6);
         cell.setCellValue(kalmanVo.getRssi1());
+        cell.setCellStyle(style);
+        //Kalman Distance
+        cell = row.createCell(7);
+        cell.setCellValue(kalmanVo.getDistance1());
         cell.setCellStyle(style);
 
 
         //Proposed RSSI
-        cell = row.createCell(6);
+        cell = row.createCell(9);
         cell.setCellValue(proposedVo.getRssi1());
+        cell.setCellStyle(style);
+        //Proposed Distance
+        cell = row.createCell(10);
+        cell.setCellValue(proposedVo.getDistance1());
         cell.setCellStyle(style);
 
 

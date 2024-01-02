@@ -242,10 +242,10 @@ public class RSSIFilterTestService {
         kfilteredVo = createFilteredVo(filteredVo);
 
 
-        log.info("Original Rssi1 = {}", realOriginalVo.getRssi1());
-        log.info("Weight Rssi1 = {}", weightVo.getRssi1());
-        log.info("Kalman Rssi = {}", kalmanVo.getRssi1());
-        log.info("Proposed Rssi = {}", kfilteredVo.getRssi1());
+        log.info("Original Rssi1 = {}  dis1 = {}", realOriginalVo.getRssi1(), realOriginalVo.getDistance1());
+        log.info("Weight Rssi1 = {}  dis2 = {}", weightVo.getRssi1(), weightVo.getDistance1());
+        log.info("Kalman Rssi = {}  dis3 = {}", kalmanVo.getRssi1(), kalmanVo.getDistance1());
+        log.info("Proposed Rssi = {}  dis4 = {}", kfilteredVo.getRssi1(), kfilteredVo.getDistance1());
 
         createCsvEx1(realOriginalVo, weightVo, kalmanVo, kfilteredVo, totalNum);
 
