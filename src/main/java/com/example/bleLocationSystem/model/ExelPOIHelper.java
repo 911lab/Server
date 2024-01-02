@@ -63,8 +63,11 @@ public class ExelPOIHelper {
 //        threeBeaconStopSetting();
 
         //실험 2 셋팅
-        forEx2Setting();
-        nowNum = 0;
+//        forEx2Setting();
+//        nowNum = 0;
+
+        //실험 1 셋팅
+        forEx1Setting();
     }
 
 
@@ -572,7 +575,7 @@ public class ExelPOIHelper {
 //        File currDir = new File(".");
 //        String path = currDir.getAbsolutePath();
 //        String fileLocation = path.substring(0, path.length() - 1) + "temp.xlsx";
-        String fileLocation = "C:\\Users\\heehe\\Desktop\\bleExel\\0102\\1m_open.xlsx";
+        String fileLocation = "C:\\Users\\heehe\\Desktop\\bleExel\\0102\\1m_open_another_battery.xlsx";
 
 //        String fileLocation = "C:\\Users\\JaeHyuk\\Desktop\\rssifilterfinal.xlsx";
 
