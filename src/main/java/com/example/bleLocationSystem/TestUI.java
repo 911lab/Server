@@ -372,12 +372,28 @@ public class TestUI extends JFrame {
                 }
             }
 
+            //Proposed method without Proximity
+            if(pwpx!=-1 && pwpy!=-1 ) {
+                if(pwpx!=999 && pwpy!=999) {
+                    if (prePwpx != -1 && prePwpy != -1) {
+                        g2.setColor(Color.BLUE);
+                        g2.draw(new Line2D.Float((int) (prePwpx * (w / beaconW)), -(int) (prePwpy * (h / beaconH)), (int) (pwpx * (w / beaconW)), -(int) (pwpy * (h / beaconH))));//12
+                        prePwpx = pwpx;
+                        prePwpy = pwpy;
+                    } else {
+                        g2.setColor(Color.GRAY);
+                        g2.fillRect((int) (pwpx * (w / beaconW)) - radius, -((int) (pwpy * (h / beaconH)) + radius), radius * 2, radius * 2);
+                        prePwpx = pwpx;
+                        prePwpy = pwpy;
+                    }
+                }
+            }
 
             //Proposed method
             if(px!=-1 && py!=-1) {
                 if(px!=999 && py!=999) {
                     if (prePx != -1 && prePy != -1) {
-                        g2.setColor(Color.BLACK);
+                        g2.setColor(Color.RED);
                         g2.draw(new Line2D.Float((int) (prePx * (w / beaconW)), -(int) (prePy * (h / beaconH)), (int) (px * (w / beaconW)), -(int) (py * (h / beaconH))));//12
                         prePx = px;
                         prePy = py;
@@ -391,22 +407,7 @@ public class TestUI extends JFrame {
             }
 
 
-            //Proposed method without Proximity
-            if(pwpx!=-1 && pwpy!=-1 ) {
-                if(pwpx!=999 && pwpy!=999) {
-                    if (prePwpx != -1 && prePwpy != -1) {
-                        g2.setColor(Color.GRAY);
-                        g2.draw(new Line2D.Float((int) (prePwpx * (w / beaconW)), -(int) (prePwpy * (h / beaconH)), (int) (pwpx * (w / beaconW)), -(int) (pwpy * (h / beaconH))));//12
-                        prePwpx = pwpx;
-                        prePwpy = pwpy;
-                    } else {
-                        g2.setColor(Color.GRAY);
-                        g2.fillRect((int) (pwpx * (w / beaconW)) - radius, -((int) (pwpy * (h / beaconH)) + radius), radius * 2, radius * 2);
-                        prePwpx = pwpx;
-                        prePwpy = pwpy;
-                    }
-                }
-            }
+
                 //else if(i%2==1)
                 //g2.setColor(Color.GREEN);
 
