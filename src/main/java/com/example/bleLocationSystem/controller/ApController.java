@@ -28,10 +28,10 @@ import java.util.Map;
 public class ApController {
 
     //실제
-//    ApService apService = new ApService();
-//    UI ui = new UI(apService.getW(),apService.getH());
-//    UserLocation ul;
-//    Map<String, Double> map = new HashMap<String, Double>();
+    ApService apService = new ApService();
+    UI ui = new UI(apService.getW(),apService.getH());
+    UserLocation ul;
+    Map<String, Double> map = new HashMap<String, Double>();
 
 
     //Test
@@ -43,38 +43,38 @@ public class ApController {
 
 
     //RSSI Test for Experiment 1
-    VO vooo;
-    RSSIFilterTestService testService = new RSSIFilterTestService();
+//    VO vooo;
+//    RSSIFilterTestService testService = new RSSIFilterTestService();
 
 
 
     //앱으로부터 ap1, ap2, ap3 각각의 거리값 받기
     //실제
-//    @PostMapping("/api/distance")
-//    public ResponseEntity<Map<String, Double>> receiveDistance(VO vo) throws Exception {
+    @PostMapping("/api/distance")
+    public ResponseEntity<Map<String, Double>> receiveDistance(VO vo) throws Exception {
 
     //테스트시
 //    @PostMapping("/api/distance")
 //    public ResponseEntity<UserLocation> receiveDistance(VO vo) throws Exception {
 
     //논문 실험 1 테스트시
-    @PostMapping("/api/distance")
-    public ResponseEntity<VO> receiveDistance(VO vo) throws Exception {
+//    @PostMapping("/api/distance")
+//    public ResponseEntity<VO> receiveDistance(VO vo) throws Exception {
 
 
         //-------------Real--------------
-//        ul = apService.trilateration(vo);
-//
-//        if(ul != null) {
-//            ui.setUserLocation(ul);
-//            map.put("triangleNum", apService.getTriangleNum()*1.0);
-//            map.put("x", ul.getX());
-//            map.put("y", ul.getY());
-//        }
-//
-//        return (ul != null) ?
-//                ResponseEntity.status(HttpStatus.OK).body(map) :
-//                ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        ul = apService.trilateration(vo);
+
+        if(ul != null) {
+            ui.setUserLocation(ul);
+            map.put("triangleNum", apService.getTriangleNum()*1.0);
+            map.put("x", ul.getX());
+            map.put("y", ul.getY());
+        }
+
+        return (ul != null) ?
+                ResponseEntity.status(HttpStatus.OK).body(map) :
+                ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
 
 
@@ -98,12 +98,12 @@ public class ApController {
 
     //--------------RSSI Test for Experiment 1--------------
     //        ul = testService.trilateration(vo);
-    vooo = null;
-    vooo = testService.trilateration(vo);
-
-        return (vooo != null) ?
-            ResponseEntity.status(HttpStatus.OK).body(vooo) :
-            ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+//    vooo = null;
+//    vooo = testService.trilateration(vo);
+//
+//        return (vooo != null) ?
+//            ResponseEntity.status(HttpStatus.OK).body(vooo) :
+//            ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
 }
 

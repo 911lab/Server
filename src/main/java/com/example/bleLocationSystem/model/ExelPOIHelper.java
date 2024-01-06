@@ -9,6 +9,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 @Slf4j
@@ -42,6 +43,10 @@ public class ExelPOIHelper {
     int num;
     int nowNum;
 
+    ArrayList<Row> rowArray;
+
+
+
 
     public ExelPOIHelper() {
         workbook = new XSSFWorkbook();
@@ -67,8 +72,17 @@ public class ExelPOIHelper {
 //        nowNum = 0;
 
         //실험 1 셋팅
-        forEx1Setting();
+//        forEx1Setting();
+
+        //칼만 파라미터 실험 셋팅
+        forKalmanParameterExSetting();
+        rowArray = new ArrayList<Row>();
+        //data row 생성
+        for(int j=0; j<100; j++) {
+            rowArray.add(Ex2Sheet.createRow(j));
+        }
     }
+
 
 
     public void styleSetting() {
@@ -575,9 +589,11 @@ public class ExelPOIHelper {
 //        File currDir = new File(".");
 //        String path = currDir.getAbsolutePath();
 //        String fileLocation = path.substring(0, path.length() - 1) + "temp.xlsx";
-        String fileLocation = "C:\\Users\\heehe\\Desktop\\bleExel\\0102\\6m_open.xlsx";
+        //HJ
+//        String fileLocation = "C:\\Users\\heehe\\Desktop\\bleExel\\0102\\6m_open.xlsx";
 
-//        String fileLocation = "C:\\Users\\JaeHyuk\\Desktop\\rssifilterfinal.xlsx";
+        //JH
+        String fileLocation = "C:\\Users\\JaeHyuk\\Desktop\\kalman_parameter_LOS_1_15.xlsx";
 
         FileOutputStream outputStream = new FileOutputStream(fileLocation);
         workbook.write(outputStream);
@@ -964,11 +980,96 @@ public class ExelPOIHelper {
         cell.setCellValue(proposedVo.getDistance1());
         cell.setCellStyle(style);
 
+//        //1000번
+//        if (totalNum == 1000) {
+//            createFileAndRewrite();
+//        }
+    }
 
-        //1000번
-        if (totalNum == 1000) {
-            createFileAndRewrite();
+
+
+
+
+
+    //-----------------------------------------------------------for KalmanParameter Experiment-----------------------------------------------------------
+    public void forKalmanParameterExSetting() {
+        Ex2Sheet = workbook.createSheet("KalmanParameter");
+
+        String ourStr;
+        String fusionStr;
+        String performanceStr;
+
+        for(int i=0; i<47; i++) {
+            Ex2Sheet.setColumnWidth(i, 10000);
         }
+
+        Ex2Header = Ex2Sheet.createRow(0);
+        Cell headerCell;
+
+        //헤더 셀(컬럼)
+        for(int i=0; i<47; i++) {
+            if(i==15 || i==31) {}
+            else {
+                ourStr = String.format("our %dm", i);
+                headerCell = Ex2Header.createCell(i);
+                headerCell.setCellValue(ourStr);
+                headerCell.setCellStyle(headerStyle);
+
+                fusionStr = String.format("fusion %dm", i+16);
+                headerCell = Ex2Header.createCell(i);
+                headerCell.setCellValue(fusionStr);
+                headerCell.setCellStyle(headerStyle);
+
+                performanceStr = String.format("performance %dm", i+32);
+                headerCell = Ex2Header.createCell(i);
+                headerCell.setCellValue(performanceStr);
+                headerCell.setCellStyle(headerStyle);
+            }
+        }
+    }
+
+    public void writeExcelforKalmanParameterEx(int meter, ArrayList<Double>[] ourKalmanArrays, ArrayList<Double>[] fusionKalmanArrays, ArrayList<Double>[] performanceKalmanArrays) throws IOException {
+
+
+        //data row 생성 -> 생성자에서
+
+        Cell cell;
+
+        //셀 추가
+
+        for(int i=0; i<100; i++) {
+            //our
+            cell = rowArray.get(i).createCell(meter);
+            cell.setCellValue(ourKalmanArrays[meter].get(i));
+            cell.setCellStyle(style);
+
+            //fusion
+            cell = rowArray.get(i).createCell(meter+16);
+            cell.setCellValue(fusionKalmanArrays[meter].get(i));
+            cell.setCellStyle(style);
+
+            //performance
+            cell = rowArray.get(i).createCell(meter+32);
+            cell.setCellValue(performanceKalmanArrays[meter].get(i));
+            cell.setCellStyle(style);
+        }
+
+//        if(meter == 14) {
+//
+//        }
+//        if (totalNum == 1000) {
+//            createFileAndRewrite();
+//        }
+    }
+
+    public double calcDistanceforPOI(double tempRssi) {
+
+        float tempAlpha= -23;
+        double lossNum= 3.81;
+
+        double distance = Math.pow(10, (tempAlpha-tempRssi)/(10*lossNum));
+
+        return distance;
     }
 
 }
