@@ -593,7 +593,7 @@ public class ExelPOIHelper {
 //        String fileLocation = "C:\\Users\\heehe\\Desktop\\bleExel\\0102\\6m_open.xlsx";
 
         //JH
-        String fileLocation = "C:\\Users\\JaeHyuk\\Desktop\\kalman_parameter_LOS_1_15.xlsx";
+        String fileLocation = "C:\\Users\\JaeHyuk\\Desktop\\kalman_parameter_NLOS_1_15.xlsx";
 
         FileOutputStream outputStream = new FileOutputStream(fileLocation);
         workbook.write(outputStream);
