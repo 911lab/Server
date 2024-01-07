@@ -842,7 +842,6 @@ public class TestService {
                 calcDistance(rssi3),
                 rssi3
         );
-
     }
 
     private SelectedVO createWeightVo(SelectedVO originalVo) {
