@@ -26,6 +26,7 @@ public class RSSIFilterOursTestService {
     int kalmanFinishNum;
     int proposedFinishNum;
 
+    int i=0;
     int totalNum;
 
     int finishedCount;
@@ -65,7 +66,7 @@ public class RSSIFilterOursTestService {
                 RSSI=1;
             }
             else{
-                RSSI=arrays.get(j)
+                RSSI=arrays.get(j);
             }
             if(RSSI != 1) {
                     RnMArrays[i].add(createOurKalmanVo_1m(arrays.get(j)));
@@ -173,4 +174,6 @@ public class RSSIFilterOursTestService {
         }
         return array;
     }
+
+
 }

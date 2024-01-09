@@ -75,12 +75,19 @@ public class ExelPOIHelper {
 //        forEx1Setting();
 
         //칼만 파라미터 실험 셋팅
-        forKalmanParameterExSetting();
-        rowArray = new ArrayList<Row>();
-        //data row 생성
-        for(int j=0; j<100; j++) {
-            rowArray.add(Ex2Sheet.createRow(j));
-        }
+//        forKalmanParameterExSetting();
+//        rowArray = new ArrayList<Row>();
+//        //data row 생성
+//        for(int j=0; j<100; j++) {
+//            rowArray.add(Ex2Sheet.createRow(j));
+//        }
+
+        //RSSI Filter Test 셋팅
+
+
+        //Loc Filter Test 셋팅
+//        forLocFilterSetting();
+//        nowNum = 0;
     }
 
 
@@ -1071,5 +1078,142 @@ public class ExelPOIHelper {
 
         return distance;
     }
+
+
+    //-----------------------------------------------------------for Loc Filter Test-----------------------------------------------------------
+    public void forLocFilterSetting() {
+        Ex2Sheet = workbook.createSheet("LocFilterTest");
+
+
+        Ex2Sheet.setColumnWidth(0, 10000);
+        Ex2Sheet.setColumnWidth(1, 10000);
+        Ex2Sheet.setColumnWidth(2, 10000);
+        Ex2Sheet.setColumnWidth(3, 10000);
+        Ex2Sheet.setColumnWidth(4, 10000);
+        Ex2Sheet.setColumnWidth(5, 10000);
+        Ex2Sheet.setColumnWidth(6, 10000);
+        Ex2Sheet.setColumnWidth(7, 10000);
+        Ex2Sheet.setColumnWidth(8, 10000);
+        Ex2Sheet.setColumnWidth(9, 10000);
+
+        Ex2Header = Ex2Sheet.createRow(0);
+
+        //헤더 셀(컬럼)
+        Cell headerCell = Ex2Header.createCell(0);
+        headerCell.setCellValue("Original Location");
+        headerCell.setCellStyle(headerStyle);
+
+        headerCell = Ex2Header.createCell(1);
+        headerCell.setCellValue("Original Distance MAE");
+        headerCell.setCellStyle(headerStyle);
+
+
+        headerCell = Ex2Header.createCell(2);
+        headerCell.setCellValue("Kalman Location");
+        headerCell.setCellStyle(headerStyle);
+
+        headerCell = Ex2Header.createCell(3);
+        headerCell.setCellValue("Kalman Distance MAE");
+        headerCell.setCellStyle(headerStyle);
+
+
+        headerCell = Ex2Header.createCell(4);
+        headerCell.setCellValue("Proposed without Loc Filter and Proximity Location");
+        headerCell.setCellStyle(headerStyle);
+
+        headerCell = Ex2Header.createCell(5);
+        headerCell.setCellValue("Proposed without Loc Filter and Proximity Distance MAE");
+        headerCell.setCellStyle(headerStyle);
+
+
+        headerCell = Ex2Header.createCell(6);
+        headerCell.setCellValue("Proposed without Proximity Location");
+        headerCell.setCellStyle(headerStyle);
+
+        headerCell = Ex2Header.createCell(7);
+        headerCell.setCellValue("Proposed without Proximity MAE");
+        headerCell.setCellStyle(headerStyle);
+
+
+        headerCell = Ex2Header.createCell(8);
+        headerCell.setCellValue("Proposed Location");
+        headerCell.setCellStyle(headerStyle);
+
+        headerCell = Ex2Header.createCell(9);
+        headerCell.setCellValue("Proposed Distance MAE");
+        headerCell.setCellStyle(headerStyle);
+
+    }
+
+    public void writeExcelforLocFilter(UserLocation originalUl, UserLocation kalmanUl, UserLocation notLocFilterUl, UserLocation proposedWithoutProximity ,UserLocation proposedUl) throws IOException {
+
+        nowNum++;
+        log.info("Now Row : {}", nowNum);
+
+        //data row 생성
+        Row row = Ex2Sheet.createRow(nowNum);
+
+        //셀 추가
+
+        //Weight Ul
+        Cell cell = row.createCell(0);
+        String originalUl_xy = String.format("(%.2f, %.2f)", originalUl.getX(), originalUl.getY());
+        cell.setCellValue(originalUl_xy);
+        cell.setCellStyle(style);
+
+        cell = row.createCell(1);
+        cell.setCellValue(originalUl.getDistanceDev());
+        cell.setCellStyle(style);
+
+        //Kalman Ul
+        cell = row.createCell(2);
+        String kalmanUl_xy = String.format("(%.2f, %.2f)", kalmanUl.getX(), kalmanUl.getY());
+        cell.setCellValue(kalmanUl_xy);
+        cell.setCellStyle(style);
+
+        cell = row.createCell(3);
+        cell.setCellValue(kalmanUl.getDistanceDev());
+        cell.setCellStyle(style);
+
+        //Proposed without Loc Filter and Proximity
+        cell = row.createCell(4);
+        String notLocFilterUl_xy = String.format("(%.2f, %.2f)", notLocFilterUl.getX(), notLocFilterUl.getY());
+        cell.setCellValue(notLocFilterUl_xy);
+        cell.setCellStyle(style);
+
+        cell = row.createCell(5);
+        cell.setCellValue(notLocFilterUl.getDistanceDev());
+        cell.setCellStyle(style);
+
+        //Proposed without Proximity
+        cell = row.createCell(6);
+        String proposedWithoutProximity_xy = String.format("(%.2f, %.2f)", proposedWithoutProximity.getX(), proposedWithoutProximity.getY());
+        cell.setCellValue(proposedWithoutProximity_xy);
+        cell.setCellStyle(style);
+
+        cell = row.createCell(7);
+        cell.setCellValue(proposedWithoutProximity.getDistanceDev());
+        cell.setCellStyle(style);
+
+        //Proposed
+        cell = row.createCell(8);
+        String proposed_xy = String.format("(%.2f, %.2f)", proposedUl.getX(), proposedUl.getY());
+        cell.setCellValue(proposed_xy);
+        cell.setCellStyle(style);
+
+        cell = row.createCell(9);
+        cell.setCellValue(proposedUl.getDistanceDev());
+        cell.setCellStyle(style);
+
+        //1000번
+        if (nowNum == 1000) {
+            createFileAndRewrite();
+        }
+    }
+
+
+
+
+
 
 }

@@ -45,8 +45,8 @@ public class ApService extends JFrame {
 
     Up UserPoint;
     Thread t;
-    private float tempAlpha;
-    private int lossNum;
+    private double tempAlpha;
+    private double lossNum;
 
     boolean initCheck;
     boolean numCheck;
@@ -599,7 +599,9 @@ public class ApService extends JFrame {
         }
 
 
-        if(valueTemp >= -42 && valueTemp2 < -42) {
+        //2m -> -34.4692
+        //3m -> -41.1783
+        if(valueTemp >= -41.1783 && valueTemp2 < -41.1783) {
             return keyTemp;
         }
 
@@ -684,8 +686,8 @@ public class ApService extends JFrame {
 
     public double calcDistance(double tempRssi) {
 
-        tempAlpha = -30;
-        lossNum = 4;
+        tempAlpha = -23;
+        lossNum = 3.81;
 
         double distance = Math.pow(10, (tempAlpha-tempRssi)/(10*lossNum));
 
