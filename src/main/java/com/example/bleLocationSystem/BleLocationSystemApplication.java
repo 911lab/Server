@@ -2,6 +2,7 @@ package com.example.bleLocationSystem;
 
 import com.example.bleLocationSystem.service.Ex1Service;
 import com.example.bleLocationSystem.service.KalmanParameterTestService;
+import com.example.bleLocationSystem.service.RSSIFilterOursTestService;
 import com.example.bleLocationSystem.service.RSSIFilterTestService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -25,7 +26,11 @@ public class BleLocationSystemApplication {
 
 
 		//-----------칼만 파라미터 테스트-----------
-		new KalmanParameterTestService();
+//		new KalmanParameterTestService();
+
+
+		//-----------RSSI Filter Test-----------
+		new RSSIFilterOursTestService();
 
 	}
 }

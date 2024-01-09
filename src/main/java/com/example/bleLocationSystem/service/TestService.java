@@ -59,8 +59,8 @@ public class TestService {
 
     Up UserPoint;
     Thread t;
-    private float tempAlpha;
-    private int lossNum;
+    double tempAlpha;
+    double lossNum;
 
     boolean initCheck;
     boolean numCheck;
@@ -943,8 +943,8 @@ public class TestService {
 
     public double calcDistance(double tempRssi) {
 
-        tempAlpha = -30;
-        lossNum = 4;
+        tempAlpha = -23;
+        lossNum = 3.81;
 
         double distance = Math.pow(10, (tempAlpha-tempRssi)/(10*lossNum));
 

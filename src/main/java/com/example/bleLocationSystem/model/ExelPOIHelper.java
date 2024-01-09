@@ -83,7 +83,7 @@ public class ExelPOIHelper {
 //        }
 
         //RSSI Filter Test 셋팅
-
+        forRSSIFilterSetting();
 
         //Loc Filter Test 셋팅
 //        forLocFilterSetting();
@@ -600,7 +600,7 @@ public class ExelPOIHelper {
 //        String fileLocation = "C:\\Users\\heehe\\Desktop\\bleExel\\0102\\6m_open.xlsx";
 
         //JH
-        String fileLocation = "C:\\Users\\JaeHyuk\\Desktop\\kalman_parameter_NLOS_1_15.xlsx";
+        String fileLocation = "C:\\Users\\JaeHyuk\\Desktop\\RSSI_Filter_Test\\Result\\NLOS\\15m_result.xlsx";
 
         FileOutputStream outputStream = new FileOutputStream(fileLocation);
         workbook.write(outputStream);
@@ -1078,6 +1078,120 @@ public class ExelPOIHelper {
 
         return distance;
     }
+
+
+
+
+    //-----------------------------------------------------------for RSSI Filter Test-----------------------------------------------------------
+    public void forRSSIFilterSetting() {
+        Ex2Sheet = workbook.createSheet("RSSIFilterTest");
+
+
+        Ex2Sheet.setColumnWidth(0, 10000);
+        Ex2Sheet.setColumnWidth(1, 10000);
+        Ex2Sheet.setColumnWidth(2, 10000);
+        Ex2Sheet.setColumnWidth(3, 10000);
+        Ex2Sheet.setColumnWidth(4, 10000);
+        Ex2Sheet.setColumnWidth(5, 10000);
+        Ex2Sheet.setColumnWidth(6, 10000);
+        Ex2Sheet.setColumnWidth(7, 10000);
+        Ex2Sheet.setColumnWidth(8, 10000);
+
+        Ex2Header = Ex2Sheet.createRow(0);
+
+        //헤더 셀(컬럼)
+        Cell headerCell = Ex2Header.createCell(0);
+        headerCell.setCellValue("Original");
+        headerCell.setCellStyle(headerStyle);
+
+        headerCell = Ex2Header.createCell(1);
+        headerCell.setCellValue("Only RM");
+        headerCell.setCellStyle(headerStyle);
+
+        headerCell = Ex2Header.createCell(2);
+        headerCell.setCellValue("RM+F");
+        headerCell.setCellStyle(headerStyle);
+
+        headerCell = Ex2Header.createCell(3);
+        headerCell.setCellValue("RM+M");
+        headerCell.setCellStyle(headerStyle);
+
+        headerCell = Ex2Header.createCell(4);
+        headerCell.setCellValue("RM+K");
+        headerCell.setCellStyle(headerStyle);
+
+        headerCell = Ex2Header.createCell(5);
+        headerCell.setCellValue("RM+K+F");
+        headerCell.setCellStyle(headerStyle);
+
+        headerCell = Ex2Header.createCell(6);
+        headerCell.setCellValue("RM+K+M");
+        headerCell.setCellStyle(headerStyle);
+
+        headerCell = Ex2Header.createCell(7);
+        headerCell.setCellValue("RM+F+K");
+        headerCell.setCellStyle(headerStyle);
+
+        headerCell = Ex2Header.createCell(8);
+        headerCell.setCellValue("RM+M+K");
+        headerCell.setCellStyle(headerStyle);
+    }
+
+    public void writeExcelforRSSIFilter(int i,
+                                        double arrayOrigin, double arrayRm,
+                                        double arrayFeedback, double arrayMAF, double arrayKalman,
+                                        double arrayKF, double arrayKM,
+                                        double arrayFK, double arrayMK) throws IOException {
+
+//        nowNum++;
+        log.info("Now Row : {}", i+1);
+
+        //data row 생성
+        Row row = Ex2Sheet.createRow(i+1);
+
+        //셀 추가
+
+        //Original
+        Cell cell = row.createCell(0);
+        cell.setCellValue(arrayOrigin);
+        cell.setCellStyle(style);
+        //Only RM
+        cell = row.createCell(1);
+        cell.setCellValue(arrayRm);
+        cell.setCellStyle(style);
+        //RM + Feedback
+        cell = row.createCell(2);
+        cell.setCellValue(arrayFeedback);
+        cell.setCellStyle(style);
+        //RM + MAF
+        cell = row.createCell(3);
+        cell.setCellValue(arrayMAF);
+        cell.setCellStyle(style);
+        //RM + Kalman
+        cell = row.createCell(4);
+        cell.setCellValue(arrayKalman);
+        cell.setCellStyle(style);
+        //RM + Kalman + Feedback
+        cell = row.createCell(5);
+        cell.setCellValue(arrayKF);
+        cell.setCellStyle(style);
+        //RM + Kalman + MAF
+        cell = row.createCell(6);
+        cell.setCellValue(arrayKM);
+        cell.setCellStyle(style);
+        //RM + Feedback + Kalman
+        cell = row.createCell(7);
+        cell.setCellValue(arrayFK);
+        cell.setCellStyle(style);
+        //RM + MAF + Kalman
+        cell = row.createCell(8);
+        cell.setCellValue(arrayMK);
+        cell.setCellStyle(style);
+
+    }
+
+
+
 
 
     //-----------------------------------------------------------for Loc Filter Test-----------------------------------------------------------
