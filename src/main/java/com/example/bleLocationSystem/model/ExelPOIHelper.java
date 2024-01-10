@@ -82,8 +82,16 @@ public class ExelPOIHelper {
 //            rowArray.add(Ex2Sheet.createRow(j));
 //        }
 
+        //칼만 파라미터2 실험 셋팅
+        forKalmanParameter2ExSetting();
+        rowArray = new ArrayList<Row>();
+//        //data row 생성
+        for(int j=0; j<1001; j++) {
+            rowArray.add(Ex2Sheet.createRow(j));
+        }
+
         //RSSI Filter Test 셋팅
-        forRSSIFilterSetting();
+//        forRSSIFilterSetting();
 
         //Loc Filter Test 셋팅
 //        forLocFilterSetting();
@@ -1058,6 +1066,80 @@ public class ExelPOIHelper {
             //performance
             cell = rowArray.get(i).createCell(meter+32);
             cell.setCellValue(performanceKalmanArrays[meter].get(i));
+            cell.setCellStyle(style);
+        }
+
+//        if(meter == 14) {
+//
+//        }
+//        if (totalNum == 1000) {
+//            createFileAndRewrite();
+//        }
+    }
+
+
+
+    //-----------------------------------------------------------for KalmanParameter Experiment 2222222-----------------------------------------------------------
+    //AP1~AP8 1000개씩 읽어온후 세가지 칼만 방식 적용하고 엑셀에 쓰기
+    public void forKalmanParameter2ExSetting() {
+        Ex2Sheet = workbook.createSheet("KalmanParameter2");
+
+        String ourStr;
+        String fusionStr;
+        String performanceStr;
+
+        for(int i=0; i<26; i++) {
+            Ex2Sheet.setColumnWidth(i, 10000);
+        }
+
+        Ex2Header = rowArray.get(0);
+        Cell headerCell;
+
+        //헤더 셀(컬럼)
+        for(int i=0; i<26; i++) {
+            if(i==8 || i==17) {}
+            else {
+                ourStr = String.format("our AP %d", i);
+                headerCell = Ex2Header.createCell(i);
+                headerCell.setCellValue(ourStr);
+                headerCell.setCellStyle(headerStyle);
+
+                fusionStr = String.format("fusion AP %d", i+9);
+                headerCell = Ex2Header.createCell(i);
+                headerCell.setCellValue(fusionStr);
+                headerCell.setCellStyle(headerStyle);
+
+                performanceStr = String.format("performance AP %d", i+18);
+                headerCell = Ex2Header.createCell(i);
+                headerCell.setCellValue(performanceStr);
+                headerCell.setCellStyle(headerStyle);
+            }
+        }
+    }
+
+    public void writeExcelforKalmanParameter2Ex(int apNum, ArrayList<Double>[] ourKalmanArrays, ArrayList<Double>[] fusionKalmanArrays, ArrayList<Double>[] performanceKalmanArrays) throws IOException {
+
+
+        //data row 생성 -> 생성자에서
+
+        Cell cell;
+
+        //셀 추가
+
+        for(int i=1; i<1001; i++) {
+            //our
+            cell = rowArray.get(i).createCell(apNum);
+            cell.setCellValue(ourKalmanArrays[apNum].get(i));
+            cell.setCellStyle(style);
+
+            //fusion
+            cell = rowArray.get(i).createCell(apNum+9);
+            cell.setCellValue(fusionKalmanArrays[apNum].get(i));
+            cell.setCellStyle(style);
+
+            //performance
+            cell = rowArray.get(i).createCell(apNum+18);
+            cell.setCellValue(performanceKalmanArrays[apNum].get(i));
             cell.setCellStyle(style);
         }
 
