@@ -108,7 +108,7 @@ public class RSSIFilterOursTestService {
 
         double RSSI;
 
-        for(int j=0; j<100; j++) {
+        for(int j=0; j<1000; j++) {
 
             //이상치 제거
             if(array.get(j) < outlier20m || array.get(j) > 0){
@@ -148,7 +148,7 @@ public class RSSIFilterOursTestService {
 
     public ArrayList<Double> readExel() {
         try {
-            FileInputStream file = new FileInputStream("C:\\Users\\JaeHyuk\\Desktop\\RSSI_Filter_test\\RowData\\NLOS\\15m.xlsx");
+            FileInputStream file = new FileInputStream("C:\\Users\\heejin\\Desktop\\BLE_Test\\RSSI_Filter_1000\\RawData\\15m_NLOS_Ap8.xlsx");
             XSSFWorkbook workbook = new XSSFWorkbook(file);
 
 //            int rowindex=0;

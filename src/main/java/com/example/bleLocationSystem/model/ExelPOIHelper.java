@@ -600,7 +600,7 @@ public class ExelPOIHelper {
 //        String fileLocation = "C:\\Users\\heehe\\Desktop\\bleExel\\0102\\6m_open.xlsx";
 
         //JH
-        String fileLocation = "C:\\Users\\JaeHyuk\\Desktop\\RSSI_Filter_Test\\Result\\NLOS\\15m_result.xlsx";
+        String fileLocation = "C:\\Users\\heejin\\Desktop\\BLE_Test\\RSSI_Filter_1000\\Result\\15m_NLOS_Ap8_result.xlsx";
 
         FileOutputStream outputStream = new FileOutputStream(fileLocation);
         workbook.write(outputStream);
