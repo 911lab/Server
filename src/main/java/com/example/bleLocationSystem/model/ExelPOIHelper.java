@@ -43,7 +43,7 @@ public class ExelPOIHelper {
     int num;
     int nowNum;
 
-    ArrayList<Row> rowArray;
+    ArrayList<Row> rowArray= new ArrayList<Row>();
 
 
 
@@ -84,11 +84,11 @@ public class ExelPOIHelper {
 
         //칼만 파라미터2 실험 셋팅
         forKalmanParameter2ExSetting();
-        rowArray = new ArrayList<Row>();
+//        rowArray =
 //        //data row 생성
-        for(int j=0; j<1001; j++) {
-            rowArray.add(Ex2Sheet.createRow(j));
-        }
+//        for(int j=0; j<1001; j++) {
+//            rowArray.add(Ex2Sheet.createRow(j));
+//        }
 
         //RSSI Filter Test 셋팅
 //        forRSSIFilterSetting();
@@ -608,7 +608,7 @@ public class ExelPOIHelper {
 //        String fileLocation = "C:\\Users\\heehe\\Desktop\\bleExel\\0102\\6m_open.xlsx";
 
         //JH
-        String fileLocation = "C:\\Users\\heejin\\Desktop\\BLE_Test\\RSSI_Filter_1000\\Result\\15m_NLOS_Ap8_result.xlsx";
+        String fileLocation = "C:\\Users\\heejin\\Desktop\\BLE_Test\\RSSI_Filter_1000\\Result_n468\\NLOS_15m_Ap5_result2.xlsx";
 
         FileOutputStream outputStream = new FileOutputStream(fileLocation);
         workbook.write(outputStream);
@@ -1088,32 +1088,38 @@ public class ExelPOIHelper {
         String fusionStr;
         String performanceStr;
 
+        //data row 생성
+        for(int j=0; j<1001; j++) {
+            rowArray.add(Ex2Sheet.createRow(j));
+        }
+
         for(int i=0; i<26; i++) {
             Ex2Sheet.setColumnWidth(i, 10000);
         }
 
-        Ex2Header = rowArray.get(0);
+//        Ex2Header = Ex2Sheet.createRow(0);
+//        Ex2Header = rowArray.get(0);
         Cell headerCell;
 
         //헤더 셀(컬럼)
-        for(int i=0; i<26; i++) {
-            if(i==8 || i==17) {}
-            else {
-                ourStr = String.format("our AP %d", i);
-                headerCell = Ex2Header.createCell(i);
-                headerCell.setCellValue(ourStr);
-                headerCell.setCellStyle(headerStyle);
+        for(int i=0; i<8; i++) {
+//            if(i==8 || i==17) {}
+//            else {
+            ourStr = String.format("our AP %d", i+1);
+            headerCell = rowArray.get(0).createCell(i);
+            headerCell.setCellValue(ourStr);
+            headerCell.setCellStyle(headerStyle);
 
-                fusionStr = String.format("fusion AP %d", i+9);
-                headerCell = Ex2Header.createCell(i);
-                headerCell.setCellValue(fusionStr);
-                headerCell.setCellStyle(headerStyle);
+            fusionStr = String.format("fusion AP %d", i+1);
+            headerCell = rowArray.get(0).createCell(i+9);
+            headerCell.setCellValue(fusionStr);
+            headerCell.setCellStyle(headerStyle);
 
-                performanceStr = String.format("performance AP %d", i+18);
-                headerCell = Ex2Header.createCell(i);
-                headerCell.setCellValue(performanceStr);
-                headerCell.setCellStyle(headerStyle);
-            }
+            performanceStr = String.format("performance AP %d", i+1);
+            headerCell = rowArray.get(0).createCell(i+18);
+            headerCell.setCellValue(performanceStr);
+            headerCell.setCellStyle(headerStyle);
+//            }
         }
     }
 
@@ -1126,19 +1132,19 @@ public class ExelPOIHelper {
 
         //셀 추가
 
-        for(int i=1; i<1001; i++) {
+        for(int i=0; i<1000; i++) {
             //our
-            cell = rowArray.get(i).createCell(apNum);
+            cell = rowArray.get(i+1).createCell(apNum);
             cell.setCellValue(ourKalmanArrays[apNum].get(i));
             cell.setCellStyle(style);
 
             //fusion
-            cell = rowArray.get(i).createCell(apNum+9);
+            cell = rowArray.get(i+1).createCell(apNum+9);
             cell.setCellValue(fusionKalmanArrays[apNum].get(i));
             cell.setCellStyle(style);
 
             //performance
-            cell = rowArray.get(i).createCell(apNum+18);
+            cell = rowArray.get(i+1).createCell(apNum+18);
             cell.setCellValue(performanceKalmanArrays[apNum].get(i));
             cell.setCellStyle(style);
         }

@@ -130,19 +130,19 @@ public class KalmanParameter2TestService {
         //originArrays = new ArrayList[15];
 //        filteredArrays = new ArrayList[15];
 
-        ourKalmanArrays = new ArrayList[15];
-        fusionKalmanArrays = new ArrayList[15];
-        performanceKalmanArrays = new ArrayList[15];
+        ourKalmanArrays = new ArrayList[8];
+        fusionKalmanArrays = new ArrayList[8];
+        performanceKalmanArrays = new ArrayList[8];
 
-        for(int i=0; i<15; i++) {
+        for(int i=0; i<8; i++) {
             ourKalmanArrays[i] = new ArrayList<Double>();
         }
 
-        for(int i=0; i<15; i++) {
+        for(int i=0; i<8; i++) {
             fusionKalmanArrays[i] = new ArrayList<Double>();
         }
 
-        for(int i=0; i<15; i++) {
+        for(int i=0; i<8; i++) {
             performanceKalmanArrays[i] = new ArrayList<Double>();
         }
 
@@ -156,13 +156,13 @@ public class KalmanParameter2TestService {
 
     public ArrayList<Double>[] readExel() {
 
-        ArrayList<Double>[] arrays = new ArrayList[15];
+        ArrayList<Double>[] arrays = new ArrayList[8];
 
-        for(int i=0; i<15; i++) {
+        for(int i=0; i<8; i++) {
             arrays[i] = new ArrayList<Double>();
         }
         try {
-            FileInputStream file = new FileInputStream("C:\\Users\\JaeHyuk\\Desktop\\NLOS_1_15.xlsx");
+            FileInputStream file = new FileInputStream("C:\\Users\\heejin\\Desktop\\BLE_Test\\Kalman_Parameter_1000\\RawData\\10mNLOS.xlsx");
             XSSFWorkbook workbook = new XSSFWorkbook(file);
 
 //            int rowindex=0;

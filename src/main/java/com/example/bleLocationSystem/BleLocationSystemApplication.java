@@ -24,11 +24,10 @@ public class BleLocationSystemApplication {
 
 		//-----------칼만 파라미터 테스트-----------
 //		new KalmanParameterTestService();
-		new KalmanParameter2TestService();
-
+//		new KalmanParameter2TestService();
 
 		//-----------RSSI Filter Test-----------
-//		new RSSIFilterOursTestService();
+		new RSSIFilterOursTestService();
 
 	}
 }

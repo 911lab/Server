@@ -42,8 +42,9 @@ public class RSSIFilterOursTestService {
 
 
     // 1m=-30, n=4 : 15m = -77
-    // 1m=-23, n=3.81 : 15m =  -67.8091
-    double outlier15m = -67.8091;
+    // 1m=-23, n=3.81 : 15m =  -67.8091  outlier20m = -72.5692
+    // 1m=-23, n=4.68 : 15m =  -78.0411
+    double outlier15m = -78.0411;
     double outlier20m = -72.5692;
 
     double value;
@@ -69,11 +70,11 @@ public class RSSIFilterOursTestService {
         mafFilter2 = new MAFilter();
         mafFilter3 = new MAFilter();
 
-        kalmanFilter1 = new KalmanFilter(0.005, 2.5);
-        kalmanFilter2 = new KalmanFilter(0.005, 2.5);
-        kalmanFilter3 = new KalmanFilter(0.005, 2.5);
-        kalmanFilter4 = new KalmanFilter(0.005, 2.5);
-        kalmanFilter5 = new KalmanFilter(0.005, 2.5);
+        kalmanFilter1 = new KalmanFilter(0.005, 20);
+        kalmanFilter2 = new KalmanFilter(0.005, 20);
+        kalmanFilter3 = new KalmanFilter(0.005, 20);
+        kalmanFilter4 = new KalmanFilter(0.005, 20);
+        kalmanFilter5 = new KalmanFilter(0.005, 20);
 
         value = 1.0;
 
@@ -111,7 +112,7 @@ public class RSSIFilterOursTestService {
         for(int j=0; j<1000; j++) {
 
             //이상치 제거
-            if(array.get(j) < outlier20m || array.get(j) > 0){
+            if(array.get(j) < outlier15m || array.get(j) > 0){
                 RSSI=1;
             }
             else{
@@ -148,7 +149,7 @@ public class RSSIFilterOursTestService {
 
     public ArrayList<Double> readExel() {
         try {
-            FileInputStream file = new FileInputStream("C:\\Users\\heejin\\Desktop\\BLE_Test\\RSSI_Filter_1000\\RawData\\15m_NLOS_Ap8.xlsx");
+            FileInputStream file = new FileInputStream("C:\\Users\\heejin\\Desktop\\BLE_Test\\RSSI_Filter_1000\\RawData\\15m_NLOS_Ap5.xlsx");
             XSSFWorkbook workbook = new XSSFWorkbook(file);
 
 //            int rowindex=0;
@@ -281,7 +282,7 @@ public class RSSIFilterOursTestService {
     public double calcDistance(double tempRssi) {
 
         tempAlpha = -23;
-        lossNum = 3.81;
+        lossNum = 4.68;
 
         double distance = Math.pow(10, (tempAlpha-tempRssi)/(10*lossNum));
 
