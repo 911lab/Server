@@ -83,7 +83,7 @@ public class ExelPOIHelper {
 //        }
 
         //칼만 파라미터2 실험 셋팅
-        forKalmanParameter2ExSetting();
+//        forKalmanParameter2ExSetting();
 //        rowArray =
 //        //data row 생성
 //        for(int j=0; j<1001; j++) {
@@ -94,8 +94,8 @@ public class ExelPOIHelper {
 //        forRSSIFilterSetting();
 
         //Loc Filter Test 셋팅
-//        forLocFilterSetting();
-//        nowNum = 0;
+        forLocFilterSetting();
+        nowNum = 0;
     }
 
 
@@ -1298,6 +1298,7 @@ public class ExelPOIHelper {
         Ex2Sheet.setColumnWidth(8, 10000);
         Ex2Sheet.setColumnWidth(9, 10000);
 
+
         Ex2Header = Ex2Sheet.createRow(0);
 
         //헤더 셀(컬럼)
@@ -1311,20 +1312,20 @@ public class ExelPOIHelper {
 
 
         headerCell = Ex2Header.createCell(2);
-        headerCell.setCellValue("Kalman Location");
+        headerCell.setCellValue("RM+Kalman Location");
         headerCell.setCellStyle(headerStyle);
 
         headerCell = Ex2Header.createCell(3);
-        headerCell.setCellValue("Kalman Distance MAE");
+        headerCell.setCellValue("RM+Kalman Distance MAE");
         headerCell.setCellStyle(headerStyle);
 
 
         headerCell = Ex2Header.createCell(4);
-        headerCell.setCellValue("Proposed without Loc Filter and Proximity Location");
+        headerCell.setCellValue("RM+Kalman+LocRM+2DMAF Location");
         headerCell.setCellStyle(headerStyle);
 
         headerCell = Ex2Header.createCell(5);
-        headerCell.setCellValue("Proposed without Loc Filter and Proximity Distance MAE");
+        headerCell.setCellValue("RM+Kalman+LocRM+2DMAF Distance MAE");
         headerCell.setCellStyle(headerStyle);
 
 
@@ -1347,7 +1348,7 @@ public class ExelPOIHelper {
 
     }
 
-    public void writeExcelforLocFilter(UserLocation originalUl, UserLocation kalmanUl, UserLocation notLocFilterUl, UserLocation proposedWithoutProximity ,UserLocation proposedUl) throws IOException {
+    public void writeExcelforLocFilter(UserLocation originalUl, UserLocation kalmanUl, UserLocation locMAFUl, UserLocation proposedWithoutProximity, UserLocation proposedUl) throws IOException {
 
         nowNum++;
         log.info("Now Row : {}", nowNum);
@@ -1367,7 +1368,7 @@ public class ExelPOIHelper {
         cell.setCellValue(originalUl.getDistanceDev());
         cell.setCellStyle(style);
 
-        //Kalman Ul
+        //RM + Kalman Ul
         cell = row.createCell(2);
         String kalmanUl_xy = String.format("(%.2f, %.2f)", kalmanUl.getX(), kalmanUl.getY());
         cell.setCellValue(kalmanUl_xy);
@@ -1377,14 +1378,14 @@ public class ExelPOIHelper {
         cell.setCellValue(kalmanUl.getDistanceDev());
         cell.setCellStyle(style);
 
-        //Proposed without Loc Filter and Proximity
+        //RM + Kalman Ul + Loc RM + 2D MAF
         cell = row.createCell(4);
-        String notLocFilterUl_xy = String.format("(%.2f, %.2f)", notLocFilterUl.getX(), notLocFilterUl.getY());
-        cell.setCellValue(notLocFilterUl_xy);
+        String locMAFUl_xy = String.format("(%.2f, %.2f)", locMAFUl.getX(), locMAFUl.getY());
+        cell.setCellValue(locMAFUl_xy);
         cell.setCellStyle(style);
 
         cell = row.createCell(5);
-        cell.setCellValue(notLocFilterUl.getDistanceDev());
+        cell.setCellValue(locMAFUl.getDistanceDev());
         cell.setCellStyle(style);
 
         //Proposed without Proximity

@@ -89,6 +89,7 @@ public class LocFiterTestService {
 
     LocMAFilter locMAFilter;
     LocMAFilter locMAFilter2;
+    LocMAFilter locMAFilter3;
 
     LocKalmanFilter locKalmanFilter;
     LocKalmanFilter locKalmanFilter2;
@@ -106,9 +107,10 @@ public class LocFiterTestService {
 
 
     UserLocation originalUl;
-    UserLocation kalmanUl;
+    UserLocation rmKalmanUl;
 
-    UserLocation filteredUlNotLoc;
+    UserLocation locMAFUl;
+    UserLocation mAFilteredUlforNotProximity;
     UserLocation filteredUlforNotProximity;
     UserLocation updateLocFilteredUlforNotProximity;
 
@@ -119,8 +121,11 @@ public class LocFiterTestService {
 
     // 1m=-30, n=4 : 15m = -77
     // 1m=-23, n=3.81 : 15m =  -67.8091
-    double outlier15m = -67.8091;
-    double outlier20m = -72.5692;
+//    double outlier15m = -67.8091;
+//    double outlier20m = -72.5692;
+
+    // 1m=-23, n=4.68 : 15m =  -78.0411
+    double outlier15m = -78.0411;
     @Getter
     double w = 15.0;
     @Getter
@@ -160,6 +165,7 @@ public class LocFiterTestService {
         //위치 보정 프로세스
         locMAFilter = new LocMAFilter();
         locMAFilter2 = new LocMAFilter();
+        locMAFilter3 = new LocMAFilter();
 
         locKalmanFilter = new LocKalmanFilter(0.1, 1, 1, 1, 0.1, 0.1);
         locKalmanFilter2 = new LocKalmanFilter(0.1, 1, 1, 1, 0.1, 0.1);
@@ -179,53 +185,6 @@ public class LocFiterTestService {
 
         totalNum++;
 
-        //--------------------------------------------------------------Kalman Method--------------------------------------------------------------
-        triangleNumforKalman = selectTriangle(originalVo);
-
-        switch (triangleNumforKalman) {
-            case 0:
-                selectedVoforKalman = null;
-                break;
-            case 1:
-                selectedVoforKalman = createSelectVO(originalVo.getDeviceName(), originalVo.getRssi1(), originalVo.getRssi2(), originalVo.getRssi3());
-                break;
-            case 2:
-                selectedVoforKalman = createSelectVO(originalVo.getDeviceName(), originalVo.getRssi2(), originalVo.getRssi3(), originalVo.getRssi4());
-                break;
-            case 3:
-                selectedVoforKalman = createSelectVO(originalVo.getDeviceName(), originalVo.getRssi3(), originalVo.getRssi4(), originalVo.getRssi4());
-                break;
-            case 4:
-                selectedVoforKalman = createSelectVO(originalVo.getDeviceName(), originalVo.getRssi4(), originalVo.getRssi5(), originalVo.getRssi6());
-                break;
-            case 5:
-                selectedVoforKalman = createSelectVO(originalVo.getDeviceName(), originalVo.getRssi5(), originalVo.getRssi6(), originalVo.getRssi7());
-                break;
-            case 6:
-                selectedVoforKalman = createSelectVO(originalVo.getDeviceName(), originalVo.getRssi6(), originalVo.getRssi7(), originalVo.getRssi8());
-                break;
-        }
-
-        if(selectedVoforKalman != null) {
-            kalmanVo = createFilteredVo2(selectedVoforKalman);
-            log.info("Kalman Rssi1 = {}, Rssi2 = {}, Rssi3 = {}", kalmanVo.getRssi1(), kalmanVo.getRssi2(), kalmanVo.getRssi3());
-
-            if (triangleNumforKalman % 2 == 0) {
-                kalmanAp1 = new Ap((w / 2.0) * (triangleNumforKalman - 1), h, kalmanVo.getDistance1());
-                kalmanAp2 = new Ap((w / 2.0) * triangleNumforKalman, 0, kalmanVo.getDistance2());
-                kalmanAp3 = new Ap((w / 2.0) * (triangleNumforKalman + 1), h, kalmanVo.getDistance3());
-            } else {
-                kalmanAp1 = new Ap((w / 2.0) * (triangleNumforKalman - 1), 0, kalmanVo.getDistance1());
-                kalmanAp2 = new Ap((w / 2.0) * triangleNumforKalman, h, kalmanVo.getDistance2());
-                kalmanAp3 = new Ap((w / 2.0) * (triangleNumforKalman + 1), 0, kalmanVo.getDistance3());
-            }
-            Trilateration kalmanTr = new Trilateration(kalmanVo.getDeviceName(), kalmanAp1, kalmanAp2, kalmanAp3);
-            kalmanUl = kalmanTr.calcUserLocation();
-            kalmanFinishNum++;
-            System.out.printf("Kalman Finish Num : %d\n", kalmanFinishNum);
-        } else {
-            kalmanUl = new UserLocation(999, 999, "ddd");
-        }
 //--------------------------------------------------------------Proposed Method--------------------------------------------------------------
 
         //--------------------------------------------------------------Proposed Proximity Method--------------------------------------------------------------
@@ -302,7 +261,7 @@ public class LocFiterTestService {
             if(selectedVo != null) {
                 log.info("Selected Rssi1 = {}, Rssi2 = {}, Rssi3 = {}", selectedVo.getRssi1(), selectedVo.getRssi2(), selectedVo.getRssi3());
                 //RSSI 이상치 제거
-                if (!rm.rmOutlier(selectedVo.getRssi1(), selectedVo.getRssi2(), selectedVo.getRssi3(), outlier20m)) {
+                if (!rm.rmOutlier(selectedVo.getRssi1(), selectedVo.getRssi2(), selectedVo.getRssi3(), outlier15m)) {
                     selectedVo = null;
                 }
 //        if(selectedVo.getDeviceName().equals("HJ")) {
@@ -317,19 +276,8 @@ public class LocFiterTestService {
                         }
                     }
                     if(selectedVo != null) {
-//                        if (triangleNum % 2 == 0) {
-//                            ap1 = new Ap((w / 2.0) * (triangleNum - 1), h, selectedVo.getDistance1());
-//                            ap2 = new Ap((w / 2.0) * triangleNum, 0, selectedVo.getDistance2());
-//                            ap3 = new Ap((w / 2.0) * (triangleNum + 1), h, selectedVo.getDistance3());
-//                        } else {
-//                            ap1 = new Ap((w / 2.0) * (triangleNum - 1), 0, selectedVo.getDistance1());
-//                            ap2 = new Ap((w / 2.0) * triangleNum, h, selectedVo.getDistance2());
-//                            ap3 = new Ap((w / 2.0) * (triangleNum + 1), 0, selectedVo.getDistance3());
-//                        }
-                        //MAF
-                        filteredVo = createMAFVo(selectedVo);
                         //KF
-                        filteredVo = createFilteredVo(filteredVo);
+                        filteredVo = createFilteredVo(selectedVo);
                         //AP 좌표 설정
                         if (triangleNum % 2 == 0) {
                             filteredAp1 = new Ap((w / 2.0) * (triangleNum - 1), h, filteredVo.getDistance1());
@@ -368,20 +316,6 @@ public class LocFiterTestService {
             //위치 MAF
             UserLocation mAFilteredUl = locMAFilter.push(filteredUl);
 
-//            if (mAFilteredUl == null) {
-//                System.out.println("LOC MAF CUT");
-//            }
-
-//            if(i==10){
-//                ulList.add(0,mAFilteredUl);
-//            }
-//            else{
-//                ulList.set(0,mAFilteredUl);
-//            }
-
-//            finishedCount++;
-            //log.info("Finished Count = {}", finishedCount);
-
             if(mAFilteredUl != null) {
                 //2D 칼만 필터
                 x = locKalmanFilter.predict();
@@ -401,8 +335,9 @@ public class LocFiterTestService {
         else {
             updateLocFilteredUl = new UserLocation(999, 999, "ddd");
         }
+//--------------------------------------------------------------END--------------------------------------------------------------
 
-        //--------------------------------------------------------------Proposed Method without Proximity--------------------------------------------------------------
+//--------------------------------------------------------------Proposed Method without Proximity--------------------------------------------------------------
 
         triangleNumforNotProximity = selectTriangle(originalVoforNotProximity);
 
@@ -453,7 +388,7 @@ public class LocFiterTestService {
 
             log.info("Selected Rssi1 = {}, Rssi2 = {}, Rssi3 = {}", selectedVoforNotProximity.getRssi1(), selectedVoforNotProximity.getRssi2(), selectedVoforNotProximity.getRssi3());
             //RSSI 이상치 제거
-            if (!rm.rmOutlier(selectedVoforNotProximity.getRssi1(), selectedVoforNotProximity.getRssi2(), selectedVoforNotProximity.getRssi3(), outlier20m)) {
+            if (!rm.rmOutlier(selectedVoforNotProximity.getRssi1(), selectedVoforNotProximity.getRssi2(), selectedVoforNotProximity.getRssi3(), outlier15m)) {
                 selectedVoforNotProximity = null;
             }
 
@@ -469,10 +404,8 @@ public class LocFiterTestService {
                     }
                 }
                 if(selectedVoforNotProximity != null) {
-                    //MAF
-                    filteredVoforNotProximity = createMAFVo2(selectedVoforNotProximity);
                     //KF
-                    filteredVoforNotProximity = createFilteredVo3(filteredVoforNotProximity);
+                    filteredVoforNotProximity = createFilteredVo3(selectedVoforNotProximity);
                     //AP 좌표 설정
                     if (triangleNumforNotProximity % 2 == 0) {
                         ap1forNotProximity = new Ap((w / 2.0) * (triangleNumforNotProximity - 1), h, filteredVoforNotProximity.getDistance1());
@@ -484,8 +417,9 @@ public class LocFiterTestService {
                         ap3forNotProximity = new Ap((w / 2.0) * (triangleNumforNotProximity + 1), 0, filteredVoforNotProximity.getDistance3());
                     }
                     Trilateration filteredTrforNotProximity = new Trilateration(originalVo.getDeviceName(), ap1forNotProximity, ap2forNotProximity, ap3forNotProximity);
+                    //RM + Kalman
                     filteredUlforNotProximity = filteredTrforNotProximity.calcUserLocation();
-//                    filteredUlNotLoc = filteredTrforNotProximity.calcUserLocation();
+
                 }
                 else {
                     filteredUlforNotProximity = new UserLocation(999, 999, "ddd");
@@ -500,25 +434,22 @@ public class LocFiterTestService {
         }
 
 
-        //Our Non Loc Filter Non Proximity
-        //++++
-        //---------------------------------------------------------------------------------------------------------------------------------------------------
-        filteredUlNotLoc = new UserLocation(filteredUlforNotProximity.getX(), filteredUlforNotProximity.getY(), filteredUlforNotProximity.getDeviceName());
-        //---------------------------------------------------------------------------------------------------------------------------------------------------
         //좌표 이상치 제거
         if (rm.rmXYOutlier(filteredUlforNotProximity, w, h)) {
-            filteredUlforNotProximity = null;
-        }
+            //이후꺼 다 new UserLocation(999, 999, "ddd");
+            mAFilteredUlforNotProximity = new UserLocation(999, 999, "ddd");
+            updateLocFilteredUlforNotProximity = new UserLocation(999, 999, "ddd");
 
-        if(filteredUlforNotProximity != null) {
-            //위치 MAF
-            UserLocation mAFilteredUlforNotProximity = locMAFilter2.push(filteredUlforNotProximity);
+        } else {
+            //RM + Kalman + Loc RM + 2d MAF
+            mAFilteredUlforNotProximity = locMAFilter3.push(filteredUlforNotProximity);
 
             if(mAFilteredUlforNotProximity != null) {
                 //2D 칼만 필터
                 xforNotProximity = locKalmanFilter2.predict();
                 tempArr = new double[][]{{mAFilteredUlforNotProximity.getX()}, {mAFilteredUlforNotProximity.getY()}};
                 x2forNotProximity = locKalmanFilter2.update(tempArr);
+                //RM + Kalman + Loc RM+ 2d MAF + 2d Kalman
                 updateLocFilteredUlforNotProximity = new UserLocation(x2forNotProximity[0][0], x2forNotProximity[1][0], mAFilteredUlforNotProximity.getDeviceName());
 
                 //제안 방법 성공 횟수
@@ -527,12 +458,9 @@ public class LocFiterTestService {
             }
             else
             {
+                mAFilteredUlforNotProximity = new UserLocation(999, 999, "ddd");
                 updateLocFilteredUlforNotProximity = new UserLocation(999, 999, "ddd");
             }
-        }
-        else
-        {
-            updateLocFilteredUlforNotProximity = new UserLocation(999, 999, "ddd");
         }
 
 
@@ -545,13 +473,13 @@ public class LocFiterTestService {
         //System.out.printf("Proposed Location (Update) : (%.2f, %.2f)  Distance Deviation : %.2fm%n", updateLocFilteredUl.getX(), updateLocFilteredUl.getY(), updateLocFilteredUl.getDistanceDev());
 
         System.out.printf("Original Location : (%.2f, %.2f)\n", originalUl.getX(), originalUl.getY());
-        System.out.printf("Kalman Location : (%.2f, %.2f)\n", kalmanUl.getX(), kalmanUl.getY());
-        System.out.printf("Proposed without Loc Filter, Proximity Location : (%.2f, %.2f)\n", filteredUlNotLoc.getX(), filteredUlNotLoc.getY());
+        System.out.printf("Kalman Location : (%.2f, %.2f)\n", filteredUlforNotProximity.getX(), filteredUlforNotProximity.getY());
+        System.out.printf("Proposed without Loc Filter, Proximity Location : (%.2f, %.2f)\n", mAFilteredUlforNotProximity.getX(), mAFilteredUlforNotProximity.getY());
         System.out.printf("Proposed without Proximity Location : (%.2f, %.2f)\n", updateLocFilteredUlforNotProximity.getX(), updateLocFilteredUlforNotProximity.getY());
         System.out.printf("Proposed Location : (%.2f, %.2f)\n", updateLocFilteredUl.getX(), updateLocFilteredUl.getY());
 
         //original, kalman, ourNoLocNoProximity,ourNoProximity, our
-        createCsvEx2(originalUl, kalmanUl, filteredUlNotLoc, updateLocFilteredUlforNotProximity, updateLocFilteredUl);
+        createCsvEx2(originalUl, filteredUlforNotProximity, mAFilteredUlforNotProximity,updateLocFilteredUlforNotProximity, updateLocFilteredUl);
 
         //4개찍을떄
 //        if(totalNum==1){
@@ -568,9 +496,6 @@ public class LocFiterTestService {
 //        }
 
         log.info("total Num = {}", totalNum);
-
-
-
 
         return ulList;
     }
@@ -636,10 +561,14 @@ public class LocFiterTestService {
             }
         }
 
+
+
         //if(valueTemp < 0 && valueTemp >= -49 && valueTemp2 < -49) {  //3m
         //if(valueTemp < 0 && valueTemp >= -42 && valueTemp2 < -42) {  //2m
-        if(valueTemp < 0 && valueTemp >= -37 && valueTemp2 < -37) {  //1.5m
+//        if(valueTemp < 0 && valueTemp >= -37 && valueTemp2 < -37) {  //1.5m
 //        if(valueTemp < 0 && valueTemp >= -30 && valueTemp2 < -30) {  //1m
+//        if(valueTemp < 0 && valueTemp >= -37.0882 && valueTemp2 < -37.0882) { // 1m = 23, n=4.68 일때 2m =-37.0882
+        if(valueTemp < 0 && valueTemp >= -45.3292 && valueTemp2 < -45.3292) { // 1m = 23, n=4.68 일때 3m =-45.3292
             return keyTemp;
         }
 
@@ -651,7 +580,7 @@ public class LocFiterTestService {
     public double calcDistance(double tempRssi) {
 
         tempAlpha = -23;
-        lossNum = 3.81;
+        lossNum = 4.68;
 
         double distance = Math.pow(10, (tempAlpha-tempRssi)/(10*lossNum));
 
@@ -811,9 +740,9 @@ public class LocFiterTestService {
     }
 
     //실험 2 엑셀 파일 만들기
-    public void createCsvEx2(UserLocation originalUl, UserLocation kalmanUl, UserLocation notLocFilterUl, UserLocation proposedWithoutProximity ,UserLocation proposedUl) {
+    public void createCsvEx2(UserLocation originalUl, UserLocation kalmanUl, UserLocation mAFilteredUlforNotProximity, UserLocation proposedWithoutProximity ,UserLocation proposedUl) {
         try {
-            poiHelper.writeExcelforLocFilter(originalUl, kalmanUl, notLocFilterUl, proposedWithoutProximity, proposedUl);
+            poiHelper.writeExcelforLocFilter(originalUl, kalmanUl, mAFilteredUlforNotProximity, proposedWithoutProximity, proposedUl);
 
         } catch (IOException e) {
             e.printStackTrace();
