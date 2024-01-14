@@ -5,10 +5,8 @@ import com.example.bleLocationSystem.TestUI;
 import com.example.bleLocationSystem.UI;
 import com.example.bleLocationSystem.model.UserLocation;
 import com.example.bleLocationSystem.model.VO;
-import com.example.bleLocationSystem.service.ApService;
-import com.example.bleLocationSystem.service.LocFiterTestService;
-import com.example.bleLocationSystem.service.RSSIFilterTestService;
-import com.example.bleLocationSystem.service.TestService;
+import com.example.bleLocationSystem.originalTestUI;
+import com.example.bleLocationSystem.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,6 +32,11 @@ public class ApController {
 //    UserLocation ul;
 //    Map<String, Double> map = new HashMap<String, Double>();
 
+    //Original Test
+    OriginalTestService originalService = new OriginalTestService();
+    UserLocation ul;
+    originalTestUI ui = new originalTestUI(originalService.getW(), originalService.getH());
+
 
     //Test
 //    TestService testService = new TestService();
@@ -48,8 +51,11 @@ public class ApController {
 //    RSSIFilterTestService testService = new RSSIFilterTestService();
 
     //Loc Filter Test
-    LocFiterTestService locService = new LocFiterTestService();
-    ArrayList<UserLocation> ulList;
+//    LocFiterTestService locService = new LocFiterTestService();
+//    ArrayList<UserLocation> ulList;
+
+
+
 
 
     //앱으로부터 ap1, ap2, ap3 각각의 거리값 받기
@@ -81,6 +87,13 @@ public class ApController {
 //                ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
 
+        //Original Test
+        ul = originalService.trilateration(vo);
+        if(ul != null) {
+            ui.setUserLocation(ul);
+        }
+
+
         //--------------Test--------------
 //        ul = testService.trilateration(vo);
 //        ulList = null;
@@ -108,7 +121,9 @@ public class ApController {
 //            ResponseEntity.status(HttpStatus.OK).body(vooo) :
 //            ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
-        ulList = locService.trilateration(vo);
+
+        //Loc Fiter Test
+//        ulList = locService.trilateration(vo);
 
     }
 }

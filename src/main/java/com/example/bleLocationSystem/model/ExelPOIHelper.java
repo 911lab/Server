@@ -94,8 +94,12 @@ public class ExelPOIHelper {
 //        forRSSIFilterSetting();
 
         //Loc Filter Test 셋팅
-        forLocFilterSetting();
-        nowNum = 0;
+//        forLocFilterSetting();
+//        nowNum = 0;
+
+        //Original Test 셋팅
+        forOriginalTestSetting();
+        nowNum=0;
     }
 
 
@@ -1414,6 +1418,57 @@ public class ExelPOIHelper {
         }
     }
 
+
+    //-----------------------------------------------------------for Original Test-----------------------------------------------------------
+    public void forOriginalTestSetting() {
+        Ex2Sheet = workbook.createSheet("Original Test");
+
+
+        Ex2Sheet.setColumnWidth(0, 10000);
+        Ex2Sheet.setColumnWidth(1, 10000);
+
+
+
+        Ex2Header = Ex2Sheet.createRow(0);
+
+        //헤더 셀(컬럼)
+        Cell headerCell = Ex2Header.createCell(0);
+        headerCell.setCellValue("Original Location");
+        headerCell.setCellStyle(headerStyle);
+
+        headerCell = Ex2Header.createCell(1);
+        headerCell.setCellValue("Original Distance MAE");
+        headerCell.setCellStyle(headerStyle);
+
+
+    }
+
+    public void writeExcelforOriginalTest(UserLocation ul) throws IOException {
+
+        nowNum++;
+        log.info("Now Row : {}", nowNum);
+
+        //data row 생성
+        Row row = Ex2Sheet.createRow(nowNum);
+
+        //셀 추가
+
+        //Weight Ul
+        Cell cell = row.createCell(0);
+        String originalUl_xy = String.format("(%.2f, %.2f)", ul.getX(), ul.getY());
+        cell.setCellValue(originalUl_xy);
+        cell.setCellStyle(style);
+
+        cell = row.createCell(1);
+        cell.setCellValue(ul.getDistanceDev());
+        cell.setCellStyle(style);
+
+
+        //1000번
+        if (nowNum == 1000) {
+            createFileAndRewrite();
+        }
+    }
 
 
 

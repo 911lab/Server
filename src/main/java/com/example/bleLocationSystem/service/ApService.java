@@ -617,7 +617,6 @@ public class ApService extends JFrame {
                 calcDistance(rssi3),
                 rssi3
         );
-
     }
 
 
@@ -687,7 +686,7 @@ public class ApService extends JFrame {
     public double calcDistance(double tempRssi) {
 
         tempAlpha = -23;
-        lossNum = 3.81;
+        lossNum = 4.68;
 
         double distance = Math.pow(10, (tempAlpha-tempRssi)/(10*lossNum));
 

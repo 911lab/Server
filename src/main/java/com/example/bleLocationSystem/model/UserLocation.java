@@ -15,7 +15,6 @@ public class UserLocation {
     //측정된 위치
     private double x;
     private double y;
-3
     //실제 위치
     //1
     private double realLocX = 1;
