@@ -430,6 +430,7 @@ public class LocFiterTestService {
             }
         }
         else {
+            originalUl = new UserLocation(999, 999, "ddd");
             filteredUlforNotProximity = new UserLocation(999, 999, "ddd");
         }
 
@@ -567,8 +568,9 @@ public class LocFiterTestService {
         //if(valueTemp < 0 && valueTemp >= -42 && valueTemp2 < -42) {  //2m
 //        if(valueTemp < 0 && valueTemp >= -37 && valueTemp2 < -37) {  //1.5m
 //        if(valueTemp < 0 && valueTemp >= -30 && valueTemp2 < -30) {  //1m
-//        if(valueTemp < 0 && valueTemp >= -37.0882 && valueTemp2 < -37.0882) { // 1m = 23, n=4.68 일때 2m =-37.0882
-        if(valueTemp < 0 && valueTemp >= -45.3292 && valueTemp2 < -45.3292) { // 1m = 23, n=4.68 일때 3m =-45.3292
+
+        if(valueTemp < 0 && valueTemp >= -37.0882 && valueTemp2 < -37.0882) { // 1m = 23, n=4.68 일때 2m =-37.0882
+//        if(valueTemp < 0 && valueTemp >= -45.3292 && valueTemp2 < -45.3292) { // 1m = 23, n=4.68 일때 3m =-45.3292
             return keyTemp;
         }
 

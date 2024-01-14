@@ -15,12 +15,87 @@ public class UserLocation {
     //측정된 위치
     private double x;
     private double y;
-
+3
     //실제 위치
-    //10m
-    private double realLocX = 48.5;
-    //best
-    private double realLocY = 10;
+    //1
+    private double realLocX = 1;
+    private double realLocY = 1;
+
+    //2
+    //private double realLocX = 7.5;
+    //private double realLocY = 12;
+
+    //3
+    //private double realLocX = 15;
+    //private double realLocY = 1;
+
+    //4
+    //private double realLocX = 22.5;
+    //private double realLocY = 12;
+
+    //5
+    //private double realLocX = 30;
+    //private double realLocY = 1;
+
+    //6
+    //private double realLocX = 37.5;
+    //private double realLocY = 12;
+
+    //7
+    //private double realLocX = 45;
+    //private double realLocY = 1;
+
+    //8
+    //private double realLocX = 51.5;
+    //private double realLocY = 12;
+
+    //9
+    //private double realLocX = 45;
+    //private double realLocY = 6.5;
+
+    //10
+    //private double realLocX = 37.5;
+    //private double realLocY = 6.5;
+
+    //11
+    //private double realLocX = 30;
+    //private double realLocY = 6.5;
+
+    //12
+    //private double realLocX = 22.5;
+    //private double realLocY = 6.5;
+
+    //13
+    //private double realLocX = 15;
+    //private double realLocY = 6.5;
+
+    //14
+    //private double realLocX = 7.5;
+    //private double realLocY = 6.5;
+
+    //15
+    //private double realLocX = 4;
+    //private double realLocY = 3;
+
+    //16
+    //private double realLocX = 15;
+    //private double realLocY = 10;
+
+    //17
+    //private double realLocX = 26;
+    //private double realLocY = 3;
+
+    //18
+    //private double realLocX = 26;
+    //private double realLocY = 10;
+
+    //19
+    //private double realLocX = 37.5;
+    //private double realLocY = 3;
+
+    //20
+    //private double realLocX = 48.5;
+    //private double realLocY = 10;
 
 
     //worst

@@ -605,10 +605,10 @@ public class ExelPOIHelper {
 //        String path = currDir.getAbsolutePath();
 //        String fileLocation = path.substring(0, path.length() - 1) + "temp.xlsx";
         //HJ
-//        String fileLocation = "C:\\Users\\heehe\\Desktop\\bleExel\\0102\\6m_open.xlsx";
+        String fileLocation = "C:\\Users\\heehe\\Desktop\\ble_loc_test_exel\\2m\\2m_1.xlsx";
 
         //JH
-        String fileLocation = "C:\\Users\\heejin\\Desktop\\BLE_Test\\RSSI_Filter_1000\\Result_n468\\NLOS_15m_Ap5_result2.xlsx";
+//        String fileLocation = "C:\\Users\\heejin\\Desktop\\ble_loc_test_exel\\1.xlsx";
 
         FileOutputStream outputStream = new FileOutputStream(fileLocation);
         workbook.write(outputStream);
