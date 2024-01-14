@@ -100,6 +100,8 @@ public class LocFiterTestService {
 
     double[][] tempArr;
 
+    double[][] tempArrforNotProximity;
+
     double[][] xforNotProximity;
 
     double[][] x2forNotProximity;
@@ -448,8 +450,8 @@ public class LocFiterTestService {
             if(mAFilteredUlforNotProximity != null) {
                 //2D 칼만 필터
                 xforNotProximity = locKalmanFilter2.predict();
-                tempArr = new double[][]{{mAFilteredUlforNotProximity.getX()}, {mAFilteredUlforNotProximity.getY()}};
-                x2forNotProximity = locKalmanFilter2.update(tempArr);
+                tempArrforNotProximity = new double[][]{{mAFilteredUlforNotProximity.getX()}, {mAFilteredUlforNotProximity.getY()}};
+                x2forNotProximity = locKalmanFilter2.update(tempArrforNotProximity);
                 //RM + Kalman + Loc RM+ 2d MAF + 2d Kalman
                 updateLocFilteredUlforNotProximity = new UserLocation(x2forNotProximity[0][0], x2forNotProximity[1][0], mAFilteredUlforNotProximity.getDeviceName());
 
@@ -482,19 +484,19 @@ public class LocFiterTestService {
         //original, kalman, ourNoLocNoProximity,ourNoProximity, our
         createCsvEx2(originalUl, filteredUlforNotProximity, mAFilteredUlforNotProximity,updateLocFilteredUlforNotProximity, updateLocFilteredUl);
 
-        //4개찍을떄
-//        if(totalNum==1){
-//            ulList.add(0, weightUl);
-//            ulList.add(1, kalmanUl);
-//            ulList.add(2, updateLocFilteredUl);
-//            ulList.add(3, updateLocFilteredUlforNotProximity);
-//        }
-//        else{
-//            ulList.set(0, weightUl);
-//            ulList.set(1, kalmanUl);
-//            ulList.set(2, updateLocFilteredUl);
-//            ulList.set(3, updateLocFilteredUlforNotProximity);
-//        }
+//        4개찍을떄
+        if(totalNum==1){
+            ulList.add(0, originalUl);
+            ulList.add(1, filteredUlforNotProximity);
+            ulList.add(2, mAFilteredUlforNotProximity);
+            ulList.add(3, updateLocFilteredUlforNotProximity);
+        }
+        else{
+            ulList.set(0, originalUl);
+            ulList.set(1, filteredUlforNotProximity);
+            ulList.set(2, mAFilteredUlforNotProximity);
+            ulList.set(3, updateLocFilteredUlforNotProximity);
+        }
 
         log.info("total Num = {}", totalNum);
 

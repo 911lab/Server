@@ -94,12 +94,12 @@ public class ExelPOIHelper {
 //        forRSSIFilterSetting();
 
         //Loc Filter Test 셋팅
-//        forLocFilterSetting();
-//        nowNum = 0;
+        forLocFilterSetting();
+        nowNum = 0;
 
         //Original Test 셋팅
-        forOriginalTestSetting();
-        nowNum=0;
+//        forOriginalTestSetting();
+//        nowNum=0;
     }
 
 

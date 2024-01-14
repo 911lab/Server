@@ -1,6 +1,7 @@
 package com.example.bleLocationSystem.controller;
 
 import ch.qos.logback.core.net.SyslogOutputStream;
+import com.example.bleLocationSystem.LocFilterTestUI;
 import com.example.bleLocationSystem.TestUI;
 import com.example.bleLocationSystem.UI;
 import com.example.bleLocationSystem.model.UserLocation;
@@ -33,9 +34,9 @@ public class ApController {
 //    Map<String, Double> map = new HashMap<String, Double>();
 
     //Original Test
-    OriginalTestService originalService = new OriginalTestService();
-    UserLocation ul;
-    originalTestUI ui = new originalTestUI(originalService.getW(), originalService.getH());
+//    OriginalTestService originalService = new OriginalTestService();
+//    UserLocation ul;
+//    originalTestUI ui = new originalTestUI(originalService.getW(), originalService.getH());
 
 
     //Test
@@ -51,8 +52,9 @@ public class ApController {
 //    RSSIFilterTestService testService = new RSSIFilterTestService();
 
     //Loc Filter Test
-//    LocFiterTestService locService = new LocFiterTestService();
-//    ArrayList<UserLocation> ulList;
+    LocFiterTestService locService = new LocFiterTestService();
+    ArrayList<UserLocation> ulList;
+    LocFilterTestUI ui = new LocFilterTestUI(locService.getW(), locService.getH());
 
 
 
@@ -88,10 +90,20 @@ public class ApController {
 
 
         //Original Test
-        ul = originalService.trilateration(vo);
-        if(ul != null) {
-            ui.setUserLocation(ul);
-        }
+//        ul = originalService.trilateration(vo);
+//        if(ul != null) {
+//            ui.setUserLocation(ul);
+//        }
+
+
+//        ulList = testService.trilateration(vo);
+
+//        if(ulList != null) {
+//            ui.setUserLocation(ulList);
+//            map.put("triangleNum", testService.getTriangleNum()*1.0);
+//            map.put("x", ul.getX());
+//            map.put("y", ul.getY());
+//        }
 
 
         //--------------Test--------------
@@ -123,7 +135,12 @@ public class ApController {
 
 
         //Loc Fiter Test
-//        ulList = locService.trilateration(vo);
+        ulList = null;
+        ulList = locService.trilateration(vo);
+
+        if(ulList != null) {
+            ui.setUserLocation(ulList);
+        }
 
     }
 }

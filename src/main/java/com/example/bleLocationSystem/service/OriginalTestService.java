@@ -36,7 +36,7 @@ public class OriginalTestService {
 
 
     public OriginalTestService() {
-
+        poiHelper = new ExelPOIHelper();
     }
 
 
@@ -47,7 +47,8 @@ public class OriginalTestService {
 
         switch (triangleNum) {
             case 0:
-                return null;
+                selectedVo = null;
+                break;
             case 1:
                 selectedVo = createSelectVO(originalVo.getDeviceName(), originalVo.getRssi1(), originalVo.getRssi2(), originalVo.getRssi3());
                 break;
@@ -88,11 +89,14 @@ public class OriginalTestService {
 
             System.out.printf("Original Location : (%.2f, %.2f) dev : %.2f m \n", ul.getX(), ul.getY(), ul.getDistanceDev());
 
-            createCsvforOrigianl(ul);
+
 
         } else {
-            return null;
+            ul = new UserLocation(999, 999, "ddd");
         }
+
+        createCsvforOrigianl(ul);
+
         return ul;
     }
 
