@@ -62,6 +62,10 @@ public class LocFiterTestService {
     Ap ap2forNotProximity;
     Ap ap3forNotProximity;
 
+    Ap ap1forNoKalman;
+    Ap ap2forNoKalman;
+    Ap ap3forNoKalman;
+
 
     StartFilter startFilter;
     StartFilter startFilter2;
@@ -114,6 +118,7 @@ public class LocFiterTestService {
     UserLocation locMAFUl;
     UserLocation mAFilteredUlforNotProximity;
     UserLocation filteredUlforNotProximity;
+    UserLocation filteredUlforNoKalman;
     UserLocation updateLocFilteredUlforNotProximity;
 
     UserLocation filteredUl;
@@ -412,49 +417,70 @@ public class LocFiterTestService {
                     log.info("Filtered Rssi1 = {}, Rssi2 = {}, Rssi3 = {}", filteredVoforNotProximity.getRssi1(), filteredVoforNotProximity.getRssi2(), filteredVoforNotProximity.getRssi3());
                     //AP 좌표 설정
                     if (triangleNumforNotProximity % 2 == 0) {
+                        //rm+kf한거
                         ap1forNotProximity = new Ap((w / 2.0) * (triangleNumforNotProximity - 1), h, filteredVoforNotProximity.getDistance1());
                         ap2forNotProximity = new Ap((w / 2.0) * triangleNumforNotProximity, 0, filteredVoforNotProximity.getDistance2());
                         ap3forNotProximity = new Ap((w / 2.0) * (triangleNumforNotProximity + 1), h, filteredVoforNotProximity.getDistance3());
+                        //rm만한거
+                        ap1forNoKalman = new Ap((w / 2.0) * (triangleNumforNotProximity - 1), h, selectedVoforNotProximity.getDistance1());
+                        ap2forNoKalman = new Ap((w / 2.0) * triangleNumforNotProximity, 0, selectedVoforNotProximity.getDistance2());
+                        ap3forNoKalman = new Ap((w / 2.0) * (triangleNumforNotProximity + 1), h, selectedVoforNotProximity.getDistance3());
                     } else {
+                        //rm+kf한거
                         ap1forNotProximity = new Ap((w / 2.0) * (triangleNumforNotProximity - 1), 0, filteredVoforNotProximity.getDistance1());
                         ap2forNotProximity = new Ap((w / 2.0) * triangleNumforNotProximity, h, filteredVoforNotProximity.getDistance2());
                         ap3forNotProximity = new Ap((w / 2.0) * (triangleNumforNotProximity + 1), 0, filteredVoforNotProximity.getDistance3());
+                        //rm만한거
+                        ap1forNoKalman = new Ap((w / 2.0) * (triangleNumforNotProximity - 1), 0, selectedVoforNotProximity.getDistance1());
+                        ap2forNoKalman = new Ap((w / 2.0) * triangleNumforNotProximity, h, selectedVoforNotProximity.getDistance2());
+                        ap3forNoKalman = new Ap((w / 2.0) * (triangleNumforNotProximity + 1), 0, selectedVoforNotProximity.getDistance3());
                     }
+                    //rm+kf한거
                     Trilateration filteredTrforNotProximity = new Trilateration(originalVo.getDeviceName(), ap1forNotProximity, ap2forNotProximity, ap3forNotProximity);
+                    //rm만한거
+                    Trilateration filteredTrforNoKalman = new Trilateration(originalVo.getDeviceName(), ap1forNoKalman, ap2forNoKalman, ap3forNoKalman);
                     //RM + Kalman
                     filteredUlforNotProximity = filteredTrforNotProximity.calcUserLocation();
+                    //RM
+                    filteredUlforNoKalman = filteredTrforNoKalman.calcUserLocation();
 
                 }
                 else {
                     filteredUlforNotProximity = new UserLocation(999, 999, "ddd");
+                    filteredUlforNoKalman = new UserLocation(999, 999, "ddd");
                 }
             }
             else {
                 filteredUlforNotProximity = new UserLocation(999, 999, "ddd");
+                filteredUlforNoKalman = new UserLocation(999, 999, "ddd");
             }
         }
         else {
             originalUl = new UserLocation(999, 999, "ddd");
             filteredUlforNotProximity = new UserLocation(999, 999, "ddd");
+            filteredUlforNoKalman = new UserLocation(999, 999, "ddd");
         }
 
 
         //좌표 이상치 제거
-        if (rm.rmXYOutlier(filteredUlforNotProximity, w, h)) {
+//        if (rm.rmXYOutlier(filteredUlforNotProximity, w, h)) { //rm+kalman
+        if (rm.rmXYOutlier(filteredUlforNoKalman, w, h)) { //rssi이상치제거만된 xy
             //이후꺼 다 new UserLocation(999, 999, "ddd");
             mAFilteredUlforNotProximity = new UserLocation(999, 999, "ddd");
             updateLocFilteredUlforNotProximity = new UserLocation(999, 999, "ddd");
 
         } else {
             //RM + Kalman + Loc RM + 2d MAF
-            mAFilteredUlforNotProximity = locMAFilter3.push(filteredUlforNotProximity);
+//            mAFilteredUlforNotProximity = locMAFilter3.push(filteredUlforNotProximity);
+            //RM + Loc RM + 2d MAF
+            mAFilteredUlforNotProximity = locMAFilter3.push(filteredUlforNoKalman);
 
             if(mAFilteredUlforNotProximity != null) {
                 //2D 칼만 필터
                 xforNotProximity = locKalmanFilter2.predict();
                 tempArrforNotProximity = new double[][]{{mAFilteredUlforNotProximity.getX()}, {mAFilteredUlforNotProximity.getY()}};
                 x2forNotProximity = locKalmanFilter2.update(tempArrforNotProximity);
-                //RM + Kalman + Loc RM+ 2d MAF + 2d Kalman
+                //RM + Loc RM+ 2d MAF + 2d Kalman
                 updateLocFilteredUlforNotProximity = new UserLocation(x2forNotProximity[0][0], x2forNotProximity[1][0], mAFilteredUlforNotProximity.getDeviceName());
 
                 //제안 방법 성공 횟수
