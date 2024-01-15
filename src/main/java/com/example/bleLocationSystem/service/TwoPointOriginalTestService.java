@@ -1,37 +1,96 @@
 package com.example.bleLocationSystem.service;
 
+import com.example.bleLocationSystem.LocFilterTestUI;
+import com.example.bleLocationSystem.model.*;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.FileInputStream;
-import java.util.ArrayList;
+import java.io.IOException;
+import java.util.*;
 
+@Slf4j
 public class TwoPointOriginalTestService {
+    ExelPOIHelper poiHelper;
     @Getter
     double w = 15.0;
     @Getter
     double h = 15.0*Math.sqrt(3)/2;  //12.99
-    ArrayList<Double>[] originArrays;
+
+    ArrayList<String>[] originArrays;
+    String value;
+
+    private double tempAlpha;
+    private double lossNum;
+
+    VO originalVo;
+    SelectedVO selectedVo;
+    UserLocation ul;
+
+    @Getter
+    int triangleNum;
+
+    Ap ap1;
+    Ap ap2;
+    Ap ap3;
+
+    ArrayList<UserLocation> ulList;
+    LocFilterTestUI ui = new LocFilterTestUI(w, h);
+
+
+
     public TwoPointOriginalTestService(){
+        poiHelper = new ExelPOIHelper();
+
+        ulList = new ArrayList<UserLocation>();
+
         originArrays = readExel();
+        System.out.printf("originArrays length = %d\n", originArrays.length);
+        System.out.printf("originArrays[0] size = %d\n", originArrays[0].size());
+        System.out.printf("originArrays[1] size = %d\n", originArrays[1].size());
+
+
+
+        for(int i=0; i < 100; i++) {
+            ulList.clear();
+
+            ulList.add(splitString(originArrays[0].get(i)));
+            ulList.add(splitString(originArrays[1].get(i)));
+
+
+            if(!ulList.isEmpty()) {
+                ui.setUserLocation(ulList);
+            }
+        }
 
     }
-    public ArrayList<Double>[] readExel() {
 
-        ArrayList<Double>[] arrays = new ArrayList[2];
+    public UserLocation splitString(String str) {
+        double x=0;
+        double y=0;
 
-        for(int i=0; i<8; i++) {
-            arrays[i] = new ArrayList<Double>();
+        
+
+
+        return new UserLocation(x,y,"ddd");
+    }
+
+
+    public ArrayList<String>[] readExel() {
+
+        ArrayList<String>[] arrays = new ArrayList[2];
+
+        for(int i=0; i<2; i++) {
+            arrays[i] = new ArrayList<String>();
         }
         try {
-            FileInputStream file = new FileInputStream("C:\\Users\\heejin\\Desktop\\BLE_Test\\Kalman_Parameter_1000\\RawData\\10mNLOS.xlsx");
+            FileInputStream file = new FileInputStream("C:\\Users\\JaeHyuk\\Desktop\\original_6(37.5,12),16(15,10).xlsx");
             XSSFWorkbook workbook = new XSSFWorkbook(file);
 
-//            int rowindex=0;
-//            int columnindex=0;
 
             //시트 수 (첫번째에만 존재하므로 0을 준다)
             //만약 각 시트를 읽기위해서는 FOR문을 한번더 돌려준다
@@ -56,16 +115,16 @@ public class TwoPointOriginalTestService {
                     //15m -> 14
 
                     for(int cellindex=0; cellindex < cells; cellindex++) {
-                        value = 1.0;
+                        value = "";
 
                         XSSFCell cell = row.getCell(cellindex);
 
                         if (cell == null) {
-                            arrays[rowindex].add(1.0);
+                            arrays[rowindex].add("");
                         } else {
-                            value = cell.getNumericCellValue();
+                            value = cell.getStringCellValue();
 
-                            System.out.printf("value = %f", value);
+                            System.out.printf("value = %s\n", value);
 
                             arrays[rowindex].add(value);
                         }
@@ -77,6 +136,96 @@ public class TwoPointOriginalTestService {
             e.printStackTrace();
         }
         return arrays;
+    }
+
+    private SelectedVO createSelectVO(String name, double rssi1, double rssi2, double rssi3) {
+        return new SelectedVO(name,
+                calcDistance(rssi1),
+                rssi1,
+                calcDistance(rssi2),
+                rssi2,
+                calcDistance(rssi3),
+                rssi3
+        );
+    }
+
+    public double calcDistance(double tempRssi) {
+
+        tempAlpha = -23;
+        lossNum = 4.68;
+
+        double distance = Math.pow(10, (tempAlpha-tempRssi)/(10*lossNum));
+
+        return distance;
+    }
+
+    public int selectTriangle(VO originalVo) {
+        int num;
+        double valueTemp;
+        int keyTemp;
+        double errorValue = -999.9;
+
+        VO vo = originalVo;
+
+        Map<Integer, Double> map = new HashMap<Integer, Double>();
+        map.put(1, vo.getRssi1());
+        map.put(2, vo.getRssi2());
+        map.put(3, vo.getRssi3());
+        map.put(4, vo.getRssi4());
+        map.put(5, vo.getRssi5());
+        map.put(6, vo.getRssi6());
+        map.put(7, vo.getRssi7());
+        map.put(8, vo.getRssi8());
+
+
+        for(int i=0; i<8; i++) {
+            if( map.get(i+1) > 0 ) {
+                map.put(i+1, errorValue);
+            }
+        }
+
+        List<Integer> keyList = new ArrayList<Integer>();
+
+        for(int j = 0; j<3; j++) {
+            valueTemp = map.get(1);
+            keyTemp=1;
+
+            for(int i = 2; i<9; i++) {
+
+                if(valueTemp < map.get(i) && 0>map.get(i)) {
+                    keyTemp = i;
+                    valueTemp = map.get(i);
+                }
+            }
+            if(!map.get(keyTemp).equals(errorValue)) {
+                keyList.add(keyTemp);
+                map.put(keyTemp, errorValue);
+            }
+        }
+
+        if(keyList.size() == 3) {
+            Collections.sort(keyList);
+
+            log.info("deviceName = {} key list = {}", vo.getDeviceName(), keyList.toString());
+
+
+            int n1 = keyList.get(1) - keyList.get(0);
+            int n2 = keyList.get(2) - keyList.get(1);
+
+            if(n1 == 1 && n2 ==1) {
+                return keyList.get(0);
+            }
+        }
+        return 0;
+    }
+
+    public void createCsvforOrigianl(UserLocation ul) {
+        try {
+            poiHelper.writeExcelforOriginalTest(ul);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

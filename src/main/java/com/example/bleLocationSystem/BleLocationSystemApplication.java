@@ -9,8 +9,8 @@ public class BleLocationSystemApplication {
 
 	public static void main(String[] args) {
 		//-----------실제-----------
-		System.setProperty("java.awt.headless", "false");
-		SpringApplication.run(BleLocationSystemApplication.class, args);
+//		System.setProperty("java.awt.headless", "false");
+//		SpringApplication.run(BleLocationSystemApplication.class, args);
 		//-------------------------
 
 //		new UI();
@@ -31,5 +31,8 @@ public class BleLocationSystemApplication {
 
 		//-----------Loc Filter Test-----------
 		//new LocFiterTestService();
+
+		//-----------Original Test -----------
+		new TwoPointOriginalTestService();
 	}
 }

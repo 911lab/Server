@@ -157,13 +157,13 @@ public class LocFiterTestService {
 
         rm = new RemoveOutlier();
 
-        kFilterForAp1 = new KalmanFilter();
-        kFilterForAp2 = new KalmanFilter();
-        kFilterForAp3 = new KalmanFilter();
+//        kFilterForAp1 = new KalmanFilter();
+//        kFilterForAp2 = new KalmanFilter();
+//        kFilterForAp3 = new KalmanFilter();
 
-        kFilterForAp4 = new KalmanFilter();
-        kFilterForAp5 = new KalmanFilter();
-        kFilterForAp6 = new KalmanFilter();
+//        kFilterForAp4 = new KalmanFilter();
+//        kFilterForAp5 = new KalmanFilter();
+//        kFilterForAp6 = new KalmanFilter();
 
         kFilterForAp7 = new KalmanFilter();
         kFilterForAp8 = new KalmanFilter();
@@ -284,7 +284,7 @@ public class LocFiterTestService {
                     }
                     if(selectedVo != null) {
                         //KF
-                        filteredVo = createFilteredVo(selectedVo);
+//                        filteredVo = createFilteredVo(selectedVo);
                         //AP 좌표 설정
                         if (triangleNum % 2 == 0) {
                             filteredAp1 = new Ap((w / 2.0) * (triangleNum - 1), h, filteredVo.getDistance1());
@@ -661,37 +661,37 @@ public class LocFiterTestService {
     }
 
     //칼만 필터 VO 생성 함수
-    public SelectedVO createFilteredVo(SelectedVO originalVo) {
+//    public SelectedVO createFilteredVo(SelectedVO originalVo) {
+//
+//        double filterdRssi1 = kFilterForAp1.kalmanFiltering(originalVo.getRssi1());
+//        double filterdRssi2 = kFilterForAp2.kalmanFiltering(originalVo.getRssi2());
+//        double filterdRssi3 = kFilterForAp3.kalmanFiltering(originalVo.getRssi3());
+//
+//        return new SelectedVO(originalVo.getDeviceName(),
+//                calcDistance(filterdRssi1),
+//                filterdRssi1,
+//                calcDistance(filterdRssi2),
+//                filterdRssi2,
+//                calcDistance(filterdRssi3),
+//                filterdRssi3
+//        );
+//    }
 
-        double filterdRssi1 = kFilterForAp1.kalmanFiltering(originalVo.getRssi1());
-        double filterdRssi2 = kFilterForAp2.kalmanFiltering(originalVo.getRssi2());
-        double filterdRssi3 = kFilterForAp3.kalmanFiltering(originalVo.getRssi3());
-
-        return new SelectedVO(originalVo.getDeviceName(),
-                calcDistance(filterdRssi1),
-                filterdRssi1,
-                calcDistance(filterdRssi2),
-                filterdRssi2,
-                calcDistance(filterdRssi3),
-                filterdRssi3
-        );
-    }
-
-    public SelectedVO createFilteredVo2(SelectedVO originalVo) {
-
-        double filterdRssi1 = kFilterForAp4.kalmanFiltering(originalVo.getRssi1());
-        double filterdRssi2 = kFilterForAp5.kalmanFiltering(originalVo.getRssi2());
-        double filterdRssi3 = kFilterForAp6.kalmanFiltering(originalVo.getRssi3());
-
-        return new SelectedVO(originalVo.getDeviceName(),
-                calcDistance(filterdRssi1),
-                filterdRssi1,
-                calcDistance(filterdRssi2),
-                filterdRssi2,
-                calcDistance(filterdRssi3),
-                filterdRssi3
-        );
-    }
+//    public SelectedVO createFilteredVo2(SelectedVO originalVo) {
+//
+//        double filterdRssi1 = kFilterForAp4.kalmanFiltering(originalVo.getRssi1());
+//        double filterdRssi2 = kFilterForAp5.kalmanFiltering(originalVo.getRssi2());
+//        double filterdRssi3 = kFilterForAp6.kalmanFiltering(originalVo.getRssi3());
+//
+//        return new SelectedVO(originalVo.getDeviceName(),
+//                calcDistance(filterdRssi1),
+//                filterdRssi1,
+//                calcDistance(filterdRssi2),
+//                filterdRssi2,
+//                calcDistance(filterdRssi3),
+//                filterdRssi3
+//        );
+//    }
 
     public SelectedVO createFilteredVo3(SelectedVO originalVo) {
 
