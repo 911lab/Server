@@ -33,15 +33,15 @@ public class KalmanFilter {
         log.info("predictedRssi = {}, errorConvariance = {}", predictedRssi, errorCovariance);
     }
 
-    public KalmanFilter(double processNoise, double measurementNoise) {
-        initialized = false;
-        this.processNoise = processNoise;
-        this.measurementNoise = measurementNoise;
-        predictedRssi = 0;
-        errorCovariance = 0;
-
-        log.info("predictedRssi = {}, errorConvariance = {}", predictedRssi, errorCovariance);
-    }
+//    public KalmanFilter(double processNoise, double measurementNoise) {
+//        initialized = false;
+//        this.processNoise = processNoise;
+//        this.measurementNoise = measurementNoise;
+//        predictedRssi = 0;
+//        errorCovariance = 0;
+//
+//        log.info("predictedRssi = {}, errorConvariance = {}", predictedRssi, errorCovariance);
+//    }
 
 
     public double kalmanFiltering(double rssi) {

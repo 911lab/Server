@@ -77,14 +77,14 @@ public class KalmanParameter2TestService {
     public KalmanParameter2TestService() {
         poiHelper = new ExelPOIHelper();
 
-        kFilterForOur1 = new KalmanFilter(0.005, 20.0);
-        kFilterForOur2 = new KalmanFilter(0.005, 20.0);
-        kFilterForOur3 = new KalmanFilter(0.005, 20.0);
-        kFilterForOur4 = new KalmanFilter(0.005, 20.0);
-        kFilterForOur5 = new KalmanFilter(0.005, 20.0);
-        kFilterForOur6 = new KalmanFilter(0.005, 20.0);
-        kFilterForOur7 = new KalmanFilter(0.005, 20.0);
-        kFilterForOur8 = new KalmanFilter(0.005, 20.0);
+//        kFilterForOur1 = new KalmanFilter(0.005, 20.0);
+//        kFilterForOur2 = new KalmanFilter(0.005, 20.0);
+//        kFilterForOur3 = new KalmanFilter(0.005, 20.0);
+//        kFilterForOur4 = new KalmanFilter(0.005, 20.0);
+//        kFilterForOur5 = new KalmanFilter(0.005, 20.0);
+//        kFilterForOur6 = new KalmanFilter(0.005, 20.0);
+//        kFilterForOur7 = new KalmanFilter(0.005, 20.0);
+//        kFilterForOur8 = new KalmanFilter(0.005, 20.0);
 //        kFilterForOur9 = new KalmanFilter(0.005, 20.0);
 //        kFilterForOur10 = new KalmanFilter(0.005, 20.0);
 //        kFilterForOur11 = new KalmanFilter(0.005, 20.0);
@@ -93,14 +93,14 @@ public class KalmanParameter2TestService {
 //        kFilterForOur14 = new KalmanFilter(0.005, 20.0);
 //        kFilterForOur15 = new KalmanFilter(0.005, 20.0);
 
-        kFilterForFusion1 = new KalmanFilter(0.005, 1.25);
-        kFilterForFusion2 = new KalmanFilter(0.005, 1.25);
-        kFilterForFusion3 = new KalmanFilter(0.005, 1.25);
-        kFilterForFusion4 = new KalmanFilter(0.005, 1.25);
-        kFilterForFusion5 = new KalmanFilter(0.005, 1.25);
-        kFilterForFusion6 = new KalmanFilter(0.005, 1.25);
-        kFilterForFusion7 = new KalmanFilter(0.005, 1.25);
-        kFilterForFusion8 = new KalmanFilter(0.005, 1.25);
+//        kFilterForFusion1 = new KalmanFilter(0.005, 1.25);
+//        kFilterForFusion2 = new KalmanFilter(0.005, 1.25);
+//        kFilterForFusion3 = new KalmanFilter(0.005, 1.25);
+//        kFilterForFusion4 = new KalmanFilter(0.005, 1.25);
+//        kFilterForFusion5 = new KalmanFilter(0.005, 1.25);
+//        kFilterForFusion6 = new KalmanFilter(0.005, 1.25);
+//        kFilterForFusion7 = new KalmanFilter(0.005, 1.25);
+//        kFilterForFusion8 = new KalmanFilter(0.005, 1.25);
 //        kFilterForFusion9 = new KalmanFilter(0.005, 1.25);
 //        kFilterForFusion10 = new KalmanFilter(0.005, 1.25);
 //        kFilterForFusion11 = new KalmanFilter(0.005, 1.25);
@@ -109,14 +109,14 @@ public class KalmanParameter2TestService {
 //        kFilterForFusion14 = new KalmanFilter(0.005, 1.25);
 //        kFilterForFusion15 = new KalmanFilter(0.005, 1.25);
 
-        kFilterForPerformance1 = new KalmanFilter(0.005, 2.5);
-        kFilterForPerformance2 = new KalmanFilter(0.005, 2.5);
-        kFilterForPerformance3 = new KalmanFilter(0.005, 2.5);
-        kFilterForPerformance4 = new KalmanFilter(0.005, 2.5);
-        kFilterForPerformance5 = new KalmanFilter(0.005, 2.5);
-        kFilterForPerformance6 = new KalmanFilter(0.005, 2.5);
-        kFilterForPerformance7 = new KalmanFilter(0.005, 2.5);
-        kFilterForPerformance8 = new KalmanFilter(0.005, 2.5);
+//        kFilterForPerformance1 = new KalmanFilter(0.005, 2.5);
+//        kFilterForPerformance2 = new KalmanFilter(0.005, 2.5);
+//        kFilterForPerformance3 = new KalmanFilter(0.005, 2.5);
+//        kFilterForPerformance4 = new KalmanFilter(0.005, 2.5);
+//        kFilterForPerformance5 = new KalmanFilter(0.005, 2.5);
+//        kFilterForPerformance6 = new KalmanFilter(0.005, 2.5);
+//        kFilterForPerformance7 = new KalmanFilter(0.005, 2.5);
+//        kFilterForPerformance8 = new KalmanFilter(0.005, 2.5);
 //        kFilterForPerformance9 = new KalmanFilter(0.005, 2.5);
 //        kFilterForPerformance10 = new KalmanFilter(0.005, 2.5);
 //        kFilterForPerformance11 = new KalmanFilter(0.005, 2.5);

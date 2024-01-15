@@ -321,7 +321,7 @@ public class LocFilterTestUI extends JFrame {
             //Original
             if(wx!=-1 && wy!=-1) {
                 if(wx!=999 && wy!=999) {
-                    g2.setColor(Color.RED);
+                    g2.setColor(Color.BLACK);
                     g2.fillRect((int) (wx * (w / beaconW)) - radius, -((int) (wy * (h / beaconH)) + radius), radius * 2, radius * 2);
                 }
             }
@@ -329,7 +329,7 @@ public class LocFilterTestUI extends JFrame {
             //RM + Kalman
             if(kx!=-1 && ky!=-1) {
                 if(kx!=999 && ky!=999) {
-                    g2.setColor(Color.BLUE);
+                    g2.setColor(Color.RED);
                     g2.fillRect((int) (kx * (w / beaconW)) - radius, -((int) (ky * (h / beaconH)) + radius), radius * 2, radius * 2);
                 }
             }
@@ -345,7 +345,7 @@ public class LocFilterTestUI extends JFrame {
             //RM + Kalman + Loc MR + 2-D MAF + 2-D Kalman
             if(px!=-1 && py!=-1) {
                 if(px!=999 && py!=999) {
-                    g2.setColor(Color.RED);
+                    g2.setColor(Color.magenta);
                     g2.fillOval((int) (px * (w / beaconW)) - radius, -((int) (py * (h / beaconH)) + radius), radius * 2, radius * 2);
 
                 }

@@ -388,6 +388,7 @@ public class LocFiterTestService {
             originalUl = originalTr.calcUserLocation();
             //----------------------------------------------------------------------------------
 
+            log.info("Original Rssi1 = {}, Rssi2 = {}, Rssi3 = {}", originalSelectVo.getRssi1(), originalSelectVo.getRssi2(), originalSelectVo.getRssi3());
             log.info("Selected Rssi1 = {}, Rssi2 = {}, Rssi3 = {}", selectedVoforNotProximity.getRssi1(), selectedVoforNotProximity.getRssi2(), selectedVoforNotProximity.getRssi3());
             //RSSI 이상치 제거
             if (!rm.rmOutlier(selectedVoforNotProximity.getRssi1(), selectedVoforNotProximity.getRssi2(), selectedVoforNotProximity.getRssi3(), outlier15m)) {
@@ -408,6 +409,7 @@ public class LocFiterTestService {
                 if(selectedVoforNotProximity != null) {
                     //KF
                     filteredVoforNotProximity = createFilteredVo3(selectedVoforNotProximity);
+                    log.info("Filtered Rssi1 = {}, Rssi2 = {}, Rssi3 = {}", filteredVoforNotProximity.getRssi1(), filteredVoforNotProximity.getRssi2(), filteredVoforNotProximity.getRssi3());
                     //AP 좌표 설정
                     if (triangleNumforNotProximity % 2 == 0) {
                         ap1forNotProximity = new Ap((w / 2.0) * (triangleNumforNotProximity - 1), h, filteredVoforNotProximity.getDistance1());
@@ -571,8 +573,8 @@ public class LocFiterTestService {
 //        if(valueTemp < 0 && valueTemp >= -37 && valueTemp2 < -37) {  //1.5m
 //        if(valueTemp < 0 && valueTemp >= -30 && valueTemp2 < -30) {  //1m
 
-        if(valueTemp < 0 && valueTemp >= -37.0882 && valueTemp2 < -37.0882) { // 1m = 23, n=4.68 일때 2m =-37.0882
-//        if(valueTemp < 0 && valueTemp >= -45.3292 && valueTemp2 < -45.3292) { // 1m = 23, n=4.68 일때 3m =-45.3292
+//        if(valueTemp < 0 && valueTemp >= -37.0882 && valueTemp2 < -37.0882) { // 1m = 23, n=4.68 일때 2m =-37.0882
+        if(valueTemp < 0 && valueTemp >= -45.3292 && valueTemp2 < -45.3292) { // 1m = 23, n=4.68 일때 3m =-45.3292
             return keyTemp;
         }
 

@@ -70,11 +70,11 @@ public class RSSIFilterOursTestService {
         mafFilter2 = new MAFilter();
         mafFilter3 = new MAFilter();
 
-        kalmanFilter1 = new KalmanFilter(0.005, 20);
-        kalmanFilter2 = new KalmanFilter(0.005, 20);
-        kalmanFilter3 = new KalmanFilter(0.005, 20);
-        kalmanFilter4 = new KalmanFilter(0.005, 20);
-        kalmanFilter5 = new KalmanFilter(0.005, 20);
+        kalmanFilter1 = new KalmanFilter();
+        kalmanFilter2 = new KalmanFilter();
+        kalmanFilter3 = new KalmanFilter();
+        kalmanFilter4 = new KalmanFilter();
+        kalmanFilter5 = new KalmanFilter();
 
         value = 1.0;
 

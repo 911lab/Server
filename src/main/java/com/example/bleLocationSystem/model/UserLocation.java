@@ -17,12 +17,12 @@ public class UserLocation {
     private double y;
     //실제 위치
     //1
-    private double realLocX = 1;
-    private double realLocY = 1;
+    //private double realLocX = 1;
+    //private double realLocY = 1;
 
     //2
-    //private double realLocX = 7.5;
-    //private double realLocY = 12;
+    private double realLocX = 7.5;
+    private double realLocY = 12;
 
     //3
     //private double realLocX = 15;
