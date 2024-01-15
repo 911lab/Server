@@ -2,6 +2,7 @@ package com.example.bleLocationSystem.service;
 
 import com.example.bleLocationSystem.LocFilterTestUI;
 import com.example.bleLocationSystem.model.*;
+import com.example.bleLocationSystem.originalTestUI;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -39,9 +40,7 @@ public class TwoPointOriginalTestService {
     Ap ap3;
 
     ArrayList<UserLocation> ulList;
-    LocFilterTestUI ui = new LocFilterTestUI(w, h);
-
-
+    originalTestUI ui = new originalTestUI(w, h);
 
     public TwoPointOriginalTestService(){
         poiHelper = new ExelPOIHelper();
@@ -63,17 +62,33 @@ public class TwoPointOriginalTestService {
 
 
             if(!ulList.isEmpty()) {
-                ui.setUserLocation(ulList);
+//                ui.setUserLocation(ulList);
             }
         }
 
     }
 
     public UserLocation splitString(String str) {
+
         double x=0;
         double y=0;
 
-        
+        String valueTemp;
+
+        valueTemp = str.replace("(","");
+        valueTemp = valueTemp.replace(")","");
+        valueTemp = valueTemp.replace(" ","");
+
+        System.out.printf("valueTemp = %s\n", valueTemp);
+
+        String[] splitedArray = valueTemp.split(",");
+
+//        System.out.printf("valueTemp x = %s, y = %s\n", splitedArray[0], splitedArray[1]);
+
+        x = Double.parseDouble(splitedArray[0]);
+        y = Double.parseDouble(splitedArray[1]);
+
+        System.out.printf("valueTemp x = %f, y = %f\n", x, y);
 
 
         return new UserLocation(x,y,"ddd");
