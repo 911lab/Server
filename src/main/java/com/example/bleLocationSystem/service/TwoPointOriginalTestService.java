@@ -62,7 +62,7 @@ public class TwoPointOriginalTestService {
 
 
             if(!ulList.isEmpty()) {
-//                ui.setUserLocation(ulList);
+                ui.setUserLocation(ulList);
             }
         }
 
@@ -103,7 +103,7 @@ public class TwoPointOriginalTestService {
             arrays[i] = new ArrayList<String>();
         }
         try {
-            FileInputStream file = new FileInputStream("C:\\Users\\JaeHyuk\\Desktop\\original_6(37.5,12),16(15,10).xlsx");
+            FileInputStream file = new FileInputStream("C:\\Users\\heejin\\Desktop\\original_6(37.5,12),16(15,10).xlsx");
             XSSFWorkbook workbook = new XSSFWorkbook(file);
 
 

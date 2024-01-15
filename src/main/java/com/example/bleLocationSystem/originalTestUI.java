@@ -33,7 +33,7 @@ public class originalTestUI extends JFrame {
 
 
     public originalTestUI (double w, double h) {
-        setTitle("Ble Location App");
+        setTitle("Ble Location App22");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
 //        beaconW=w;
@@ -66,11 +66,15 @@ public class originalTestUI extends JFrame {
         add(p, BorderLayout.CENTER);
     }
 
-    public void setUserLocation(UserLocation ul) {
+    public void setUserLocation(ArrayList<UserLocation> ul) {
 
         //1개짜리
-        p.ox = ul.getX();
-        p.oy = ul.getY();
+ //       p.ox = ul.getX();
+ //       p.oy = ul.getY();
+        p.x6 = ul.get(0).getX();
+        p.y6 = ul.get(0).getY();
+        p.x16 = ul.get(1).getX();
+        p.y16 = ul.get(1).getY();
 //        p.deviceName = ul.getDeviceName();
         //p.repaint();
         //p.revalidate();
@@ -92,7 +96,6 @@ public class originalTestUI extends JFrame {
         int maxX,maxY;
         double x = -1;
         double y = -1;
-
 
 
         double ox = -1;
@@ -180,6 +183,11 @@ public class originalTestUI extends JFrame {
 
         double ox;
         double oy;
+        double x6=-1;
+        double y6=-1;
+        double x16=-1;
+        double y16=-1;
+
 
 
         String deviceName;
@@ -286,9 +294,31 @@ public class originalTestUI extends JFrame {
             //측위 결과 출력
             g2.translate(0,maxY); //원점이동
 
-            //Original Dot
-            g2.setColor(Color.RED);
-            g2.fillOval((int) (ox * (w / beaconW)), -(int) (oy * (h / beaconH)), radius*2, radius*2);
+
+            g2.setColor(Color.BLACK);
+            //6번(37.5,12)
+            g2.fillOval((int)(37.5* (w / beaconW))-radius, -((int) (12 * (h / beaconH)) + radius), radius*3, radius*3);
+            //16번(15,10)
+            g2.fillOval((int)(15* (w / beaconW))-radius, -((int) (10 * (h / beaconH)) + radius), radius*3, radius*3);
+
+
+            //6(37.5,12)
+            if(x6!=-1 && y6!=-1) {
+                if(x6!=999 && y6!=999) {
+                    System.out.println("1");
+                    g2.setColor(Color.RED);
+                    g2.fillRect((int) (x6 * (w / beaconW)) - radius, -((int) (y6 * (h / beaconH)) + radius), radius * 2, radius * 2);
+                }
+            }
+
+            //16(15,10)
+            if(x16!=-1 && y16!=-1 ) {
+                if(x16!=999 && y16!=999) {
+                    System.out.println("2");
+                    g2.setColor(Color.BLUE);
+                    g2.fillRect((int) (x16 * (w / beaconW)) - radius, -((int) (y16 * (h / beaconH)) + radius), radius * 2, radius * 2);
+                }
+            }
 
         }
     }
