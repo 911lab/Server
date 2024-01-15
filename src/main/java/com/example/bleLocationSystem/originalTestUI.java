@@ -66,15 +66,24 @@ public class originalTestUI extends JFrame {
         add(p, BorderLayout.CENTER);
     }
 
-    public void setUserLocation(ArrayList<UserLocation> ul) {
+    public void setUserLocation(ArrayList<UserLocation>[] ul) {
 
         //1개짜리
  //       p.ox = ul.getX();
  //       p.oy = ul.getY();
-        p.x6 = ul.get(0).getX();
-        p.y6 = ul.get(0).getY();
-        p.x16 = ul.get(1).getX();
-        p.y16 = ul.get(1).getY();
+//        p.x6 = ul.get(0).getX();
+//        p.y6 = ul.get(0).getY();
+//        p.x16 = ul.get(1).getX();
+//        p.y16 = ul.get(1).getY();
+
+        for(int i = 0; i< 100; i++) {
+            p.x6.add(ul[0].get(i).getX());
+            p.y6.add(ul[0].get(i).getY());
+            p.x16.add(ul[1].get(i).getX());
+            p.y16.add(ul[1].get(i).getY());
+        }
+
+
 //        p.deviceName = ul.getDeviceName();
         //p.repaint();
         //p.revalidate();
@@ -183,10 +192,15 @@ public class originalTestUI extends JFrame {
 
         double ox;
         double oy;
-        double x6=-1;
-        double y6=-1;
-        double x16=-1;
-        double y16=-1;
+//        double x6=-1;
+//        double y6=-1;
+//        double x16=-1;
+//        double y16=-1;
+
+        ArrayList<Double> x6 = new ArrayList<Double>();
+        ArrayList<Double> y6 = new ArrayList<Double>();
+        ArrayList<Double> x16 = new ArrayList<Double>();
+        ArrayList<Double> y16 = new ArrayList<Double>();
 
 
 
@@ -215,7 +229,7 @@ public class originalTestUI extends JFrame {
                 String ipNum = ipAddress.getHostAddress();
                 g2.setColor(Color.BLACK);
                 g2.setFont(new Font("맑은 고딕",Font.BOLD,15));
-                g2.drawString("서버 IP : " + ipNum,0, 0);            //1
+//                g2.drawString("서버 IP : " + ipNum,0, 0);            //1
             } catch (UnknownHostException e) {
                 e.printStackTrace();
             }
@@ -296,27 +310,33 @@ public class originalTestUI extends JFrame {
 
 
             g2.setColor(Color.BLACK);
+            g2.setFont(new Font("맑은 고딕",Font.BOLD,20));
             //6번(37.5,12)
-            g2.fillOval((int)(37.5* (w / beaconW))-radius, -((int) (12 * (h / beaconH)) + radius), radius*3, radius*3);
+            g2.fillOval((int)(37.5* (w / beaconW))-radius*3, -((int) (12 * (h / beaconH)) + radius*3), radius*6, radius*6);
+            g2.drawString("P2(RED)",(int)(37.5* (w / beaconW))-10*radius, -((int) (12 * (h / beaconH)))+8*radius);
             //16번(15,10)
-            g2.fillOval((int)(15* (w / beaconW))-radius, -((int) (10 * (h / beaconH)) + radius), radius*3, radius*3);
+            g2.fillOval((int)(15* (w / beaconW))-radius*3, -((int) (10 * (h / beaconH)) + radius*3), radius*6, radius*6);
+            g2.drawString("P1(BLUE)",(int)(15* (w / beaconW))-10*radius, -((int) (10 * (h / beaconH)))+8*radius);
 
 
-            //6(37.5,12)
-            if(x6!=-1 && y6!=-1) {
-                if(x6!=999 && y6!=999) {
-                    System.out.println("1");
-                    g2.setColor(Color.RED);
-                    g2.fillRect((int) (x6 * (w / beaconW)) - radius, -((int) (y6 * (h / beaconH)) + radius), radius * 2, radius * 2);
+            for(int i=0; i<100; i++) {
+                System.out.printf("draw num = %d\n", i);
+                //6(37.5,12)
+                if (x6.get(i) != -1 && y6.get(i) != -1) {
+                    if (x6.get(i) != 999 && y6.get(i) != 999) {
+                        System.out.println("1");
+                        g2.setColor(Color.RED);
+                        g2.fillRect((int) (x6.get(i) * (w / beaconW)) - radius, -((int) (y6.get(i) * (h / beaconH)) + radius), radius * 3, radius * 3);
+                    }
                 }
-            }
 
-            //16(15,10)
-            if(x16!=-1 && y16!=-1 ) {
-                if(x16!=999 && y16!=999) {
-                    System.out.println("2");
-                    g2.setColor(Color.BLUE);
-                    g2.fillRect((int) (x16 * (w / beaconW)) - radius, -((int) (y16 * (h / beaconH)) + radius), radius * 2, radius * 2);
+                //16(15,10)
+                if (x16.get(i) != -1 && y16.get(i) != -1) {
+                    if (x16.get(i) != 999 && y16.get(i) != 999) {
+                        System.out.println("2");
+                        g2.setColor(Color.BLUE);
+                        g2.fillRect((int) (x16.get(i) * (w / beaconW)) - radius, -((int) (y16.get(i) * (h / beaconH)) + radius), radius * 3, radius * 3);
+                    }
                 }
             }
 

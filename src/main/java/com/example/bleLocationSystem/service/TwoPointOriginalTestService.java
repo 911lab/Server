@@ -39,32 +39,33 @@ public class TwoPointOriginalTestService {
     Ap ap2;
     Ap ap3;
 
-    ArrayList<UserLocation> ulList;
+    ArrayList<UserLocation>[] ulList;
     originalTestUI ui = new originalTestUI(w, h);
 
     public TwoPointOriginalTestService(){
         poiHelper = new ExelPOIHelper();
 
-        ulList = new ArrayList<UserLocation>();
+        ulList = new ArrayList[2];
+
+        for(int i=0; i<2; i++) {
+            ulList[i] = new ArrayList<UserLocation>();
+        }
 
         originArrays = readExel();
-        System.out.printf("originArrays length = %d\n", originArrays.length);
-        System.out.printf("originArrays[0] size = %d\n", originArrays[0].size());
-        System.out.printf("originArrays[1] size = %d\n", originArrays[1].size());
+//        System.out.printf("originArrays length = %d\n", originArrays.length);
+//        System.out.printf("originArrays[0] size = %d\n", originArrays[0].size());
+//        System.out.printf("originArrays[1] size = %d\n", originArrays[1].size());
 
 
 
         for(int i=0; i < 100; i++) {
-            ulList.clear();
+            ulList[0].add(splitString(originArrays[0].get(i)));
+            ulList[1].add(splitString(originArrays[1].get(i)));
 
-            ulList.add(splitString(originArrays[0].get(i)));
-            ulList.add(splitString(originArrays[1].get(i)));
-
-
-            if(!ulList.isEmpty()) {
-                ui.setUserLocation(ulList);
-            }
         }
+
+        ui.setUserLocation(ulList);
+
 
     }
 
@@ -79,7 +80,7 @@ public class TwoPointOriginalTestService {
         valueTemp = valueTemp.replace(")","");
         valueTemp = valueTemp.replace(" ","");
 
-        System.out.printf("valueTemp = %s\n", valueTemp);
+//        System.out.printf("valueTemp = %s\n", valueTemp);
 
         String[] splitedArray = valueTemp.split(",");
 
@@ -103,7 +104,8 @@ public class TwoPointOriginalTestService {
             arrays[i] = new ArrayList<String>();
         }
         try {
-            FileInputStream file = new FileInputStream("C:\\Users\\heejin\\Desktop\\original_6(37.5,12),16(15,10).xlsx");
+//            FileInputStream file = new FileInputStream("C:\\Users\\heejin\\Desktop\\original_6(37.5,12),16(15,10).xlsx");
+            FileInputStream file = new FileInputStream("C:\\Users\\JaeHyuk\\Desktop\\original_6(37.5,12),16(15,10).xlsx");
             XSSFWorkbook workbook = new XSSFWorkbook(file);
 
 
@@ -139,7 +141,7 @@ public class TwoPointOriginalTestService {
                         } else {
                             value = cell.getStringCellValue();
 
-                            System.out.printf("value = %s\n", value);
+//                            System.out.printf("value = %s\n", value);
 
                             arrays[rowindex].add(value);
                         }
