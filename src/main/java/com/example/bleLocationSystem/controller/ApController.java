@@ -56,6 +56,11 @@ public class ApController {
     ArrayList<UserLocation> ulList;
     LocFilterTestUI ui = new LocFilterTestUI(locService.getW(), locService.getH());
 
+    //Threshold Test
+    ThresTestService thresTestService = new ThresTestService();
+//    ArrayList<UserLocation> ulList;
+//    LocFilterTestUI ui = new LocFilterTestUI(locService.getW(), locService.getH());
+
 
 
 
@@ -135,8 +140,16 @@ public class ApController {
 
 
         //Loc Fiter Test
+//        ulList = null;
+//        ulList = locService.trilateration(vo);
+//
+//        if(ulList != null) {
+//            ui.setUserLocation(ulList);
+//        }
+
+        //Threshold Test
         ulList = null;
-        ulList = locService.trilateration(vo);
+        ulList = thresTestService.trilateration(vo);
 
         if(ulList != null) {
             ui.setUserLocation(ulList);

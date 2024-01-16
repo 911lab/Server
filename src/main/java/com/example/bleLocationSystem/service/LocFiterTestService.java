@@ -285,6 +285,7 @@ public class LocFiterTestService {
                     if(selectedVo != null) {
                         //KF
 //                        filteredVo = createFilteredVo(selectedVo);
+                        filteredVo = selectedVo;
                         //AP 좌표 설정
                         if (triangleNum % 2 == 0) {
                             filteredAp1 = new Ap((w / 2.0) * (triangleNum - 1), h, filteredVo.getDistance1());

@@ -608,14 +608,20 @@ public class ExelPOIHelper {
 //        File currDir = new File(".");
 //        String path = currDir.getAbsolutePath();
 //        String fileLocation = path.substring(0, path.length() - 1) + "temp.xlsx";
-        //HJ
-        String fileLocation = "C:\\Users\\heehe\\Desktop\\ble_loc_test_exel\\loc_2.xlsx";
+
+        //For Loc Filter Test
+//        String fileLocation = "C:\\Users\\heehe\\Desktop\\ble_loc_test_exel\\locTest\\loc_20.xlsx";
+
+        //For Threshold Test
+        String fileLocation = "C:\\Users\\heehe\\Desktop\\ble_loc_test_exel\\thresholdTest\\20.xlsx";
+
 
         //JH
 //        String fileLocation = "C:\\Users\\heejin\\Desktop\\ble_loc_test_exel\\1.xlsx";
 
         FileOutputStream outputStream = new FileOutputStream(fileLocation);
         workbook.write(outputStream);
+//        System.out.println("exel write finish !!!");
         workbook.close();
         workbook = new XSSFWorkbook();
 //        styleSetting();
@@ -1325,20 +1331,20 @@ public class ExelPOIHelper {
 
 
         headerCell = Ex2Header.createCell(4);
-        headerCell.setCellValue("RM+Kalman+LocRM+2DMAF Location");
+        headerCell.setCellValue("RM+LocRM+2DMAF Location");
         headerCell.setCellStyle(headerStyle);
 
         headerCell = Ex2Header.createCell(5);
-        headerCell.setCellValue("RM+Kalman+LocRM+2DMAF Distance MAE");
+        headerCell.setCellValue("RM+LocRM+2DMAF Distance MAE");
         headerCell.setCellStyle(headerStyle);
 
 
         headerCell = Ex2Header.createCell(6);
-        headerCell.setCellValue("Proposed without Proximity Location");
+        headerCell.setCellValue("RM+LocRM+2DMAF+2D Kalman Location");
         headerCell.setCellStyle(headerStyle);
 
         headerCell = Ex2Header.createCell(7);
-        headerCell.setCellValue("Proposed without Proximity MAE");
+        headerCell.setCellValue("RM+LocRM+2DMAF+2D Kalman Distance MAE");
         headerCell.setCellStyle(headerStyle);
 
 
