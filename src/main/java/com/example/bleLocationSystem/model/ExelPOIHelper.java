@@ -615,10 +615,11 @@ public class ExelPOIHelper {
 //        String fileLocation = path.substring(0, path.length() - 1) + "temp.xlsx";
 
         //For Loc Filter Test
-        String fileLocation = "C:\\Users\\heehe\\Desktop\\ble_loc_test_exel\\locationTest__1_18\\loc_1.xlsx";
+//        String fileLocation = "C:\\Users\\heehe\\Desktop\\ble_loc_test_exel\\locationTest__1_18\\loc_20.xlsx";
 
         //For Threshold Test
-//        String fileLocation = "C:\\Users\\heehe\\Desktop\\ble_loc_test_exel\\thresholdTest_1_18\\thres_1.xlsx";
+        String fileLocation = "C:\\Users\\heehe\\Desktop\\ble_loc_test_exel\\thresholdTest_1_18\\thres_20.xlsx";
+
 
 
         //JH
@@ -1675,7 +1676,7 @@ public class ExelPOIHelper {
         cell.setCellStyle(style);
 
         //1000번
-        if (nowNum == 300) {
+        if (nowNum == 1000) {
             createFileAndRewrite();
         }
     }

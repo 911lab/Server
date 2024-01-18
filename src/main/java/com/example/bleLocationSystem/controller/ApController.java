@@ -170,9 +170,9 @@ public class ApController {
         ulList = null;
 
         //Location Filter Test
-        ulList = locationService.trilateration(vo);
+//        ulList = locationService.trilateration(vo);
         //Threshold Test
-//        ulList = thresholdTestService.trilateration(vo);
+        ulList = thresholdTestService.trilateration(vo);
 
         if(ulList != null) {
             ui.setUserLocation(ulList);

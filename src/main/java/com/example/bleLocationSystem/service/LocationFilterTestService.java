@@ -110,6 +110,7 @@ public class LocationFilterTestService {
 
     public LocationFilterTestService() {
         poiHelper = new ExelPOIHelper();
+        ulList = new ArrayList<UserLocation>();
 
         rm = new RemoveOutlier();
 

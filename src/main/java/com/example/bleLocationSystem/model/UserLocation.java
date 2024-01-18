@@ -17,8 +17,8 @@ public class UserLocation {
     private double y;
     //실제 위치
     //1
-    private double realLocX = 1;
-    private double realLocY = 1;
+//    private double realLocX = 1;
+//    private double realLocY = 1;
 
     //2
 //    private double realLocX = 7.5;
@@ -93,8 +93,8 @@ public class UserLocation {
 //    private double realLocY = 3;
 
     //20
-//    private double realLocX = 48.5;
-//    private double realLocY = 10;
+    private double realLocX = 48.5;
+    private double realLocY = 10;
 
 
     //worst
