@@ -21,6 +21,7 @@ public class ThresTestService {
     int checkProximityNumfor4m;
 
     VO originalVo;
+    VO originalVoforTraiangle;
     SelectedVO selectedVo;
 
     SelectedVO selectedVofor1m;
@@ -89,21 +90,17 @@ public class ThresTestService {
     StartFilter startFilter3;
 
 
-//    KalmanFilter kFilterForAp1;
-//    KalmanFilter kFilterForAp2;
-//    KalmanFilter kFilterForAp3;
-//
-//    KalmanFilter kFilterForAp4;
-//    KalmanFilter kFilterForAp5;
-//    KalmanFilter kFilterForAp6;
-//
-//    KalmanFilter kFilterForAp7;
-//    KalmanFilter kFilterForAp8;
-//    KalmanFilter kFilterForAp9;
-//
-//    KalmanFilter kFilterForAp10;
-//    KalmanFilter kFilterForAp11;
-//    KalmanFilter kFilterForAp12;
+    KalmanFilter kFilterForAp1;
+    KalmanFilter kFilterForAp2;
+    KalmanFilter kFilterForAp3;
+
+    KalmanFilter kFilterForAp4;
+    KalmanFilter kFilterForAp5;
+    KalmanFilter kFilterForAp6;
+
+    KalmanFilter kFilterForAp7;
+    KalmanFilter kFilterForAp8;
+
 
     LocMAFilter locMAFilter0;
     LocMAFilter locMAFilter1;
@@ -160,21 +157,15 @@ public class ThresTestService {
 
         rm = new RemoveOutlier();
 
-//        kFilterForAp1 = new KalmanFilter();
-//        kFilterForAp2 = new KalmanFilter();
-//        kFilterForAp3 = new KalmanFilter();
-//
-//        kFilterForAp4 = new KalmanFilter();
-//        kFilterForAp5 = new KalmanFilter();
-//        kFilterForAp6 = new KalmanFilter();
-//
-//        kFilterForAp7 = new KalmanFilter();
-//        kFilterForAp8 = new KalmanFilter();
-//        kFilterForAp9 = new KalmanFilter();
-//
-//        kFilterForAp10 = new KalmanFilter();
-//        kFilterForAp11 = new KalmanFilter();
-//        kFilterForAp12 = new KalmanFilter();
+        kFilterForAp1 = new KalmanFilter();
+        kFilterForAp2 = new KalmanFilter();
+        kFilterForAp3 = new KalmanFilter();
+        kFilterForAp4 = new KalmanFilter();
+        kFilterForAp5 = new KalmanFilter();
+        kFilterForAp6 = new KalmanFilter();
+        kFilterForAp7 = new KalmanFilter();
+        kFilterForAp8 = new KalmanFilter();
+
 
         //위치 보정 프로세스
         locMAFilter0 = new LocMAFilter();
@@ -194,35 +185,12 @@ public class ThresTestService {
     }
 
     public ArrayList<UserLocation> trilateration(VO vo) {
-        originalVo = vo;
+        originalVoforTraiangle = vo;
+        originalVo = createKalmanVO(vo);
 
         totalNum++;
 
-        triangleNum = selectTriangle(originalVo);
-
-        switch (triangleNum) {
-            case 0:
-                selectedVo = null;
-                break;
-            case 1:
-                selectedVo = createSelectVO(originalVo.getDeviceName(), originalVo.getRssi1(), originalVo.getRssi2(), originalVo.getRssi3());
-                break;
-            case 2:
-                selectedVo = createSelectVO(originalVo.getDeviceName(), originalVo.getRssi2(), originalVo.getRssi3(), originalVo.getRssi4());
-                break;
-            case 3:
-                selectedVo = createSelectVO(originalVo.getDeviceName(), originalVo.getRssi3(), originalVo.getRssi4(), originalVo.getRssi4());
-                break;
-            case 4:
-                selectedVo = createSelectVO(originalVo.getDeviceName(), originalVo.getRssi4(), originalVo.getRssi5(), originalVo.getRssi6());
-                break;
-            case 5:
-                selectedVo = createSelectVO(originalVo.getDeviceName(), originalVo.getRssi5(), originalVo.getRssi6(), originalVo.getRssi7());
-                break;
-            case 6:
-                selectedVo = createSelectVO(originalVo.getDeviceName(), originalVo.getRssi6(), originalVo.getRssi7(), originalVo.getRssi8());
-                break;
-        }
+        triangleNum = selectTriangle(originalVoforTraiangle);
 
 //        log.info("Selected Rssi1 = {}, Rssi2 = {}, Rssi3 = {}", selectedVo.getRssi1(), selectedVo.getRssi2(), selectedVo.getRssi3());
 
@@ -936,6 +904,64 @@ public class ThresTestService {
 //        if(valueTemp < 0 && valueTemp >= -51.1764 && valueTemp2 < -51.1764) { // 1m = 23, n=4.68 일때 4m = -51.1764
 
         return 0;
+    }
+
+    private VO createKalmanVO(VO vo) {
+
+        double filterdRssi1 = 1;
+        double filterdRssi2 = 1;
+        double filterdRssi3 = 1;
+        double filterdRssi4 = 1;
+        double filterdRssi5 = 1;
+        double filterdRssi6 = 1;
+        double filterdRssi7 = 1;
+        double filterdRssi8 = 1;
+
+
+
+        if(vo.getRssi1() == 1) {
+            filterdRssi1 = kFilterForAp1.kalmanFiltering(vo.getRssi1());
+        }
+        if(vo.getRssi2() == 1) {
+            filterdRssi2 = kFilterForAp2.kalmanFiltering(vo.getRssi2());
+        }
+        if(vo.getRssi3() == 1) {
+            filterdRssi3 = kFilterForAp3.kalmanFiltering(vo.getRssi3());
+        }
+        if(vo.getRssi4() == 1) {
+            filterdRssi4 = kFilterForAp4.kalmanFiltering(vo.getRssi4());
+        }
+        if(vo.getRssi5() == 1) {
+            filterdRssi5 = kFilterForAp5.kalmanFiltering(vo.getRssi5());
+        }
+        if(vo.getRssi6() == 1) {
+            filterdRssi6 = kFilterForAp6.kalmanFiltering(vo.getRssi6());
+        }
+        if(vo.getRssi7() == 1) {
+            filterdRssi7 = kFilterForAp7.kalmanFiltering(vo.getRssi7());
+        }
+        if(vo.getRssi8() == 1) {
+            filterdRssi8 = kFilterForAp8.kalmanFiltering(vo.getRssi8());
+        }
+
+        return new VO(vo.getDeviceName(),
+                calcDistance(filterdRssi1),
+                filterdRssi1,
+                calcDistance(filterdRssi2),
+                filterdRssi2,
+                calcDistance(filterdRssi3),
+                filterdRssi3,
+                calcDistance(filterdRssi4),
+                filterdRssi4,
+                calcDistance(filterdRssi5),
+                filterdRssi5,
+                calcDistance(filterdRssi6),
+                filterdRssi6,
+                calcDistance(filterdRssi7),
+                filterdRssi7,
+                calcDistance(filterdRssi8),
+                filterdRssi8
+        );
     }
 
     private SelectedVO createSelectVO(String name, double rssi1, double rssi2, double rssi3) {

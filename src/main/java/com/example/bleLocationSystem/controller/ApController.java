@@ -52,14 +52,24 @@ public class ApController {
 //    RSSIFilterTestService testService = new RSSIFilterTestService();
 
     //Loc Filter Test
-    LocFiterTestService locService = new LocFiterTestService();
-    ArrayList<UserLocation> ulList;
-    LocFilterTestUI ui = new LocFilterTestUI(locService.getW(), locService.getH());
-
-    //Threshold Test
-    ThresTestService thresTestService = new ThresTestService();
+//    LocFiterTestService locService = new LocFiterTestService();
 //    ArrayList<UserLocation> ulList;
 //    LocFilterTestUI ui = new LocFilterTestUI(locService.getW(), locService.getH());
+
+    //Thres Test
+//    ThresTestService thresTestService = new ThresTestService();
+//    ArrayList<UserLocation> ulList;
+//    LocFilterTestUI ui = new LocFilterTestUI(locService.getW(), locService.getH());
+
+    //Loc Filter Test
+    LocationFilterTestService locationService = new LocationFilterTestService();
+    ArrayList<UserLocation> ulList;
+    LocFilterTestUI ui = new LocFilterTestUI(locationService.getW(), locationService.getH());
+
+    //Threshold Test
+    ThresholdTestService thresholdTestService = new ThresholdTestService();
+//    ArrayList<UserLocation> ulList;
+//    LocFilterTestUI ui = new LocFilterTestUI(thresholdTestService.getW(), thresholdTestService.getH());
 
 
 
@@ -147,13 +157,35 @@ public class ApController {
 //            ui.setUserLocation(ulList);
 //        }
 
-        //Threshold Test
+        //Thres Test
+//        ulList = null;
+//        ulList = thresTestService.trilateration(vo);
+//
+//        if(ulList != null) {
+//            ui.setUserLocation(ulList);
+//        }
+
+        //--------------Location Filter Test--------------
+        //--------------Threshold Test--------------
         ulList = null;
-        ulList = thresTestService.trilateration(vo);
+
+        //Location Filter Test
+        ulList = locationService.trilateration(vo);
+        //Threshold Test
+//        ulList = thresholdTestService.trilateration(vo);
 
         if(ulList != null) {
             ui.setUserLocation(ulList);
         }
+
+
+//        ulList = null;
+//        ulList = thresholdTestService.trilateration(vo);
+//
+//        if(ulList != null) {
+//            ui.setUserLocation(ulList);
+//        }
+
 
     }
 }

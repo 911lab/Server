@@ -15,6 +15,11 @@ public class RemoveOutlier {
         return !(rssi1 <= outlier) && !(rssi2 <= outlier) && !(rssi3 <= outlier) && !(rssi1 > 0) && !(rssi2 > 0) && !(rssi3 > 0);
     }
 
+    public boolean rssiOutlier(double rssi, double out) {
+        outlier = out;
+        return (rssi > outlier) && (rssi < 0) ;
+    }
+
     //좌표 이상치 제거
     public boolean rmXYOutlier(UserLocation ul, double width, double height){
         //System.out.printf("Before RO Location : (%.2f, %.2f)\n", ul.getX(), ul.getY());

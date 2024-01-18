@@ -26,7 +26,9 @@ public class LocFiterTestService {
 
 
     VO originalVo;
+    VO realOriginalVo;
     VO originalVoforNotProximity;
+    VO realOriginalVoforNotProximity;
 
 
 
@@ -37,6 +39,7 @@ public class LocFiterTestService {
     SelectedVO selectedVo;
     SelectedVO filteredVo;
 
+    SelectedVO selectedVoforOriginal;
     SelectedVO selectedVoforNotProximity;
     SelectedVO filteredVoforNotProximity;
 
@@ -118,7 +121,7 @@ public class LocFiterTestService {
     UserLocation locMAFUl;
     UserLocation mAFilteredUlforNotProximity;
     UserLocation filteredUlforNotProximity;
-    UserLocation filteredUlforNoKalman;
+//    UserLocation filteredUlforNoKalman;
     UserLocation updateLocFilteredUlforNotProximity;
 
     UserLocation filteredUl;
@@ -157,17 +160,14 @@ public class LocFiterTestService {
 
         rm = new RemoveOutlier();
 
-//        kFilterForAp1 = new KalmanFilter();
-//        kFilterForAp2 = new KalmanFilter();
-//        kFilterForAp3 = new KalmanFilter();
-
-//        kFilterForAp4 = new KalmanFilter();
-//        kFilterForAp5 = new KalmanFilter();
-//        kFilterForAp6 = new KalmanFilter();
-
+        kFilterForAp1 = new KalmanFilter();
+        kFilterForAp2 = new KalmanFilter();
+        kFilterForAp3 = new KalmanFilter();
+        kFilterForAp4 = new KalmanFilter();
+        kFilterForAp5 = new KalmanFilter();
+        kFilterForAp6 = new KalmanFilter();
         kFilterForAp7 = new KalmanFilter();
         kFilterForAp8 = new KalmanFilter();
-        kFilterForAp9 = new KalmanFilter();
 
         //위치 보정 프로세스
         locMAFilter = new LocMAFilter();
@@ -187,15 +187,20 @@ public class LocFiterTestService {
     }
 
     public ArrayList<UserLocation> trilateration(VO vo) {
-        originalVo = vo;
-        originalVoforNotProximity = vo;
+        realOriginalVo = vo;
+        realOriginalVoforNotProximity = vo;
+
+//        originalVo = createKalmanVO(vo);
+//        originalVoforNotProximity = createKalmanVO(vo);
+
+
 
         totalNum++;
 
 //--------------------------------------------------------------Proposed Method--------------------------------------------------------------
 
         //--------------------------------------------------------------Proposed Proximity Method--------------------------------------------------------------
-        checkProximityNum = checkProximity(originalVo);
+        checkProximityNum = checkProximity(realOriginalVo);
 
         if(checkProximityNum != 0) {
             switch (checkProximityNum) {
@@ -240,7 +245,7 @@ public class LocFiterTestService {
         }
         else {
             //--------------------------------------------------------------Proposed RSSI Filter and Trilateration Method--------------------------------------------------------------
-            triangleNum = selectTriangle(originalVo);
+            triangleNum = selectTriangle(realOriginalVo);
             switch (triangleNum) {
                 case 0:
                     selectedVo = null;
@@ -252,7 +257,7 @@ public class LocFiterTestService {
                     selectedVo = createSelectVO(originalVo.getDeviceName(), originalVo.getRssi2(), originalVo.getRssi3(), originalVo.getRssi4());
                     break;
                 case 3:
-                    selectedVo = createSelectVO(originalVo.getDeviceName(), originalVo.getRssi3(), originalVo.getRssi4(), originalVo.getRssi4());
+                    selectedVo = createSelectVO(originalVo.getDeviceName(), originalVo.getRssi3(), originalVo.getRssi4(), originalVo.getRssi5());
                     break;
                 case 4:
                     selectedVo = createSelectVO(originalVo.getDeviceName(), originalVo.getRssi4(), originalVo.getRssi5(), originalVo.getRssi6());
@@ -347,38 +352,38 @@ public class LocFiterTestService {
 
 //--------------------------------------------------------------Proposed Method without Proximity--------------------------------------------------------------
 
-        triangleNumforNotProximity = selectTriangle(originalVoforNotProximity);
+        triangleNumforNotProximity = selectTriangle(realOriginalVoforNotProximity);
 
         switch (triangleNumforNotProximity) {
             case 0:
-                selectedVoforNotProximity = null;
+                selectedVoforOriginal = null;
                 break;
             case 1:
-                selectedVoforNotProximity = createSelectVO(originalVoforNotProximity.getDeviceName(), originalVoforNotProximity.getRssi1(), originalVoforNotProximity.getRssi2(), originalVoforNotProximity.getRssi3());
+                selectedVoforOriginal = createSelectVO(realOriginalVoforNotProximity.getDeviceName(), realOriginalVoforNotProximity.getRssi1(), realOriginalVoforNotProximity.getRssi2(), realOriginalVoforNotProximity.getRssi3());
                 break;
             case 2:
-                selectedVoforNotProximity = createSelectVO(originalVoforNotProximity.getDeviceName(), originalVoforNotProximity.getRssi2(), originalVoforNotProximity.getRssi3(), originalVoforNotProximity.getRssi4());
+                selectedVoforOriginal = createSelectVO(realOriginalVoforNotProximity.getDeviceName(), realOriginalVoforNotProximity.getRssi2(), realOriginalVoforNotProximity.getRssi3(), realOriginalVoforNotProximity.getRssi4());
                 break;
             case 3:
-                selectedVoforNotProximity = createSelectVO(originalVoforNotProximity.getDeviceName(), originalVoforNotProximity.getRssi3(), originalVoforNotProximity.getRssi4(), originalVoforNotProximity.getRssi4());
+                selectedVoforOriginal = createSelectVO(realOriginalVoforNotProximity.getDeviceName(), realOriginalVoforNotProximity.getRssi3(), realOriginalVoforNotProximity.getRssi4(), realOriginalVoforNotProximity.getRssi5());
                 break;
             case 4:
-                selectedVoforNotProximity = createSelectVO(originalVoforNotProximity.getDeviceName(), originalVoforNotProximity.getRssi4(), originalVoforNotProximity.getRssi5(), originalVoforNotProximity.getRssi6());
+                selectedVoforOriginal = createSelectVO(realOriginalVoforNotProximity.getDeviceName(), realOriginalVoforNotProximity.getRssi4(), realOriginalVoforNotProximity.getRssi5(), realOriginalVoforNotProximity.getRssi6());
                 break;
             case 5:
-                selectedVoforNotProximity = createSelectVO(originalVoforNotProximity.getDeviceName(), originalVoforNotProximity.getRssi5(), originalVoforNotProximity.getRssi6(), originalVoforNotProximity.getRssi7());
+                selectedVoforOriginal = createSelectVO(realOriginalVoforNotProximity.getDeviceName(), realOriginalVoforNotProximity.getRssi5(), realOriginalVoforNotProximity.getRssi6(), realOriginalVoforNotProximity.getRssi7());
                 break;
             case 6:
-                selectedVoforNotProximity = createSelectVO(originalVoforNotProximity.getDeviceName(), originalVoforNotProximity.getRssi6(), originalVoforNotProximity.getRssi7(), originalVoforNotProximity.getRssi8());
+                selectedVoforOriginal = createSelectVO(realOriginalVoforNotProximity.getDeviceName(), realOriginalVoforNotProximity.getRssi6(), realOriginalVoforNotProximity.getRssi7(), realOriginalVoforNotProximity.getRssi8());
                 break;
         }
 
-        if(selectedVoforNotProximity != null) {
+        if(selectedVoforOriginal != null) {
 
             //Original
             //++++
             //----------------------------------------------------------------------------------
-            originalSelectVo = createSelectVO(selectedVoforNotProximity.getDeviceName(), selectedVoforNotProximity.getRssi1(), selectedVoforNotProximity.getRssi2(), selectedVoforNotProximity.getRssi3());
+            originalSelectVo = createSelectVO(selectedVoforOriginal.getDeviceName(), selectedVoforOriginal.getRssi1(), selectedVoforOriginal.getRssi2(), selectedVoforOriginal.getRssi3());
 
             if (triangleNumforNotProximity % 2 == 0) {
                 ap1forOriginal = new Ap((w / 2.0) * (triangleNumforNotProximity - 1), h, originalSelectVo.getDistance1());
@@ -392,10 +397,37 @@ public class LocFiterTestService {
 
             Trilateration originalTr = new Trilateration(originalSelectVo.getDeviceName(), ap1forOriginal, ap2forOriginal, ap3forOriginal);
             originalUl = originalTr.calcUserLocation();
+
             //----------------------------------------------------------------------------------
 
+            switch (triangleNumforNotProximity) {
+                case 0:
+                    selectedVoforNotProximity = null;
+                    break;
+                case 1:
+                    selectedVoforNotProximity = createSelectVO(originalVoforNotProximity.getDeviceName(), originalVoforNotProximity.getRssi1(), originalVoforNotProximity.getRssi2(), originalVoforNotProximity.getRssi3());
+                    break;
+                case 2:
+                    selectedVoforNotProximity = createSelectVO(originalVoforNotProximity.getDeviceName(), originalVoforNotProximity.getRssi2(), originalVoforNotProximity.getRssi3(), originalVoforNotProximity.getRssi4());
+                    break;
+                case 3:
+                    selectedVoforNotProximity = createSelectVO(originalVoforNotProximity.getDeviceName(), originalVoforNotProximity.getRssi3(), originalVoforNotProximity.getRssi4(), originalVoforNotProximity.getRssi5());
+                    break;
+                case 4:
+                    selectedVoforNotProximity = createSelectVO(originalVoforNotProximity.getDeviceName(), originalVoforNotProximity.getRssi4(), originalVoforNotProximity.getRssi5(), originalVoforNotProximity.getRssi6());
+                    break;
+                case 5:
+                    selectedVoforNotProximity = createSelectVO(originalVoforNotProximity.getDeviceName(), originalVoforNotProximity.getRssi5(), originalVoforNotProximity.getRssi6(), originalVoforNotProximity.getRssi7());
+                    break;
+                case 6:
+                    selectedVoforNotProximity = createSelectVO(originalVoforNotProximity.getDeviceName(), originalVoforNotProximity.getRssi6(), originalVoforNotProximity.getRssi7(), originalVoforNotProximity.getRssi8());
+                    break;
+            }
+
+
+
             log.info("Original Rssi1 = {}, Rssi2 = {}, Rssi3 = {}", originalSelectVo.getRssi1(), originalSelectVo.getRssi2(), originalSelectVo.getRssi3());
-            log.info("Selected Rssi1 = {}, Rssi2 = {}, Rssi3 = {}", selectedVoforNotProximity.getRssi1(), selectedVoforNotProximity.getRssi2(), selectedVoforNotProximity.getRssi3());
+//            log.info("Selected Rssi1 = {}, Rssi2 = {}, Rssi3 = {}", selectedVoforNotProximity.getRssi1(), selectedVoforNotProximity.getRssi2(), selectedVoforNotProximity.getRssi3());
             //RSSI 이상치 제거
             if (!rm.rmOutlier(selectedVoforNotProximity.getRssi1(), selectedVoforNotProximity.getRssi2(), selectedVoforNotProximity.getRssi3(), outlier15m)) {
                 selectedVoforNotProximity = null;
@@ -413,8 +445,8 @@ public class LocFiterTestService {
                     }
                 }
                 if(selectedVoforNotProximity != null) {
-                    //KF
-                    filteredVoforNotProximity = createFilteredVo3(selectedVoforNotProximity);
+                    filteredVoforNotProximity = selectedVoforNotProximity;
+//                    filteredVoforNotProximity = createFilteredVo3(selectedVoforNotProximity);
                     log.info("Filtered Rssi1 = {}, Rssi2 = {}, Rssi3 = {}", filteredVoforNotProximity.getRssi1(), filteredVoforNotProximity.getRssi2(), filteredVoforNotProximity.getRssi3());
                     //AP 좌표 설정
                     if (triangleNumforNotProximity % 2 == 0) {
@@ -423,49 +455,49 @@ public class LocFiterTestService {
                         ap2forNotProximity = new Ap((w / 2.0) * triangleNumforNotProximity, 0, filteredVoforNotProximity.getDistance2());
                         ap3forNotProximity = new Ap((w / 2.0) * (triangleNumforNotProximity + 1), h, filteredVoforNotProximity.getDistance3());
                         //rm만한거
-                        ap1forNoKalman = new Ap((w / 2.0) * (triangleNumforNotProximity - 1), h, selectedVoforNotProximity.getDistance1());
-                        ap2forNoKalman = new Ap((w / 2.0) * triangleNumforNotProximity, 0, selectedVoforNotProximity.getDistance2());
-                        ap3forNoKalman = new Ap((w / 2.0) * (triangleNumforNotProximity + 1), h, selectedVoforNotProximity.getDistance3());
+//                        ap1forNoKalman = new Ap((w / 2.0) * (triangleNumforNotProximity - 1), h, selectedVoforNotProximity.getDistance1());
+//                        ap2forNoKalman = new Ap((w / 2.0) * triangleNumforNotProximity, 0, selectedVoforNotProximity.getDistance2());
+//                        ap3forNoKalman = new Ap((w / 2.0) * (triangleNumforNotProximity + 1), h, selectedVoforNotProximity.getDistance3());
                     } else {
                         //rm+kf한거
                         ap1forNotProximity = new Ap((w / 2.0) * (triangleNumforNotProximity - 1), 0, filteredVoforNotProximity.getDistance1());
                         ap2forNotProximity = new Ap((w / 2.0) * triangleNumforNotProximity, h, filteredVoforNotProximity.getDistance2());
                         ap3forNotProximity = new Ap((w / 2.0) * (triangleNumforNotProximity + 1), 0, filteredVoforNotProximity.getDistance3());
                         //rm만한거
-                        ap1forNoKalman = new Ap((w / 2.0) * (triangleNumforNotProximity - 1), 0, selectedVoforNotProximity.getDistance1());
-                        ap2forNoKalman = new Ap((w / 2.0) * triangleNumforNotProximity, h, selectedVoforNotProximity.getDistance2());
-                        ap3forNoKalman = new Ap((w / 2.0) * (triangleNumforNotProximity + 1), 0, selectedVoforNotProximity.getDistance3());
+//                        ap1forNoKalman = new Ap((w / 2.0) * (triangleNumforNotProximity - 1), 0, selectedVoforNotProximity.getDistance1());
+//                        ap2forNoKalman = new Ap((w / 2.0) * triangleNumforNotProximity, h, selectedVoforNotProximity.getDistance2());
+//                        ap3forNoKalman = new Ap((w / 2.0) * (triangleNumforNotProximity + 1), 0, selectedVoforNotProximity.getDistance3());
                     }
                     //rm+kf한거
                     Trilateration filteredTrforNotProximity = new Trilateration(originalVo.getDeviceName(), ap1forNotProximity, ap2forNotProximity, ap3forNotProximity);
                     //rm만한거
-                    Trilateration filteredTrforNoKalman = new Trilateration(originalVo.getDeviceName(), ap1forNoKalman, ap2forNoKalman, ap3forNoKalman);
+//                    Trilateration filteredTrforNoKalman = new Trilateration(originalVo.getDeviceName(), ap1forNoKalman, ap2forNoKalman, ap3forNoKalman);
                     //RM + Kalman
                     filteredUlforNotProximity = filteredTrforNotProximity.calcUserLocation();
                     //RM
-                    filteredUlforNoKalman = filteredTrforNoKalman.calcUserLocation();
+//                    filteredUlforNoKalman = filteredTrforNoKalman.calcUserLocation();
 
                 }
                 else {
                     filteredUlforNotProximity = new UserLocation(999, 999, "ddd");
-                    filteredUlforNoKalman = new UserLocation(999, 999, "ddd");
+//                    filteredUlforNoKalman = new UserLocation(999, 999, "ddd");
                 }
             }
             else {
                 filteredUlforNotProximity = new UserLocation(999, 999, "ddd");
-                filteredUlforNoKalman = new UserLocation(999, 999, "ddd");
+//                filteredUlforNoKalman = new UserLocation(999, 999, "ddd");
             }
         }
         else {
             originalUl = new UserLocation(999, 999, "ddd");
             filteredUlforNotProximity = new UserLocation(999, 999, "ddd");
-            filteredUlforNoKalman = new UserLocation(999, 999, "ddd");
+//            filteredUlforNoKalman = new UserLocation(999, 999, "ddd");
         }
 
 
         //좌표 이상치 제거
 //        if (rm.rmXYOutlier(filteredUlforNotProximity, w, h)) { //rm+kalman
-        if (rm.rmXYOutlier(filteredUlforNoKalman, w, h)) { //rssi이상치제거만된 xy
+        if (rm.rmXYOutlier(filteredUlforNotProximity, w, h)) { //rssi이상치제거만된 xy
             //이후꺼 다 new UserLocation(999, 999, "ddd");
             mAFilteredUlforNotProximity = new UserLocation(999, 999, "ddd");
             updateLocFilteredUlforNotProximity = new UserLocation(999, 999, "ddd");
@@ -474,7 +506,7 @@ public class LocFiterTestService {
             //RM + Kalman + Loc RM + 2d MAF
 //            mAFilteredUlforNotProximity = locMAFilter3.push(filteredUlforNotProximity);
             //RM + Loc RM + 2d MAF
-            mAFilteredUlforNotProximity = locMAFilter3.push(filteredUlforNoKalman);
+            mAFilteredUlforNotProximity = locMAFilter3.push(filteredUlforNotProximity);
 
             if(mAFilteredUlforNotProximity != null) {
                 //2D 칼만 필터
@@ -620,6 +652,65 @@ public class LocFiterTestService {
         return distance;
     }
 
+    private VO createKalmanVO(VO vo) {
+
+        double filterdRssi1 = 1;
+        double filterdRssi2 = 1;
+        double filterdRssi3 = 1;
+        double filterdRssi4 = 1;
+        double filterdRssi5 = 1;
+        double filterdRssi6 = 1;
+        double filterdRssi7 = 1;
+        double filterdRssi8 = 1;
+
+
+
+        if(vo.getRssi1() == 1) {
+            filterdRssi1 = kFilterForAp1.kalmanFiltering(vo.getRssi1());
+        }
+        if(vo.getRssi2() == 1) {
+            filterdRssi2 = kFilterForAp2.kalmanFiltering(vo.getRssi2());
+        }
+        if(vo.getRssi3() == 1) {
+            filterdRssi3 = kFilterForAp3.kalmanFiltering(vo.getRssi3());
+        }
+        if(vo.getRssi4() == 1) {
+            filterdRssi4 = kFilterForAp4.kalmanFiltering(vo.getRssi4());
+        }
+        if(vo.getRssi5() == 1) {
+            filterdRssi5 = kFilterForAp5.kalmanFiltering(vo.getRssi5());
+        }
+        if(vo.getRssi6() == 1) {
+            filterdRssi6 = kFilterForAp6.kalmanFiltering(vo.getRssi6());
+        }
+        if(vo.getRssi7() == 1) {
+            filterdRssi7 = kFilterForAp7.kalmanFiltering(vo.getRssi7());
+        }
+        if(vo.getRssi8() == 1) {
+            filterdRssi8 = kFilterForAp8.kalmanFiltering(vo.getRssi8());
+        }
+
+        return new VO(vo.getDeviceName(),
+                calcDistance(filterdRssi1),
+                filterdRssi1,
+                calcDistance(filterdRssi2),
+                filterdRssi2,
+                calcDistance(filterdRssi3),
+                filterdRssi3,
+                calcDistance(filterdRssi4),
+                filterdRssi4,
+                calcDistance(filterdRssi5),
+                filterdRssi5,
+                calcDistance(filterdRssi6),
+                filterdRssi6,
+                calcDistance(filterdRssi7),
+                filterdRssi7,
+                calcDistance(filterdRssi8),
+                filterdRssi8
+        );
+    }
+
+
     private SelectedVO createSelectVO(String name, double rssi1, double rssi2, double rssi3) {
         return new SelectedVO(name,
                 calcDistance(rssi1),
@@ -694,21 +785,21 @@ public class LocFiterTestService {
 //        );
 //    }
 
-    public SelectedVO createFilteredVo3(SelectedVO originalVo) {
-
-        double filterdRssi1 = kFilterForAp7.kalmanFiltering(originalVo.getRssi1());
-        double filterdRssi2 = kFilterForAp8.kalmanFiltering(originalVo.getRssi2());
-        double filterdRssi3 = kFilterForAp9.kalmanFiltering(originalVo.getRssi3());
-
-        return new SelectedVO(originalVo.getDeviceName(),
-                calcDistance(filterdRssi1),
-                filterdRssi1,
-                calcDistance(filterdRssi2),
-                filterdRssi2,
-                calcDistance(filterdRssi3),
-                filterdRssi3
-        );
-    }
+//    public SelectedVO createFilteredVo3(SelectedVO originalVo) {
+//
+//        double filterdRssi1 = kFilterForAp7.kalmanFiltering(originalVo.getRssi1());
+//        double filterdRssi2 = kFilterForAp8.kalmanFiltering(originalVo.getRssi2());
+//        double filterdRssi3 = kFilterForAp9.kalmanFiltering(originalVo.getRssi3());
+//
+//        return new SelectedVO(originalVo.getDeviceName(),
+//                calcDistance(filterdRssi1),
+//                filterdRssi1,
+//                calcDistance(filterdRssi2),
+//                filterdRssi2,
+//                calcDistance(filterdRssi3),
+//                filterdRssi3
+//        );
+//    }
 
 
 
