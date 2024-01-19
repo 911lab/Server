@@ -61,17 +61,20 @@ public class ApController {
 //    ArrayList<UserLocation> ulList;
 //    LocFilterTestUI ui = new LocFilterTestUI(locService.getW(), locService.getH());
 
-    //Loc Filter Test
-    LocationFilterTestService locationService = new LocationFilterTestService();
-    ArrayList<UserLocation> ulList;
-    LocFilterTestUI ui = new LocFilterTestUI(locationService.getW(), locationService.getH());
+    //Location Filter Test
+//    LocationFilterTestService locationService = new LocationFilterTestService();
+//    ArrayList<UserLocation> ulList;
+//    LocFilterTestUI ui = new LocFilterTestUI(locationService.getW(), locationService.getH());
 
     //Threshold Test
-    ThresholdTestService thresholdTestService = new ThresholdTestService();
+//    ThresholdTestService thresholdTestService = new ThresholdTestService();
 //    ArrayList<UserLocation> ulList;
 //    LocFilterTestUI ui = new LocFilterTestUI(thresholdTestService.getW(), thresholdTestService.getH());
 
-
+    //Dinamic Test
+    LocationFilterTestService locationService = new LocationFilterTestService();
+    ArrayList<UserLocation> ulList;
+    TestUI ui = new TestUI(locationService.getW(), locationService.getH());
 
 
 
@@ -167,18 +170,16 @@ public class ApController {
 
         //--------------Location Filter Test--------------
         //--------------Threshold Test--------------
-        ulList = null;
 
         //Location Filter Test
+//        ulList = null;
 //        ulList = locationService.trilateration(vo);
+
+//        if(ulList != null) {
+//            ui.setUserLocation(ulList);
+//        }
+
         //Threshold Test
-        ulList = thresholdTestService.trilateration(vo);
-
-        if(ulList != null) {
-            ui.setUserLocation(ulList);
-        }
-
-
 //        ulList = null;
 //        ulList = thresholdTestService.trilateration(vo);
 //
@@ -186,6 +187,13 @@ public class ApController {
 //            ui.setUserLocation(ulList);
 //        }
 
+        //--------------Dynamic Test--------------
+        ulList = null;
+        ulList = locationService.trilateration(vo);
+
+        if(ulList != null) {
+            ui.setUserLocation(ulList);
+        }
 
     }
 }

@@ -485,15 +485,15 @@ public class LocationFilterTestService {
         totalNum++;
 
         if(totalNum==1){
-            ulList.add(0, kalmanUl);
-            ulList.add(1, locfilteredUl);
-            ulList.add(2, kalmanProximityUl);
+            ulList.add(0, locfilteredUl);
+            ulList.add(1, locfilteredProximityUl);
+            ulList.add(2, locfilteredUl);
             ulList.add(3, locfilteredProximityUl);
         }
         else{
-            ulList.set(0, kalmanUl);
-            ulList.set(1, locfilteredUl);
-            ulList.set(2, kalmanProximityUl);
+            ulList.set(0, locfilteredUl);
+            ulList.set(1, locfilteredProximityUl);
+            ulList.set(2, locfilteredUl);
             ulList.set(3, locfilteredProximityUl);
         }
 
