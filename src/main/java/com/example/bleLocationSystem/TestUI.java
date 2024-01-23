@@ -362,25 +362,25 @@ public class TestUI extends JFrame {
             //2 point (49, 6.5)
             g2.fillRect((int) (48 * (w / beaconW)) - radius, -((int) (6.5 * (h / beaconH)) + radius), radius * 2, radius * 2);
             //3 point (37.5, 6.5)
-            g2.fillRect((int) (41 * (w / beaconW)) - radius, -((int) (6.5 * (h / beaconH)) + radius), radius * 2, radius * 2);
+//            g2.fillRect((int) (41 * (w / beaconW)) - radius, -((int) (6.5 * (h / beaconH)) + radius), radius * 2, radius * 2);
             //4 point (37.5, 12)
-            g2.fillRect((int) (37.5 * (w / beaconW)) - radius, -((int) (12 * (h / beaconH)) + radius), radius * 2, radius * 2);
+//            g2.fillRect((int) (37.5 * (w / beaconW)) - radius, -((int) (12 * (h / beaconH)) + radius), radius * 2, radius * 2);
             //7 point (26, 8.5)
-            g2.fillRect((int) (26 * (w / beaconW)) - radius, -((int) (8.5 * (h / beaconH)) + radius), radius * 2, radius * 2);
+//            g2.fillRect((int) (26 * (w / beaconW)) - radius, -((int) (8.5 * (h / beaconH)) + radius), radius * 2, radius * 2);
             //8 point (30, 1)
             g2.fillRect((int) (30 * (w / beaconW)) - radius, -((int) (1 * (h / beaconH)) + radius), radius * 2, radius * 2);
             //9 point (22.5, 12)
             g2.fillRect((int) (22.5 * (w / beaconW)) - radius, -((int) (12 * (h / beaconH)) + radius), radius * 2, radius * 2);
             //12 point (13, 8.5)
-            g2.fillRect((int) (13 * (w / beaconW)) - radius, -((int) (8.5 * (h / beaconH)) + radius), radius * 2, radius * 2);
+//            g2.fillRect((int) (13 * (w / beaconW)) - radius, -((int) (8.5 * (h / beaconH)) + radius), radius * 2, radius * 2);
             //13 point (13, 6.5)
-            g2.fillRect((int) (13 * (w / beaconW)) - radius, -((int) (6.5 * (h / beaconH)) + radius), radius * 2, radius * 2);
+//            g2.fillRect((int) (13 * (w / beaconW)) - radius, -((int) (6.5 * (h / beaconH)) + radius), radius * 2, radius * 2);
             //15 point (22, 4)
-            g2.fillRect((int) (22 * (w / beaconW)) - radius, -((int) (6.5 * (h / beaconH)) + radius), radius * 2, radius * 2);
+//            g2.fillRect((int) (22 * (w / beaconW)) - radius, -((int) (6.5 * (h / beaconH)) + radius), radius * 2, radius * 2);
 
-            g2.fillRect((int) (15 * (w / beaconW)) - radius, -((int) (1 * (h / beaconH)) + radius), radius * 2, radius * 2);
+//            g2.fillRect((int) (15 * (w / beaconW)) - radius, -((int) (1 * (h / beaconH)) + radius), radius * 2, radius * 2);
             //17 point (9, 6.5)
-            g2.fillRect((int) (9 * (w / beaconW)) - radius, -((int) (6.5 * (h / beaconH)) + radius), radius * 2, radius * 2);
+//            g2.fillRect((int) (9 * (w / beaconW)) - radius, -((int) (6.5 * (h / beaconH)) + radius), radius * 2, radius * 2);
             //18 point (1, 1)
             g2.fillRect((int) (1 * (w / beaconW)) - radius, -((int) (1 * (h / beaconH)) + radius), radius * 2, radius * 2);
 
@@ -395,16 +395,16 @@ public class TestUI extends JFrame {
 
 
             g2.draw(new Line2D.Float((int)(51.5 * (w / beaconW)), -(int)(12 * (h / beaconH)), (int)(48 * (w / beaconW)), -(int)(6.5 * (h / beaconH)))); //1->2
-            g2.draw(new Line2D.Float((int)(48 * (w / beaconW)), -(int)(6.5 * (h / beaconH)), (int)(41 * (w / beaconW)), -(int)(6.5 * (h / beaconH)))); //2->3
-            g2.draw(new Line2D.Float((int)(41 * (w / beaconW)), -(int)(6.5 * (h / beaconH)), (int)(37.5 * (w / beaconW)), -(int)(12 * (h / beaconH)))); //3->4
-            g2.draw(new Line2D.Float((int)(37.5 * (w / beaconW)), -(int)(12 * (h / beaconH)), (int)(26 * (w / beaconW)), -(int)(8.5 * (h / beaconH)))); //4->5
-            g2.draw(new Line2D.Float((int)(26 * (w / beaconW)), -(int)(8.5 * (h / beaconH)), (int)(30 * (w / beaconW)), -(int)(1 * (h / beaconH)))); //7->8
+            g2.draw(new Line2D.Float((int)(48 * (w / beaconW)), -(int)(6.5 * (h / beaconH)), (int)(30 * (w / beaconW)), -(int)(1 * (h / beaconH)))); //2->3
+//            g2.draw(new Line2D.Float((int)(41 * (w / beaconW)), -(int)(6.5 * (h / beaconH)), (int)(37.5 * (w / beaconW)), -(int)(12 * (h / beaconH)))); //3->4
+//            g2.draw(new Line2D.Float((int)(37.5 * (w / beaconW)), -(int)(12 * (h / beaconH)), (int)(26 * (w / beaconW)), -(int)(8.5 * (h / beaconH)))); //4->5
+//            g2.draw(new Line2D.Float((int)(26 * (w / beaconW)), -(int)(8.5 * (h / beaconH)), (int)(30 * (w / beaconW)), -(int)(1 * (h / beaconH)))); //7->8
             g2.draw(new Line2D.Float((int)(30 * (w / beaconW)), -(int)(1 * (h / beaconH)), (int)(22.5 * (w / beaconW)), -(int)(12 * (h / beaconH)))); //8->9
-            g2.draw(new Line2D.Float((int)(22.5 * (w / beaconW)), -(int)(12 * (h / beaconH)), (int)(13 * (w / beaconW)), -(int)(8.5 * (h / beaconH)))); //9->10
-            g2.draw(new Line2D.Float((int)(13 * (w / beaconW)), -(int)(8.5 * (h / beaconH)), (int)(13 * (w / beaconW)), -(int)(6.5 * (h / beaconH)))); //12->13
-            g2.draw(new Line2D.Float((int)(13 * (w / beaconW)), -(int)(6.5 * (h / beaconH)), (int)(22 * (w / beaconW)), -(int)(6.5 * (h / beaconH)))); //13->14
-            g2.draw(new Line2D.Float((int)(22 * (w / beaconW)), -(int)(6.5 * (h / beaconH)), (int)(15 * (w / beaconW)), -(int)(1 * (h / beaconH)))); //14->15
-            g2.draw(new Line2D.Float((int)(15 * (w / beaconW)), -(int)(1 * (h / beaconH)), (int)(9 * (w / beaconW)), -(int)(6.5 * (h / beaconH)))); //15->16
+            g2.draw(new Line2D.Float((int)(22.5 * (w / beaconW)), -(int)(12 * (h / beaconH)), (int)(9 * (w / beaconW)), -(int)(6.5 * (h / beaconH)))); //9->10
+//            g2.draw(new Line2D.Float((int)(13 * (w / beaconW)), -(int)(8.5 * (h / beaconH)), (int)(13 * (w / beaconW)), -(int)(6.5 * (h / beaconH)))); //12->13
+//            g2.draw(new Line2D.Float((int)(13 * (w / beaconW)), -(int)(6.5 * (h / beaconH)), (int)(22 * (w / beaconW)), -(int)(6.5 * (h / beaconH)))); //13->14
+//            g2.draw(new Line2D.Float((int)(22 * (w / beaconW)), -(int)(6.5 * (h / beaconH)), (int)(15 * (w / beaconW)), -(int)(1 * (h / beaconH)))); //14->15
+//            g2.draw(new Line2D.Float((int)(15 * (w / beaconW)), -(int)(1 * (h / beaconH)), (int)(9 * (w / beaconW)), -(int)(6.5 * (h / beaconH)))); //15->16
             g2.draw(new Line2D.Float((int)(9 * (w / beaconW)), -(int)(6.5 * (h / beaconH)), (int)(1 * (w / beaconW)), -(int)(1 * (h / beaconH)))); //17->18
 
             g2.setStroke(new BasicStroke(3,BasicStroke.CAP_BUTT,BasicStroke.JOIN_BEVEL,1,dash0,0));//실선

@@ -21,7 +21,20 @@ public class LocMAFilter {
     int queueSize;
 
     public LocMAFilter() {
-        size = 5;
+        size = 7;
+        xQueue = new ArrayList<Double>();
+        yQueue = new ArrayList<Double>();
+
+        xSum = 0;
+        ySum = 0;
+
+        xAvg = 0;
+        yAvg = 0;
+
+    }
+
+    public LocMAFilter(int size) {
+        this.size = size;
         xQueue = new ArrayList<Double>();
         yQueue = new ArrayList<Double>();
 

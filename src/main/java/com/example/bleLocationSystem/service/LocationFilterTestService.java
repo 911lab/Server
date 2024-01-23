@@ -132,8 +132,8 @@ public class LocationFilterTestService {
         startFilter7 = new StartFilter();
         startFilter8 = new StartFilter();
 
-        locMAFilter1 = new LocMAFilter();
-        locMAFilter2 = new LocMAFilter();
+        locMAFilter1 = new LocMAFilter(3);
+        locMAFilter2 = new LocMAFilter(8);
 
     }
 
@@ -407,30 +407,30 @@ public class LocationFilterTestService {
 //====================================================================== Kalman && Loc Filtered Proximity ======================================================================
 //==============================================================================================================================================================================
 
-        checkKalmanProximityNum = checkProximity(kalmanVo);
-
+//        checkKalmanProximityNum = checkProximity(kalmanVo);
+        checkKalmanProximityNum = checkProximity(originalVo);
         if(checkKalmanProximityNum != 0) {
             switch (checkKalmanProximityNum) {
                 case 0:
                     kalmanProximitySelectedVo = null;
                     break;
                 case 1: case 2:
-                    kalmanProximitySelectedVo = createSelectVO(kalmanVo.getDeviceName(), kalmanVo.getRssi1(), kalmanVo.getRssi2(), kalmanVo.getRssi3());
+                    kalmanProximitySelectedVo = createSelectVO(originalVo.getDeviceName(), originalVo.getRssi1(), originalVo.getRssi2(), originalVo.getRssi3());
                     break;
                 case 3:
-                    kalmanProximitySelectedVo = createSelectVO(kalmanVo.getDeviceName(), kalmanVo.getRssi2(), kalmanVo.getRssi3(), kalmanVo.getRssi4());
+                    kalmanProximitySelectedVo = createSelectVO(originalVo.getDeviceName(), originalVo.getRssi2(), originalVo.getRssi3(), originalVo.getRssi4());
                     break;
                 case 4:
-                    kalmanProximitySelectedVo = createSelectVO(kalmanVo.getDeviceName(), kalmanVo.getRssi3(), kalmanVo.getRssi4(), kalmanVo.getRssi5());
+                    kalmanProximitySelectedVo = createSelectVO(originalVo.getDeviceName(), originalVo.getRssi3(), originalVo.getRssi4(), originalVo.getRssi5());
                     break;
                 case 5:
-                    kalmanProximitySelectedVo = createSelectVO(kalmanVo.getDeviceName(), kalmanVo.getRssi4(), kalmanVo.getRssi5(), kalmanVo.getRssi6());
+                    kalmanProximitySelectedVo = createSelectVO(originalVo.getDeviceName(), originalVo.getRssi4(), originalVo.getRssi5(), originalVo.getRssi6());
                     break;
                 case 6:
-                    kalmanProximitySelectedVo = createSelectVO(kalmanVo.getDeviceName(), kalmanVo.getRssi5(), kalmanVo.getRssi6(), kalmanVo.getRssi7());
+                    kalmanProximitySelectedVo = createSelectVO(originalVo.getDeviceName(), originalVo.getRssi5(), originalVo.getRssi6(), originalVo.getRssi7());
                     break;
                 case 7: case 8:
-                    kalmanProximitySelectedVo = createSelectVO(kalmanVo.getDeviceName(), kalmanVo.getRssi6(), kalmanVo.getRssi7(), kalmanVo.getRssi8());
+                    kalmanProximitySelectedVo = createSelectVO(originalVo.getDeviceName(), originalVo.getRssi6(), originalVo.getRssi7(), originalVo.getRssi8());
                     break;
             }
 
