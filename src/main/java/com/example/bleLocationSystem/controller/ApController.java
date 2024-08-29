@@ -26,12 +26,15 @@ import java.util.Map;
 @RestController
 @Slf4j //로깅 어노테이션
 public class ApController {
+    // Real Real Real
+    PositioningService positioningService = new PositioningService();
+
 
     //실제
-//    ApService apService = new ApService();
-//    UI ui = new UI(apService.getW(),apService.getH());
-//    UserLocation ul;
-//    Map<String, Double> map = new HashMap<String, Double>();
+    ApService apService = new ApService();
+    UI ui = new UI(apService.getW(),apService.getH());
+    UserLocation ul;
+    Map<String, Double> map = new HashMap<String, Double>();
 
     //Original Test
 //    OriginalTestService originalService = new OriginalTestService();
@@ -72,24 +75,38 @@ public class ApController {
 //    LocFilterTestUI ui = new LocFilterTestUI(thresholdTestService.getW(), thresholdTestService.getH());
 
     //Dinamic Test
-    LocationFilterTestService locationService = new LocationFilterTestService();
-    ArrayList<UserLocation> ulList;
-    TestUI ui = new TestUI(locationService.getW(), locationService.getH());
+//    LocationFilterTestService locationService = new LocationFilterTestService();
+//    ArrayList<UserLocation> ulList;
+//    TestUI ui = new TestUI(locationService.getW(), locationService.getH());
 
 
 
     //앱으로부터 ap1, ap2, ap3 각각의 거리값 받기
-    //실제
-//    @PostMapping("/api/distance")
-//    public ResponseEntity<Map<String, Double>> receiveDistance(VO vo) throws Exception {
+//    실제
+    @PostMapping("/api/distance")
+    public ResponseEntity<Map<String, Double>> receiveDistance(VO vo) throws Exception {
 
     //테스트시
-    @PostMapping("/api/distance")
-    public void receiveDistance(VO vo) throws Exception {
+//    @PostMapping("/api/distance")
+//    public void receiveDistance(VO vo) throws Exception {
 
         //논문 실험 1 테스트시
 //    @PostMapping("/api/distance")
 //    public ResponseEntity<VO> receiveDistance(VO vo) throws Exception {
+
+        //-------------Real Real Real--------------
+        ul = positioningService.trilateration(vo);
+        if(ul != null) {
+            ui.setUserLocation(ul);
+            map.put("triangleNum", positioningService.getKalmanTriangleNum()*1.0);
+            map.put("x", ul.getX());
+            map.put("y", ul.getY());
+        }
+
+        return (ul != null) ?
+                ResponseEntity.status(HttpStatus.OK).body(map) :
+                ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+
 
 
         //-------------Real--------------
@@ -101,7 +118,7 @@ public class ApController {
 //            map.put("x", ul.getX());
 //            map.put("y", ul.getY());
 //        }
-
+//
 //        return (ul != null) ?
 //                ResponseEntity.status(HttpStatus.OK).body(map) :
 //                ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -128,18 +145,18 @@ public class ApController {
 //        ul = testService.trilateration(vo);
 //        ulList = null;
 //        ulList = testService.trilateration(vo);
-
+//
 //        if(ulList != null) {
 //            ui.setUserLocation(ulList);
 //            map.put("triangleNum", testService.getTriangleNum()*1.0);
 //            map.put("x", ul.getX());
 //            map.put("y", ul.getY());
 //        }
-//
+
 //        return (ulList != null) ?
 //                ResponseEntity.status(HttpStatus.OK).body(ulList.get(2)) :
 //                ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-//
+
 //    }
 
         //--------------RSSI Test for Experiment 1--------------
@@ -174,10 +191,24 @@ public class ApController {
         //Location Filter Test
 //        ulList = null;
 //        ulList = locationService.trilateration(vo);
-
+//
 //        if(ulList != null) {
 //            ui.setUserLocation(ulList);
 //        }
+//
+//        if(ulList != null) {
+//            ui.setUserLocation(ulList);
+//            map.put("triangleNum", locationService.getTriangleNum()*1.0);
+//            map.put("x", ulList.get(2).getX());
+//            map.put("y", ulList.get(2).getY());
+//        }
+//
+//        return (ulList != null) ?
+//        ResponseEntity.status(HttpStatus.OK).body(map) :
+//        ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+
+
+
 
         //Threshold Test
 //        ulList = null;
@@ -188,12 +219,12 @@ public class ApController {
 //        }
 
         //--------------Dynamic Test--------------
-        ulList = null;
-        ulList = locationService.trilateration(vo);
-
-        if(ulList != null) {
-            ui.setUserLocation(ulList);
-        }
+//        ulList = null;
+//        ulList = locationService.trilateration(vo);
+//
+//        if(ulList != null) {
+//            ui.setUserLocation(ulList);
+//        }
 
     }
 }
