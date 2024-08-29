@@ -70,7 +70,7 @@ public class TestUI extends JFrame {
 
         public void setUserLocation(ArrayList<UserLocation> ul) {
 //    public void setUserLocation(UserLocation ul) {
-        //2개짜리
+        //4개짜리
         p.wx = ul.get(0).getX();
         p.wy = ul.get(0).getY();
         p.kx = ul.get(1).getX();
@@ -314,7 +314,7 @@ public class TestUI extends JFrame {
             g2.fillOval((int)((w/beaconW)*(w1/2)*5)-radius, 0-radius, radius*2, radius*2);     //6(25,10)
             g2.drawString("Ap6("+((w1/2)*5)+", "+beaconH+")",(int)(w/beaconW*(w1/2)*5)-20*radius, 0-radius);     //6
             g2.fillOval((int)((w/beaconW)*(w1/2)*7)-radius, 0-radius, radius*2, radius*2);     //8(35,10)
-            g2.drawString("Ap8("+(w1/2)*7+", "+beaconH+")",(int)(w/beaconW*(w1/2)*7)-30*radius, 0-radius);     //8
+            g2.drawString("Ap8("+String.format("%.1f", (w1/2)*7)+", "+String.format("%.1f", beaconH)+")",(int)(w/beaconW*(w1/2)*7)-30*radius, 0-radius);     //8
 
             //측위 결과 출력
             g2.translate(0,maxY); //원점이동
