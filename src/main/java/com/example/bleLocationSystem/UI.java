@@ -182,7 +182,7 @@ public class UI extends JFrame {
 
             g2=(Graphics2D)g;
 
-            g2.clearRect(0, 0, 4000, 1000);
+//            g2.clearRect(0, 0, 4000, 1000);
 
             float dash0[] = {1,0f};
             float dash3[] = {3,3f};
@@ -322,12 +322,12 @@ public class UI extends JFrame {
 //                ox=movePoint(ox*(m/beaconW),0,maxX);
 //                oy=movePoint(oy*(m/beaconH),0,maxY);
 
-
                 //1개 찍을때
                 g2.translate(0,maxY); //원점이동
                 g2.setColor(Color.blue);
-
-                g2.drawString(String.valueOf(i),(int)x-radius, -((int)y+radius));
+                g2.fillRect((int)(x-radius), -(int)(y+radius), radius*2, radius*2);
+                g2.setColor(Color.black);
+                g2.drawString(deviceName,(int)(x-radius), -(int)(y+radius));
 
 
                 //2개 같이 찍을때
