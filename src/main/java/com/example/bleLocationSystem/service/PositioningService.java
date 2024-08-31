@@ -79,7 +79,8 @@ public class PositioningService {
     // 1m=-23, n=4.68 : 15m =  -78.0411
     double setting = 15.0;
 //    double outlier = -77.0;
-    double outlier15m = -78.0411;
+//    double outlier15m = -78.0411;
+    double outlier15m = -90.2827;
 //    double minOutlier = -30.0;
     @Getter
     double w = 15.0;
@@ -462,8 +463,10 @@ public class PositioningService {
 //            return keyTemp;
 //        }
 
-        if(valueTemp < 0 && valueTemp >= -37.0882 && valueTemp2 < -37.0882) { // 1m = 23, n=4.68 일때 2m =-37.0882
+//        if(valueTemp < 0 && valueTemp >= -37.0882 && valueTemp2 < -37.0882) { // 1m = 23, n=4.68 일때 2m =-37.0882
 //        if(valueTemp < 0 && valueTemp >= -45.3292 && valueTemp2 < -45.3292) { // 1m = 23, n=4.68 일때 3m =-45.3292
+        if(valueTemp < 0 && valueTemp >= -60.0 && valueTemp2 < -60.0) { // 1m = 23, n=4.68 일때 2m =-37.0882
+
             return keyTemp;
         }
 
@@ -483,8 +486,8 @@ public class PositioningService {
 
     public double calcDistance(double tempRssi) {
 
-        tempAlpha = -23;
-        lossNum = 4.68;
+        tempAlpha = -55;
+        lossNum = 3;
 
         double distance = Math.pow(10, (tempAlpha-tempRssi)/(10*lossNum));
 

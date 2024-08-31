@@ -29,10 +29,9 @@ public class ApController {
     // Real Real Real
     PositioningService positioningService = new PositioningService();
 
-
     //실제
-    ApService apService = new ApService();
-    UI ui = new UI(apService.getW(),apService.getH());
+//    ApService apService = new ApService();
+    UI ui = new UI(positioningService.getW(),positioningService.getH());
     UserLocation ul;
     Map<String, Double> map = new HashMap<String, Double>();
 
@@ -86,6 +85,10 @@ public class ApController {
     @PostMapping("/api/distance")
     public ResponseEntity<Map<String, Double>> receiveDistance(VO vo) throws Exception {
 
+    //Talend Api 사용시
+//    @PostMapping("/api/distance")
+//    public ResponseEntity<Map<String, Double>> receiveDistance(@RequestBody VO vo) throws Exception {
+
     //테스트시
 //    @PostMapping("/api/distance")
 //    public void receiveDistance(VO vo) throws Exception {
@@ -95,6 +98,7 @@ public class ApController {
 //    public ResponseEntity<VO> receiveDistance(VO vo) throws Exception {
 
         //-------------Real Real Real--------------
+        System.out.println(vo);
         ul = positioningService.trilateration(vo);
         if(ul != null) {
             ui.setUserLocation(ul);
