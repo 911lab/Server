@@ -82,12 +82,12 @@ public class ApController {
 
     //앱으로부터 ap1, ap2, ap3 각각의 거리값 받기
 //    실제
-    @PostMapping("/api/distance")
-    public ResponseEntity<Map<String, Double>> receiveDistance(VO vo) throws Exception {
-
-    //Talend Api 사용시
 //    @PostMapping("/api/distance")
-//    public ResponseEntity<Map<String, Double>> receiveDistance(@RequestBody VO vo) throws Exception {
+//    public ResponseEntity<Map<String, Double>> receiveDistance(VO vo) throws Exception {
+//
+//    //Talend Api 사용시
+    @PostMapping("/api/distance")
+    public ResponseEntity<Map<String, Double>> receiveDistance(@RequestBody VO vo) throws Exception {
 
     //테스트시
 //    @PostMapping("/api/distance")

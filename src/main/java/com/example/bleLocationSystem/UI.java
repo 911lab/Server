@@ -23,6 +23,7 @@ public class UI extends JFrame {
 
     ArrayList<Integer> hjx;
     ArrayList<Integer> hjy;
+    String hjdeviceName;
     ArrayList<Integer> elsex;
     ArrayList<Integer> elsey;
 
@@ -93,6 +94,8 @@ public class UI extends JFrame {
 
         double ox = -1;
         double oy = -1;
+
+        String deviceName;
         int i =0;
 
         int j = 0;
@@ -169,6 +172,8 @@ public class UI extends JFrame {
         double ox = -1;
         double oy = -1;
 
+        String deviceName;
+
 //        두명 위치 5번 연속 찍을 때
 //        ArrayList<Double> hjx = new ArrayList<Double>(Arrays.asList(-1.0, -1.0, -1.0, -1.0 ,-1.0));
 //        ArrayList<Double> hjy = new ArrayList<Double>(Arrays.asList(-1.0, -1.0, -1.0, -1.0 ,-1.0));
@@ -176,13 +181,13 @@ public class UI extends JFrame {
 //        ArrayList<Double> elsey = new ArrayList<Double>(Arrays.asList(-1.0, -1.0, -1.0, -1.0 ,-1.0));
 
 
-        String deviceName;
+//        String deviceName;
         public void paintComponent(Graphics g) {
 
 
             g2=(Graphics2D)g;
 
-//            g2.clearRect(0, 0, 4000, 1000);
+            g2.clearRect(0, 0, 4000, 1000);
 
             float dash0[] = {1,0f};
             float dash3[] = {3,3f};
@@ -267,32 +272,33 @@ public class UI extends JFrame {
             if(x!=-1 && y!=-1) {
 
 //                //device 여러개 있는 경우
-//                if(deviceName.equals("HJ")) {
-//                    hjx.set(i%5, (int)(x*(w/beaconW)));
-//                    hjy.set(i%5, (int)(y*(h/beaconH)));
-//                    i++;
-//                } else {
+                if(!deviceName.equals("ddd")) {
+                    hjdeviceName = deviceName;
+                    hjx.set(i % 5, (int) (x * (w / beaconW)));
+                    hjy.set(i % 5, (int) (y * (h / beaconH)));
+                    i++;
+                }
+//                else {
 //                    elsex.set(j%5, (int)(x*(w/beaconW)));
 //                    elsey.set(j%5, (int)(y*(h/beaconH)));
 //                    j++;
 //                }
 //
 //                //1개 찍을때
-//                g2.translate(0,maxY); //원점이동
-//
-//                log.info("hjx.size() = {}", hjx.size());
-//                log.info("i = {}", i);
-//                for(int k=0; k<hjx.size(); k++) {
-//                    g2.setColor(Color.RED);
-//                    int n = (k+i)%5;
-//                    log.info("hj[{}]=({},{})", n, hjx.get(n), hjy.get(n));
-//                    if(hjx.get(n) >= 0 && hjy.get(n) >= 0) {
-//                        //g2.fillRect((int)(Math.round(hjx.get(n)))-radius, -((int)(Math.round(hjy.get(n)))+radius), radius*2, radius*2);
-//                        g2.fillRect(hjx.get(n)-radius, -(hjy.get(n)+radius), radius*2, radius*2);
-//                        g2.setColor(Color.black);
-//                        g2.drawString("HJ",hjx.get(n)-radius, -(hjy.get(n)+radius));
-//                    }
-//                }
+                g2.translate(0,maxY); //원점이동
+                log.info("hjx.size() = {}", hjx.size());
+                log.info("i = {}", i);
+                for(int k=0; k<hjx.size(); k++) {
+                    g2.setColor(Color.RED);
+                    int n = (k+i)%5;
+                    log.info("{} : [{}]=({},{})",hjdeviceName, n, hjx.get(n), hjy.get(n));
+                    if(hjx.get(n) >= 0 && hjy.get(n) >= 0) {
+//                        log.info("{} : [{}]=({},{})",hjdeviceName, n, hjx.get(n), hjy.get(n));
+                        g2.fillRect(hjx.get(n)-radius, -(hjy.get(n)+radius), radius*2, radius*2);
+                        g2.setColor(Color.black);
+                        g2.drawString(hjdeviceName,hjx.get(n)-radius, -(hjy.get(n)+radius));
+                    }
+                }
 //
 //                log.info("elsex.size() = {}", elsex.size());
 //                log.info("j = {}", j);
@@ -310,8 +316,8 @@ public class UI extends JFrame {
 
 
 //                //device name 없이 화면
-                x=x*(w/beaconW);
-                y=y*(h/beaconH);
+//                x=x*(w/beaconW);
+//                y=y*(h/beaconH);
 //                ox=ox*(w/beaconW);
 //                oy=oy*(h/beaconH);
 
@@ -323,11 +329,11 @@ public class UI extends JFrame {
 //                oy=movePoint(oy*(m/beaconH),0,maxY);
 
                 //1개 찍을때
-                g2.translate(0,maxY); //원점이동
-                g2.setColor(Color.blue);
-                g2.fillRect((int)(x-radius), -(int)(y+radius), radius*2, radius*2);
-                g2.setColor(Color.black);
-                g2.drawString(deviceName,(int)(x-radius), -(int)(y+radius));
+//                g2.translate(0,maxY); //원점이동
+//                g2.setColor(Color.blue);
+//                g2.fillRect((int)(x-radius), -(int)(y+radius), radius*2, radius*2);
+//                g2.setColor(Color.black);
+//                g2.drawString(deviceName,(int)(x-radius), -(int)(y+radius));
 
 
                 //2개 같이 찍을때
