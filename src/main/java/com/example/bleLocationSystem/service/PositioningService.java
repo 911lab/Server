@@ -160,6 +160,8 @@ public class PositioningService {
         kalmanVo = rssiKalmanFilter(removedVo);
 
         kalmanTriangleNum = selectTriangle(kalmanVo);
+        log.info("triangle = {}", kalmanTriangleNum);
+        //System.out.printf("triangle Num = %d\n", kalmanTriangleNum);
         switch (kalmanTriangleNum) {
             case 0:
                 kalmanSelectedVo = null;
