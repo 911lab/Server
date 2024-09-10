@@ -523,6 +523,11 @@ public class PositioningService {
         int keyTemp;
         double errorValue = -999.9;
 
+        double rssiTmp1;
+        double rssiTmp2;
+
+        int tmpTriNum;
+
         VO vo = originalVo;
 
         Map<Integer, Double> map = new HashMap<Integer, Double>();
@@ -572,6 +577,41 @@ public class PositioningService {
 
             if(n1 == 1 && n2 ==1) {
                 return keyList.get(0);
+            }
+            else if(n1 == 1 && n2 == 2) {
+                if ( !map.get(keyList.get(2)-1).equals(errorValue) ) {
+                    rssiTmp1 = map.get(keyList.get(0));
+                    rssiTmp2 = map.get(keyList.get(2));
+
+                    if (rssiTmp1 > rssiTmp2) {
+                        return keyList.get(0);
+                    } else {
+                        return keyList.get(1);
+                    }
+                }
+            }
+            else if(n1 == 2  && n2 == 1) {
+                if ( !map.get(keyList.get(1)-1).equals(errorValue) ) {
+                    rssiTmp1 = map.get(keyList.get(0));
+                    rssiTmp2 = map.get(keyList.get(2));
+
+                    if (rssiTmp1 > rssiTmp2) {
+                        return keyList.get(0);
+                    } else {
+                        return keyList.get(1)-1;
+                    }
+                }
+            }
+            else if(n1 ==2  && n2 == 2) {
+                if ( !map.get(keyList.get(1)-1).equals(errorValue) &&  !map.get(keyList.get(1)+1).equals(errorValue) ) {
+                    return keyList.get(1)-1;
+                }
+                else if ( !map.get(keyList.get(1)-1).equals(errorValue) && map.get(keyList.get(1)+1).equals(errorValue) ) {
+                    return keyList.get(0);
+                }
+                else if ( map.get(keyList.get(1)-1).equals(errorValue) && !map.get(keyList.get(1)+1).equals(errorValue) ) {
+                    return keyList.get(1);
+                }
             }
         }
         return 0;
