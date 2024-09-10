@@ -286,12 +286,12 @@ public class UI extends JFrame {
 //
 //                //1개 찍을때
                 g2.translate(0,maxY); //원점이동
-                log.info("hjx.size() = {}", hjx.size());
-                log.info("i = {}", i);
+//                log.info("hjx.size() = {}", hjx.size());
+//                log.info("i = {}", i);
                 for(int k=0; k<hjx.size(); k++) {
                     g2.setColor(Color.RED);
                     int n = (k+i)%5;
-                    log.info("{} : [{}]=({},{})",hjdeviceName, n, hjx.get(n), hjy.get(n));
+//                    log.info("{} : [{}]=({},{})",hjdeviceName, n, hjx.get(n), hjy.get(n));
                     if(hjx.get(n) >= 0 && hjy.get(n) >= 0) {
 //                        log.info("{} : [{}]=({},{})",hjdeviceName, n, hjx.get(n), hjy.get(n));
                         g2.fillRect(hjx.get(n)-radius, -(hjy.get(n)+radius), radius*2, radius*2);

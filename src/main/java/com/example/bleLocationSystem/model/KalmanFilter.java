@@ -26,7 +26,7 @@ public class KalmanFilter {
     public KalmanFilter() {
         initialized = false;
         processNoise = 0.005;
-        measurementNoise = 20;
+        measurementNoise = 1.25;
         predictedRssi = 0;
         errorCovariance = 0;
 
