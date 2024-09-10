@@ -16,7 +16,7 @@ public class StartFilter {
     List<Double> rssiArr;
 
     float tempAlpha;
-    int lossNum;
+    double lossNum;
 
     int count;
     double sum;
@@ -94,8 +94,8 @@ public class StartFilter {
 
     public double calcDistance(double tempRssi) {
 
-        tempAlpha = -30;
-        lossNum = 4;
+        tempAlpha = -57;
+        lossNum = 3.1;
 
         double distance = Math.pow(10, (tempAlpha-tempRssi)/(10*lossNum));
 

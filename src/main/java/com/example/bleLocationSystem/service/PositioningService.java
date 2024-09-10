@@ -80,7 +80,8 @@ public class PositioningService {
     double setting = 15.0;
 //    double outlier = -77.0;
 //    double outlier15m = -78.0411;
-    double outlier15m = -90.2827;
+//    double outlier15m = -90.2827; //1m = -57, n=2.2
+    double outlier15m = -94; //1m = -57, n = 3.1
 //    double minOutlier = -30.0;
     @Getter
     double w = 15.0;
@@ -140,6 +141,7 @@ public class PositioningService {
             double rssi6 = startFilter6.startFilterling(vo.getRssi6(), i);
             double rssi7 = startFilter7.startFilterling(vo.getRssi7(), i);
             double rssi8 = startFilter8.startFilterling(vo.getRssi8(), i);
+
 
             if(i == 30) {
                 originalVo = createVO(vo.getDeviceName(), rssi1, rssi2, rssi3, rssi4, rssi5, rssi6, rssi7, rssi8);
@@ -206,21 +208,27 @@ public class PositioningService {
                     kalmanProximitySelectedVo = null;
                     break;
                 case 1: case 2:
+                    kalmanTriangleNum = 1;
                     kalmanProximitySelectedVo = createSelectVO(kalmanVo.getDeviceName(), kalmanVo.getRssi1(), kalmanVo.getRssi2(), kalmanVo.getRssi3());
                     break;
                 case 3:
+                    kalmanTriangleNum = 2;
                     kalmanProximitySelectedVo = createSelectVO(kalmanVo.getDeviceName(), kalmanVo.getRssi2(), kalmanVo.getRssi3(), kalmanVo.getRssi4());
                     break;
                 case 4:
+                    kalmanTriangleNum = 3;
                     kalmanProximitySelectedVo = createSelectVO(kalmanVo.getDeviceName(), kalmanVo.getRssi3(), kalmanVo.getRssi4(), kalmanVo.getRssi5());
                     break;
                 case 5:
+                    kalmanTriangleNum = 4;
                     kalmanProximitySelectedVo = createSelectVO(kalmanVo.getDeviceName(), kalmanVo.getRssi4(), kalmanVo.getRssi5(), kalmanVo.getRssi6());
                     break;
                 case 6:
+                    kalmanTriangleNum = 5;
                     kalmanProximitySelectedVo = createSelectVO(kalmanVo.getDeviceName(), kalmanVo.getRssi5(), kalmanVo.getRssi6(), kalmanVo.getRssi7());
                     break;
                 case 7: case 8:
+                    kalmanTriangleNum = 6;
                     kalmanProximitySelectedVo = createSelectVO(kalmanVo.getDeviceName(), kalmanVo.getRssi6(), kalmanVo.getRssi7(), kalmanVo.getRssi8());
                     break;
             }
@@ -465,8 +473,11 @@ public class PositioningService {
 
 //        if(valueTemp < 0 && valueTemp >= -37.0882 && valueTemp2 < -37.0882) { // 1m = 23, n=4.68 일때 2m =-37.0882
 //        if(valueTemp < 0 && valueTemp >= -45.3292 && valueTemp2 < -45.3292) { // 1m = 23, n=4.68 일때 3m =-45.3292
-        if(valueTemp < 0 && valueTemp >= -60.0 && valueTemp2 < -60.0) { // 1m = 23, n=4.68 일때 2m =-37.0882
-
+//        if(valueTemp < 0 && valueTemp >= -60.0 && valueTemp2 < -60.0) { // 임베디드 1m = -57, n=2.2 일때 2m =
+//        if(valueTemp < 0 && valueTemp >= -67.4966 && valueTemp2 < -67.4966) { // 임베디드 1m = -57, n=2.2 일때 3m = 67.4966
+//        if(valueTemp < 0 && valueTemp >= -71.79 && valueTemp2 < -71.79) { // 임베디드 1m = -57, n= 3.1 일때 3m = 71.79
+//        if(valueTemp < 0 && valueTemp >= -69.3361 && valueTemp2 < -69.3361) { // 임베디드 1m = -57, n= 3.1 일때 2.5m = -69.3361
+        if(valueTemp < 0 && valueTemp >= -66.3319 && valueTemp2 < -66.3319) { // 임베디드 1m = -57, n= 3.1 일때 2m = -66.3319
             return keyTemp;
         }
 
@@ -486,8 +497,8 @@ public class PositioningService {
 
     public double calcDistance(double tempRssi) {
 
-        tempAlpha = -55;
-        lossNum = 3;
+        tempAlpha = -57;
+        lossNum = 3.1;
 
         double distance = Math.pow(10, (tempAlpha-tempRssi)/(10*lossNum));
 

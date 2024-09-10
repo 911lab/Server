@@ -96,7 +96,7 @@ public class ApController {
 //    public ResponseEntity<VO> receiveDistance(VO vo) throws Exception {
 
         //-------------Real Real Real--------------
-        System.out.println(vo);
+        System.out.println("1 : "+vo.getRssi1() + "| 2 : "+vo.getRssi2() + "| 3 : "+vo.getRssi3() + "| 4 : "+vo.getRssi4() + "| 5 : "+vo.getRssi5() + "| 6 : "+vo.getRssi6() + "| 7 : "+vo.getRssi7() + "| 8 : "+vo.getRssi8());
         ul = positioningService.trilateration(vo);
         if(ul != null) {
             ui.setUserLocation(ul);
