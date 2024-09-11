@@ -4,6 +4,8 @@ import ch.qos.logback.core.net.SyslogOutputStream;
 import com.example.bleLocationSystem.LocFilterTestUI;
 import com.example.bleLocationSystem.TestUI;
 import com.example.bleLocationSystem.UI;
+import com.example.bleLocationSystem.model.CO;
+import com.example.bleLocationSystem.model.JSONVO;
 import com.example.bleLocationSystem.model.UserLocation;
 import com.example.bleLocationSystem.model.VO;
 import com.example.bleLocationSystem.originalTestUI;
@@ -34,6 +36,14 @@ public class ApController {
     UI ui = new UI(positioningService.getW(),positioningService.getH());
     UserLocation ul;
     Map<String, Double> map = new HashMap<String, Double>();
+
+    VO vo;
+
+    CO co;
+
+    boolean coDangerTmp;
+
+    double coDangerTmpFloat = 0.0;
 
     //Original Test
 //    OriginalTestService originalService = new OriginalTestService();
@@ -84,9 +94,6 @@ public class ApController {
     // @PostMapping("/api/distance")
     // public ResponseEntity<Map<String, Double>> receiveDistance(VO vo) throws Exception {
 
-    @PostMapping("/api/distance")
-    public ResponseEntity<Map<String, Double>> receiveDistance(@RequestBody VO vo) throws Exception {
-
     //테스트시
 //    @PostMapping("/api/distance")
 //    public void receiveDistance(VO vo) throws Exception {
@@ -94,6 +101,49 @@ public class ApController {
         //논문 실험 1 테스트시
 //    @PostMapping("/api/distance")
 //    public ResponseEntity<VO> receiveDistance(VO vo) throws Exception {
+
+
+
+    //실제 사용 (CO 포함 X)
+//    @PostMapping("/api/distance")
+//    public ResponseEntity<Map<String, Double>> receiveDistance(@RequestBody VO vo) throws Exception {
+
+    //실제 사용? (CO 포함 JSON 받을때)
+    @PostMapping("/api/distance")
+    public ResponseEntity<Map<String, Double>> receiveDistance(@RequestBody JSONVO jsonVo) throws Exception {
+
+        vo.setDeviceName(jsonVo.getDeviceName());
+        vo.setRssi1(jsonVo.getRssi1());
+        vo.setDistance1(jsonVo.getDistance1());
+
+        vo.setRssi2(jsonVo.getRssi2());
+        vo.setDistance2(jsonVo.getDistance2());
+
+        vo.setRssi3(jsonVo.getRssi3());
+        vo.setDistance3(jsonVo.getDistance3());
+
+        vo.setRssi4(jsonVo.getRssi4());
+        vo.setDistance4(jsonVo.getDistance4());
+
+        vo.setRssi5(jsonVo.getRssi5());
+        vo.setDistance5(jsonVo.getDistance5());
+
+        vo.setRssi6(jsonVo.getRssi6());
+        vo.setDistance6(jsonVo.getDistance6());
+
+        vo.setRssi7(jsonVo.getRssi7());
+        vo.setDistance7(jsonVo.getDistance7());
+
+        vo.setRssi8(jsonVo.getRssi8());
+        vo.setDistance8(jsonVo.getDistance8());
+
+        co.setCOValue(jsonVo.getCO());
+
+        coDangerTmp = co.checkDanger();
+
+        if (coDangerTmp == true) {
+            coDangerTmpFloat = 1.0;
+        }
 
         //-------------Real Real Real--------------
         System.out.println("1 : "+vo.getRssi1() + "| 2 : "+vo.getRssi2() + "| 3 : "+vo.getRssi3() + "| 4 : "+vo.getRssi4() + "| 5 : "+vo.getRssi5() + "| 6 : "+vo.getRssi6() + "| 7 : "+vo.getRssi7() + "| 8 : "+vo.getRssi8());
@@ -103,6 +153,7 @@ public class ApController {
             map.put("triangleNum", positioningService.getKalmanTriangleNum()*1.0);
             map.put("x", ul.getX());
             map.put("y", ul.getY());
+            map.put("coDanger", coDangerTmpFloat);
         }
 
         return (ul != null) ?
