@@ -31,6 +31,9 @@ dependencies {
 	// POI
 	implementation group: 'org.apache.poi', name: 'poi', version: '5.0.0'
 	implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '5.0.0'
+
+	// zt-exec 라이브러리 (파이썬 실행)
+	implementation 'org.zeroturnaround:zt-exec:1.12'
 }
 
 tasks.named('test') {

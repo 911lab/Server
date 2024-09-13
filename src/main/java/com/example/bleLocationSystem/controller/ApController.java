@@ -102,7 +102,18 @@ public class ApController {
 //    @PostMapping("/api/distance")
 //    public ResponseEntity<VO> receiveDistance(VO vo) throws Exception {
 
+    @Autowired
+    private PredictionTestService predictionTestService;
 
+    @PostMapping("/predict")
+    public ResponseEntity<String> predictDistance(@RequestBody ArrayList<Integer> rssiData) {
+        // Service 호출하여 Python 스크립트 실행
+        System.out.println(rssiData);
+        String result = predictionTestService.runPythonPrediction(rssiData);
+        System.out.println(result);
+        // 결과를 클라이언트에 반환
+        return ResponseEntity.ok(result);
+    }
 
     //실제 사용 (CO 포함 X)
 //    @PostMapping("/api/distance")
@@ -111,7 +122,6 @@ public class ApController {
     //실제 사용? (CO 포함 JSON 받을때)
     @PostMapping("/api/distance")
     public ResponseEntity<Map<String, Double>> receiveDistance(@RequestBody JSONVO jsonVo) throws Exception {
-
         vo.setDeviceName(jsonVo.getDeviceName());
         vo.setRssi1(jsonVo.getRssi1());
         vo.setDistance1(jsonVo.getDistance1());
